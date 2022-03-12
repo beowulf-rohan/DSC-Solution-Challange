@@ -1,6 +1,6 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:demo/screens/AuthenticationScreens/Signup.dart';
+import 'package:demo/screens/AuthenticationScreens/SignupStudent.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -8,15 +8,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
 
-class LoginScreen extends StatefulWidget {
-  static String id = "LoginScreen";
+class LoginStudentScreen extends StatefulWidget {
+  static String id = "LoginStudentScreen";
 
-  const LoginScreen({Key key}) : super(key: key);
+  const LoginStudentScreen({Key key}) : super(key: key);
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginStudentScreenState createState() => _LoginStudentScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginStudentScreenState extends State<LoginStudentScreen> {
   String _emailVal, _passwordVal;
   bool _passwordVisible = false;
   String status;
@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, SignupScreen.id);
+                        Navigator.pushNamed(context, SignupScreenStudent.id);
                       },
                       child: Text(
                         "Sign Up",

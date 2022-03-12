@@ -1,6 +1,9 @@
-import 'package:demo/screens/AuthenticationScreens/Login.dart';
-import 'package:demo/screens/AuthenticationScreens/Signup.dart';
-import 'package:demo/screens/AuthenticationScreens/Signupdetails.dart';
+import 'package:demo/screens/AuthenticationScreens/LoginStudent.dart';
+import 'package:demo/screens/AuthenticationScreens/LoginTeacher.dart';
+import 'package:demo/screens/AuthenticationScreens/SignupDetailsTeacher.dart';
+import 'package:demo/screens/AuthenticationScreens/SignupStudent.dart';
+import 'package:demo/screens/AuthenticationScreens/SignupDetailsStudent.dart';
+import 'package:demo/screens/AuthenticationScreens/SignupTeacher.dart';
 import 'package:demo/screens/IntroScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +20,12 @@ class MyApp extends StatelessWidget {
       home: IntroScreen(),
       routes: {
         // IntroScreen.id: (context) => IntroScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        SignupScreen.id: (context) => SignupScreen(),
-        SignupDetails.id: (context) => SignupDetails(),
+        LoginStudentScreen.id: (context) => LoginStudentScreen(),
+        LoginTeacherScreen.id: (context) => LoginTeacherScreen(),
+        SignupScreenStudent.id: (context) => SignupScreenStudent(),
+        SignupScreenTeacher.id: (context) => SignupScreenTeacher(),
+        SignupDetailsStudent.id: (context) => SignupDetailsStudent(),
+        SignupDetailsTeacher.id: (context) => SignupDetailsTeacher(),
         // UpdateScreen.id: (context) => UpdateScreen(),
         // NavigationScreen.id: (context) => NavigationScreen(),
         // HomeScreen.id: (context) => HomeScreen(),
