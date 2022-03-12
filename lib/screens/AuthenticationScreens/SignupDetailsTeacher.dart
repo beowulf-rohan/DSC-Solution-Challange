@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables
 
+import 'package:demo/screens/TeacherHome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../constants.dart';
@@ -11,10 +12,7 @@ class SignupDetailsTeacher extends StatefulWidget {
 }
 
 class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
-  String _name, _address, _aadhar, _panId, _contactNum;
-  String _photoUrl =
-      "https://firebasestorage.googleapis.com/v0/b/ch-points.appspot.com/o/dp.png?alt=media&token=cfe8a5dd-d8be-4c05-870e-d3a0a0112dc4";
-  bool _passwordVisible1 = false, _passwordVisible2 = false;
+  String _name, _eid, _department, _contactNum;
   // final _firestore = FirebaseFirestore.instance;
   // final _auth = FirebaseAuth.instance;
   // User loggedInUser;
@@ -88,19 +86,19 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                   child: Container(
                     child: TextField(
                       onChanged: (value) {
-                        _address = value;
+                        _eid = value;
                       },
                       cursorColor: primaryColour,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
-                        labelText: "ADDRESS",
+                        labelText: "Employee ID",
                         labelStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey.shade700),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey.shade700),
                         ),
-                        hintText: "Enter your Address",
+                        hintText: "Enter your ID",
                       ),
                     ),
                   ),
@@ -133,42 +131,20 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                   child: Container(
                     child: TextField(
                       onChanged: (value) {
-                        _aadhar = value;
+                        _department = value;
                       },
                       keyboardType: TextInputType.number,
                       cursorColor: primaryColour,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
-                        labelText: "AADHAR NO.",
+                        labelText: "Department",
                         labelStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey.shade700),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey.shade700),
                         ),
-                        hintText: "Enter your 12-digit AADHAR number",
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
-                  child: Container(
-                    child: TextField(
-                      onChanged: (value) {
-                        _panId = value;
-                      },
-                      cursorColor: primaryColour,
-                      style: TextStyle(color: Colors.grey.shade600),
-                      decoration: InputDecoration(
-                        labelText: "PAN ID",
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade700),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade700),
-                        ),
-                        hintText: "Enter your 10-digit PAN ID",
+                        hintText: "Enter your department",
                       ),
                     ),
                   ),
@@ -176,6 +152,9 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                   child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => TeacherHome()));
+                    },
                     //   onTap: () async {
                     //     if (_name != null &&
                     //         _address != null &&

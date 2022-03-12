@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables
 
 import 'package:demo/screens/AuthenticationScreens/LoginStudent.dart';
+import 'package:demo/screens/AuthenticationScreens/SignupDetailsTeacher.dart';
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 
@@ -153,7 +154,9 @@ class _SignupScreenTeacherState extends State<SignupScreenTeacher> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                   child: GestureDetector(
-                    onTap: () async {},
+                    onTap: () {
+                      Navigator.pushNamed(context, SignupDetailsTeacher.id);
+                    },
                     child: Container(
                       height: buttonHeight,
                       decoration: BoxDecoration(

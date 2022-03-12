@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:demo/screens/AuthenticationScreens/LoginStudent.dart';
 import 'package:demo/screens/AuthenticationScreens/LoginTeacher.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupDetailsTeacher.dart';
