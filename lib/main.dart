@@ -7,6 +7,8 @@ import 'package:demo/screens/AuthenticationScreens/SignupStudent.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupDetailsStudent.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupTeacher.dart';
 import 'package:demo/screens/IntroScreen.dart';
+import 'package:demo/screens/StudentHome.dart';
+import 'package:demo/screens/TeacherHome.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
         SignupScreenTeacher.id: (context) => SignupScreenTeacher(),
         SignupDetailsStudent.id: (context) => SignupDetailsStudent(),
         SignupDetailsTeacher.id: (context) => SignupDetailsTeacher(),
+        TeacherHome.id: (context) => TeacherHome(),
+        StudentHome.id: (context) => StudentHome(),
         // UpdateScreen.id: (context) => UpdateScreen(),
         // NavigationScreen.id: (context) => NavigationScreen(),
         // HomeScreen.id: (context) => HomeScreen(),
