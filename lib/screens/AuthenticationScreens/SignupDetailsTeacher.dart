@@ -69,7 +69,7 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                       cursorColor: primaryColour,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
-                        labelText: "NAME",
+                        labelText: "Name",
                         labelStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey.shade700),
@@ -114,7 +114,7 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                       cursorColor: primaryColour,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
-                        labelText: "CONTACT NUMBER",
+                        labelText: "Contact Number",
                         labelStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey.shade700),
@@ -153,7 +153,7 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                   padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => TeacherHome()));
+                      Navigator.pushNamed(context, TeacherHome.id);
                     },
                     //   onTap: () async {
                     //     if (_name != null &&

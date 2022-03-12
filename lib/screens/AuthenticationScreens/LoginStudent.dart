@@ -7,6 +7,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
+import '../StudentHome.dart';
 
 class LoginStudentScreen extends StatefulWidget {
   static String id = "LoginStudentScreen";
@@ -141,7 +142,12 @@ class _LoginStudentScreenState extends State<LoginStudentScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                   child: GestureDetector(
-                    onTap: () async {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => StudentHome()),
+                      );
+                    },
                     child: Container(
                       height: buttonHeight,
                       decoration: BoxDecoration(
