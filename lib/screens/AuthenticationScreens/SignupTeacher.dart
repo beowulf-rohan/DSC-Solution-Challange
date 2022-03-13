@@ -42,7 +42,7 @@ class _SignupScreenTeacherState extends State<SignupScreenTeacher> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 40.0,
-                    color: primaryColour,
+                    color: kPrimaryColor,
                   ),
                 ),
                 SizedBox(height: 20.0),
@@ -61,7 +61,7 @@ class _SignupScreenTeacherState extends State<SignupScreenTeacher> {
                       onChanged: (value) {
                         // _emailVal = value;
                       },
-                      cursorColor: primaryColour,
+                      cursorColor: kPrimaryColor,
                       keyboardType: TextInputType.emailAddress,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
@@ -85,7 +85,7 @@ class _SignupScreenTeacherState extends State<SignupScreenTeacher> {
                       onChanged: (value) {
                         // _passwordVal = value;
                       },
-                      cursorColor: primaryColour,
+                      cursorColor: kPrimaryColor,
                       obscureText: !_passwordVisible1,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
@@ -122,7 +122,7 @@ class _SignupScreenTeacherState extends State<SignupScreenTeacher> {
                       onChanged: (value) {
                         // _confirmPasswordVal = value;
                       },
-                      cursorColor: primaryColour,
+                      cursorColor: kPrimaryColor,
                       obscureText: !_passwordVisible2,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
@@ -160,7 +160,7 @@ class _SignupScreenTeacherState extends State<SignupScreenTeacher> {
                     child: Container(
                       height: buttonHeight,
                       decoration: BoxDecoration(
-                        color: primaryColour,
+                        color: kPrimaryColor,
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Center(
@@ -182,7 +182,7 @@ class _SignupScreenTeacherState extends State<SignupScreenTeacher> {
                   children: <Widget>[
                     Text(
                       "Already have an account?",
-                      style: TextStyle(color: primaryColour),
+                      style: TextStyle(color: kPrimaryColor),
                     ),
                     TextButton(
                       onPressed: () {
@@ -191,7 +191,7 @@ class _SignupScreenTeacherState extends State<SignupScreenTeacher> {
                       child: Text(
                         "Log In",
                         style: TextStyle(
-                          color: primaryColour,
+                          color: kPrimaryColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: IntroScreen(),
+      debugShowCheckedModeBanner: false,
       routes: {
         // IntroScreen.id: (context) => IntroScreen(),
         LoginStudentScreen.id: (context) => LoginStudentScreen(),
