@@ -7,8 +7,8 @@ import 'package:demo/screens/AuthenticationScreens/SignupStudent.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupDetailsStudent.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupTeacher.dart';
 import 'package:demo/screens/IntroScreen.dart';
-import 'package:demo/screens/StudentHome.dart';
-import 'package:demo/screens/TeacherHome.dart';
+import 'package:demo/screens/StudentScreen/StudentHome.dart';
+import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
 import 'package:flutter/material.dart';
 
 void main() {

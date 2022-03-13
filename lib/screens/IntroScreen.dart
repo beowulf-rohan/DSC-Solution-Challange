@@ -52,7 +52,7 @@ class IntroScreen extends StatelessWidget {
               child: Container(
                 height: 130,
                 width: 150,
-                child: Text('SigninStudent'),
+                child: Text('SignupStudent'),
               ),
             ),
             SizedBox(
