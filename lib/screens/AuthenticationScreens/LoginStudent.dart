@@ -7,7 +7,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
-import '../StudentHome.dart';
+import '../StudentScreen/StudentHome.dart';
 
 class LoginStudentScreen extends StatefulWidget {
   static String id = "LoginStudentScreen";
