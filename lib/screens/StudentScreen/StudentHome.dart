@@ -2,7 +2,7 @@ import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
-import '../TeacherScreen/TeacherReusable.dart';
+import 'StudentReusable.dart';
 
 class StudentHome extends StatefulWidget {
   static const String id = "StudentHome";
@@ -70,7 +70,7 @@ class _StudentHomeState extends State<StudentHome> {
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(12.0),
                 child:
-                Icon(Icons.person_rounded, size: 30, color: kPrimaryColor),
+                    Icon(Icons.person_rounded, size: 30, color: kPrimaryColor),
               ),
               RawMaterialButton(
                 onPressed: () {

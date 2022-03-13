@@ -17,17 +17,24 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: kPrimaryColor,
-        body: Center(
-          child: Text('Classroom to show assignmnet'),
+        body: Column(
+          children: [
+            HeadingText(text: "My Assignments"),
+            AssignemntCard(
+                name: 'ABC1',
+                date: '13-03-2022',
+                time: '3:21PM',
+                duration: '1 hours',
+                response: '30/60'),
+            AssignemntCard(
+                name: 'ABC2',
+                date: '16-03-2022',
+                time: '5:21AM',
+                duration: '3 hours',
+                response: '20/60'),
+          ],
         ),
       ),
     );
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(message),
-      duration: const Duration(milliseconds: 1000),
-    ));
   }
 }
