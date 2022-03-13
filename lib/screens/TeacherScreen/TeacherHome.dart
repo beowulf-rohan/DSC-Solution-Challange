@@ -35,9 +35,11 @@ class _TeacherHomeState extends State<TeacherHome> {
         floatingActionButton: Padding(
           padding: EdgeInsets.only(bottom: 10, right: 15, top: 0, left: 0),
           child: FabCircularMenu(
+            fabCloseColor: Colors.white.withOpacity(0.7),
+            fabOpenColor: Colors.white.withOpacity(0.7),
             key: fabKey,
             alignment: Alignment.bottomRight,
-            ringColor: Colors.white,
+            ringColor: Colors.white.withOpacity(0.7),
             ringDiameter: 300.0,
             ringWidth: 75.0,
             fabSize: 60.0,
