@@ -1,10 +1,12 @@
+import 'package:demo/screens/TeacherScreen/AddAAssignment.dart';
+import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../../constants.dart';
 import 'TeacherReusable.dart';
-
+BuildContext tempContext;
 class TeacherClassScreen extends StatefulWidget {
   static String id = "TeacherClassScreen";
   @override
@@ -15,6 +17,7 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
   final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
+    tempContext=context;
     return SafeArea(
       child: Scaffold(
         backgroundColor: kPrimaryColor,
@@ -98,7 +101,8 @@ Widget _getFAB() {
         // FAB 1
         SpeedDialChild(
           child: Icon(Icons.person_add, color: kPrimaryColor),
-          onTap: () {/* do anything */},
+          onTap: () {/* do anything */
+            Navigator.pushNamed(tempContext,AddStudentToClass.id);},
           label: 'Add Student',
           labelStyle: TextStyle(
               fontWeight: FontWeight.w500, color: Colors.white, fontSize: 16.0),
@@ -107,7 +111,7 @@ Widget _getFAB() {
         // FAB 2
         SpeedDialChild(
             child: Icon(Icons.assignment, color: kPrimaryColor),
-            onTap: () {},
+            onTap: () {Navigator.pushNamed(tempContext,AddAAssignment.id);},
             label: 'Add Assignment',
             labelStyle: TextStyle(
                 fontWeight: FontWeight.w500,
