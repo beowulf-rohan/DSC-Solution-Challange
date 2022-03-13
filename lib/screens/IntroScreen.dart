@@ -5,6 +5,7 @@ import 'package:demo/screens/AuthenticationScreens/LoginTeacher.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupDetailsTeacher.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupStudent.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupDetailsStudent.dart';
+import 'package:demo/screens/AuthenticationScreens/SignupTeacher.dart';
 import 'package:flutter/material.dart';
 
 class IntroScreen extends StatelessWidget {
@@ -60,7 +61,7 @@ class IntroScreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, SignupDetailsTeacher.id);
+                Navigator.pushNamed(context, SignupScreenTeacher.id);
               },
               child: Container(
                 height: 130,
