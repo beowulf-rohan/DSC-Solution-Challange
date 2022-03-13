@@ -174,7 +174,7 @@ class AssignemntCard extends StatelessWidget {
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                padding: const EdgeInsets.only(left: 15, top: 3, bottom: 3),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
