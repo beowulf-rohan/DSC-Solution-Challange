@@ -7,6 +7,7 @@ import 'package:demo/screens/AuthenticationScreens/SignupStudent.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupDetailsStudent.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupTeacher.dart';
 import 'package:demo/screens/IntroScreen.dart';
+import 'package:demo/screens/StudentScreen/StudentClassScreen.dart';
 import 'package:demo/screens/StudentScreen/StudentHome.dart';
 import 'package:demo/screens/TeacherScreen/TeacherClassScreen.dart';
 import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
         TeacherHome.id: (context) => TeacherHome(),
         StudentHome.id: (context) => StudentHome(),
         TeacherClassScreen.id: (context) => TeacherClassScreen(),
+        StudentClassScreen.id: (context) => StudentClassScreen(),
         // UpdateScreen.id: (context) => UpdateScreen(),
         // NavigationScreen.id: (context) => NavigationScreen(),
         // HomeScreen.id: (context) => HomeScreen(),

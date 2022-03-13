@@ -1,6 +1,9 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants.dart';
+import '../TeacherScreen/TeacherReusable.dart';
+
 class StudentHome extends StatefulWidget {
   static const String id = "StudentHome";
 
@@ -13,86 +16,72 @@ class _StudentHomeState extends State<StudentHome> {
   final primaryColor = Color(0xFF192A56);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        color: const Color(0xFF192A56),
-        child: Center(
-          child: RaisedButton(
-            onPressed: () {
-              // The menu can be handled programatically using a key
-              if (fabKey.currentState.isOpen) {
-                fabKey.currentState.close();
-              } else {
-                fabKey.currentState.open();
-              }
-            },
-            color: Colors.white,
-            child: Text('Toggle menu programatically',
-                style: TextStyle(color: primaryColor)),
-          ),
-        ),
-      ),
-      floatingActionButton: Builder(
-        builder: (context) => FabCircularMenu(
-          key: fabKey,
-          // Cannot be `Alignment.center`
-          alignment: Alignment.bottomRight,
-          ringColor: Colors.white.withAlpha(25),
-          ringDiameter: 500.0,
-          ringWidth: 150.0,
-          fabSize: 64.0,
-          fabElevation: 8.0,
-          fabIconBorder: CircleBorder(),
-          // Also can use specific color based on wether
-          // the menu is open or not:
-          // fabOpenColor: Colors.white
-          // fabCloseColor: Colors.white
-          // These properties take precedence over fabColor
-          fabColor: Colors.white,
-          fabOpenIcon: Icon(Icons.menu, color: primaryColor),
-          fabCloseIcon: Icon(Icons.close, color: primaryColor),
-          fabMargin: const EdgeInsets.all(16.0),
-          animationDuration: const Duration(milliseconds: 800),
-          animationCurve: Curves.easeInOutCirc,
-          onDisplayChange: (isOpen) {
-            _showSnackBar(context, "The menu is ${isOpen ? "open" : "closed"}");
-          },
-          children: <Widget>[
-            RawMaterialButton(
-              onPressed: () {
-                _showSnackBar(context, "You pressed 1");
-              },
-              shape: CircleBorder(),
-              padding: const EdgeInsets.all(24.0),
-              child: Icon(Icons.looks_one, color: Colors.white),
-            ),
-            RawMaterialButton(
-              onPressed: () {
-                _showSnackBar(context, "You pressed 2");
-              },
-              shape: CircleBorder(),
-              padding: const EdgeInsets.all(24.0),
-              child: Icon(Icons.looks_two, color: Colors.white),
-            ),
-            RawMaterialButton(
-              onPressed: () {
-                _showSnackBar(context, "You pressed 3");
-              },
-              shape: CircleBorder(),
-              padding: const EdgeInsets.all(24.0),
-              child: Icon(Icons.looks_3, color: Colors.white),
-            ),
-            RawMaterialButton(
-              onPressed: () {
-                _showSnackBar(
-                    context, "You pressed 4. This one closes the menu on tap");
-                fabKey.currentState.close();
-              },
-              shape: CircleBorder(),
-              padding: const EdgeInsets.all(24.0),
-              child: Icon(Icons.looks_4, color: Colors.white),
-            )
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            HeadingText(text: "My Classes"),
+            ClassCard(
+                path: "",
+                className: "Data Structrue and Algoritms",
+                department: "CSE",
+                batch: "2k19"),
+            ClassCard(
+                path: "",
+                className: "Data Structrue and Algoritms",
+                department: "CSE",
+                batch: "2k19"),
           ],
+        ),
+        backgroundColor: kPrimaryColor,
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(bottom: 10, right: 15, top: 0, left: 0),
+          child: FabCircularMenu(
+            key: fabKey,
+            alignment: Alignment.bottomRight,
+            ringColor: Colors.white,
+            ringDiameter: 300.0,
+            ringWidth: 75.0,
+            fabSize: 60.0,
+            fabElevation: 8.0,
+            fabIconBorder: CircleBorder(),
+            fabColor: Colors.white,
+            fabOpenIcon: Icon(Icons.menu, color: kPrimaryColor),
+            fabCloseIcon: Icon(Icons.close, color: kPrimaryColor),
+            fabMargin: const EdgeInsets.all(16.0),
+            animationDuration: const Duration(milliseconds: 800),
+            animationCurve: Curves.easeInOutCirc,
+            onDisplayChange: (isOpen) {
+              //_showSnackBar(context, "The menu is ${isOpen ? "open" : "closed"}");
+            },
+            children: <Widget>[
+              RawMaterialButton(
+                onPressed: () {
+                  // _showSnackBar(context, "You pressed 1");
+                },
+                shape: CircleBorder(),
+                padding: const EdgeInsets.all(12.0),
+                child: Icon(Icons.info, size: 30, color: kPrimaryColor),
+              ),
+              RawMaterialButton(
+                onPressed: () {
+                  // _showSnackBar(context, "You pressed 2");
+                },
+                shape: CircleBorder(),
+                padding: const EdgeInsets.all(12.0),
+                child:
+                Icon(Icons.person_rounded, size: 30, color: kPrimaryColor),
+              ),
+              RawMaterialButton(
+                onPressed: () {
+                  //  _showSnackBar(context, "You pressed 3");
+                },
+                shape: CircleBorder(),
+                padding: const EdgeInsets.all(12.0),
+                child: Icon(Icons.add_circle, size: 30, color: kPrimaryColor),
+              ),
+            ],
+          ),
         ),
       ),
     );
