@@ -1,4 +1,5 @@
 import 'package:demo/constants.dart';
+import 'package:demo/screens/TeacherScreen/MakeNewClass.dart';
 import 'package:demo/screens/TeacherScreen/TeacherReusable.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,7 @@ class _TeacherHomeState extends State<TeacherHome> {
               ),
               RawMaterialButton(
                 onPressed: () {
-                  //  _showSnackBar(context, "You pressed 3");
+                  Navigator.pushNamed(context, MakeNewClass.id);
                 },
                 shape: CircleBorder(),
                 padding: const EdgeInsets.all(12.0),
