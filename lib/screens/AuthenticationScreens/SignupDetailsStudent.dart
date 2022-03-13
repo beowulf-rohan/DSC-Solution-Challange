@@ -55,7 +55,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 40.0,
-                    color: primaryColour,
+                    color: kPrimaryColor,
                   ),
                 ),
                 SizedBox(height: 40.0),
@@ -66,7 +66,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                       onChanged: (value) {
                         _name = value;
                       },
-                      cursorColor: primaryColour,
+                      cursorColor: kPrimaryColor,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
                         labelText: "Name",
@@ -88,7 +88,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                       onChanged: (value) {
                         _sid = value;
                       },
-                      cursorColor: primaryColour,
+                      cursorColor: kPrimaryColor,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
                         labelText: "Student ID",
@@ -111,7 +111,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                         _contactNum = value;
                       },
                       keyboardType: TextInputType.number,
-                      cursorColor: primaryColour,
+                      cursorColor: kPrimaryColor,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
                         labelText: "Contact Number",
@@ -134,7 +134,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                         _department = value;
                       },
                       keyboardType: TextInputType.number,
-                      cursorColor: primaryColour,
+                      cursorColor: kPrimaryColor,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
                         labelText: "Department",
@@ -261,7 +261,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                     child: Container(
                       height: buttonHeight,
                       decoration: BoxDecoration(
-                        color: primaryColour,
+                        color: kPrimaryColor,
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Center(

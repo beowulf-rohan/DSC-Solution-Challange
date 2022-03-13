@@ -45,7 +45,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                     fontWeight: FontWeight.bold,
                     fontFamily: 'NotoSans',
                     fontSize: 40.0,
-                    color: primaryColour,
+                    color: kPrimaryColor,
                   ),
                 ),
                 SizedBox(height: 20.0),
@@ -65,7 +65,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                       onChanged: (value) {
                         _emailVal = value;
                       },
-                      cursorColor: primaryColour,
+                      cursorColor: kPrimaryColor,
                       keyboardType: TextInputType.emailAddress,
                       style: TextStyle(
                         color: Colors.grey.shade600,
@@ -92,7 +92,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                       onChanged: (value) {
                         _passwordVal = value;
                       },
-                      cursorColor: primaryColour,
+                      cursorColor: kPrimaryColor,
                       obscureText: !_passwordVisible,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
@@ -132,7 +132,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                       child: Text(
                         "Forgot Password",
                         style: TextStyle(
-                          color: primaryColour,
+                          color: kPrimaryColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -151,7 +151,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                     child: Container(
                       height: buttonHeight,
                       decoration: BoxDecoration(
-                        color: primaryColour,
+                        color: kPrimaryColor,
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Center(
@@ -173,7 +173,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                   children: <Widget>[
                     Text(
                       "Don't have an account?",
-                      style: TextStyle(color: primaryColour),
+                      style: TextStyle(color: kPrimaryColor),
                     ),
                     TextButton(
                       onPressed: () {
@@ -182,7 +182,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                       child: Text(
                         "Sign Up",
                         style: TextStyle(
-                          color: primaryColour,
+                          color: kPrimaryColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

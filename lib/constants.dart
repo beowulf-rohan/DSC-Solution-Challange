@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const primaryColour = Color(0xff43bcb5);
+const kPrimaryColor = Color(0xFF488fb1);
 const buttonHeight = 45.0;
 
 const String USER_COLLECTION = "UserDatabase";
