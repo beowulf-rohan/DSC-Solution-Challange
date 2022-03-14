@@ -9,11 +9,13 @@ import 'package:demo/screens/AuthenticationScreens/SignupTeacher.dart';
 import 'package:demo/screens/IntroScreen.dart';
 import 'package:demo/screens/StudentScreen/StudentClassScreen.dart';
 import 'package:demo/screens/StudentScreen/StudentHome.dart';
+import 'package:demo/screens/StudentScreen/StudentProfile.dart';
 import 'package:demo/screens/TeacherScreen/AddAAssignment.dart';
 import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
 import 'package:demo/screens/TeacherScreen/MakeNewClass.dart';
 import 'package:demo/screens/TeacherScreen/TeacherClassScreen.dart';
 import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
+import 'package:demo/screens/TeacherScreen/TeacherProfile.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -41,8 +43,10 @@ class MyApp extends StatelessWidget {
         TeacherClassScreen.id: (context) => TeacherClassScreen(),
         StudentClassScreen.id: (context) => StudentClassScreen(),
         MakeNewClass.id: (context) => MakeNewClass(),
-        AddStudentToClass.id: (context)=> AddStudentToClass(),
-        AddAAssignment.id: (context)=> AddAAssignment(),
+        AddStudentToClass.id: (context) => AddStudentToClass(),
+        AddAAssignment.id: (context) => AddAAssignment(),
+        TeacherProfile.id: (context) => TeacherProfile(),
+        StudentProfile.id: (context) => StudentProfile(),
         // UpdateScreen.id: (context) => UpdateScreen(),
         // NavigationScreen.id: (context) => NavigationScreen(),
         // HomeScreen.id: (context) => HomeScreen(),

@@ -1,5 +1,6 @@
 import 'package:demo/constants.dart';
 import 'package:demo/screens/TeacherScreen/MakeNewClass.dart';
+import 'package:demo/screens/TeacherScreen/TeacherProfile.dart';
 import 'package:demo/screens/TeacherScreen/TeacherReusable.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,9 @@ class _TeacherHomeState extends State<TeacherHome> {
           // FAB 2
           SpeedDialChild(
               child: Icon(Icons.person, color: kPrimaryColor),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(tempContext, TeacherProfile.id);
+              },
               label: 'Profile',
               labelStyle: TextStyle(
                   fontWeight: FontWeight.w500,
