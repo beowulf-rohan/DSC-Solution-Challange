@@ -1,4 +1,4 @@
-import 'package:demo/screens/TeacherScreen/AddAAssignment.dart';
+import 'package:demo/screens/TeacherScreen/AddAssignment.dart';
 import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
