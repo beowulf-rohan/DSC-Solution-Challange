@@ -6,7 +6,9 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../../constants.dart';
 import 'TeacherReusable.dart';
+
 BuildContext tempContext;
+
 class TeacherClassScreen extends StatefulWidget {
   static String id = "TeacherClassScreen";
   @override
@@ -17,70 +19,74 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
   final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    tempContext=context;
+    tempContext = context;
     return SafeArea(
       child: Scaffold(
         backgroundColor: kPrimaryColor,
-        body: Column(
+        body: ListView(
           children: [
-            HeadingText(text: "My Assignments"),
-            AssignemntCard(
-                name: 'ABC1',
-                date: '13-03-2022',
-                time: '3:21PM',
-                duration: '1 hours',
-                response: '30/60'),
-            AssignemntCard(
-                name: 'ABC2',
-                date: '16-03-2022',
-                time: '5:21AM',
-                duration: '3 hours',
-                response: '20/60'),
+            Column(
+              children: [
+                HeadingText(text: "Assigned"),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    children: [
+                      AssignemntCard(
+                          name: 'ABC1',
+                          date: '13-03-2022',
+                          time: '3:21PM',
+                          duration: '1 hours',
+                          response: '30/60'),
+                      AssignemntCard(
+                          name: 'ABC2',
+                          date: '16-03-2022',
+                          time: '5:21AM',
+                          duration: '3 hours',
+                          response: '20/60'),
+                      AssignemntCard(
+                          name: 'ABC2',
+                          date: '16-03-2022',
+                          time: '5:21AM',
+                          duration: '3 hours',
+                          response: '20/60'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                HeadingText(text: "Completed"),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    children: [
+                      AssignemntCard(
+                          name: 'ABC1',
+                          date: '13-03-2022',
+                          time: '3:21PM',
+                          duration: '1 hours',
+                          response: '30/60'),
+                      AssignemntCard(
+                          name: 'ABC2',
+                          date: '16-03-2022',
+                          time: '5:21AM',
+                          duration: '3 hours',
+                          response: '20/60'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
-        // floatingActionButton: Padding(
-        //   padding: EdgeInsets.only(bottom: 10, right: 15, top: 0, left: 0),
-        //   child: FabCircularMenu(
-        //     fabCloseColor: Colors.white.withOpacity(0.7),
-        //     fabOpenColor: Colors.white.withOpacity(0.7),
-        //     key: fabKey,
-        //     alignment: Alignment.bottomRight,
-        //     ringColor: Colors.white.withOpacity(0.7),
-        //     ringDiameter: 300.0,
-        //     ringWidth: 75.0,
-        //     fabSize: 60.0,
-        //     fabElevation: 8.0,
-        //     fabIconBorder: CircleBorder(),
-        //     fabColor: Colors.white,
-        //     fabOpenIcon: Icon(Icons.menu, color: kPrimaryColor),
-        //     fabCloseIcon: Icon(Icons.close, color: kPrimaryColor),
-        //     fabMargin: const EdgeInsets.all(16.0),
-        //     animationDuration: const Duration(milliseconds: 800),
-        //     animationCurve: Curves.easeInOutCirc,
-        //     onDisplayChange: (isOpen) {
-        //       //_showSnackBar(context, "The menu is ${isOpen ? "open" : "closed"}");
-        //     },
-        //     children: <Widget>[
-        //       RawMaterialButton(
-        //         onPressed: () {
-        //           // _showSnackBar(context, "You pressed 2");
-        //         },
-        //         shape: CircleBorder(),
-        //         padding: const EdgeInsets.all(12.0),
-        //         child: Icon(Icons.person_add, size: 30, color: kPrimaryColor),
-        //       ),
-        //       RawMaterialButton(
-        //         onPressed: () {
-        //           // Navigator.pushNamed(context, MakeNewClass.id);
-        //         },
-        //         shape: CircleBorder(),
-        //         padding: const EdgeInsets.all(12.0),
-        //         child:
-        //             Icon(Icons.note_add_sharp, size: 30, color: kPrimaryColor),
-        //       ),
-        //     ],
-        //   ),
-        // ),
         floatingActionButton: _getFAB(),
       ),
     );
@@ -101,8 +107,10 @@ Widget _getFAB() {
         // FAB 1
         SpeedDialChild(
           child: Icon(Icons.person_add, color: kPrimaryColor),
-          onTap: () {/* do anything */
-            Navigator.pushNamed(tempContext,AddStudentToClass.id);},
+          onTap: () {
+            /* do anything */
+            Navigator.pushNamed(tempContext, AddStudentToClass.id);
+          },
           label: 'Add Student',
           labelStyle: TextStyle(
               fontWeight: FontWeight.w500, color: Colors.white, fontSize: 16.0),
@@ -111,7 +119,9 @@ Widget _getFAB() {
         // FAB 2
         SpeedDialChild(
             child: Icon(Icons.assignment, color: kPrimaryColor),
-            onTap: () {Navigator.pushNamed(tempContext,AddAAssignment.id);},
+            onTap: () {
+              Navigator.pushNamed(tempContext, AddAAssignment.id);
+            },
             label: 'Add Assignment',
             labelStyle: TextStyle(
                 fontWeight: FontWeight.w500,
