@@ -64,7 +64,9 @@ class _TeacherHomeState extends State<TeacherHome> {
           // FAB 1
           SpeedDialChild(
             child: Icon(Icons.add_circle_outline, color: kPrimaryColor),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(tempContext, MakeNewClass.id);
+            },
             label: 'Add Class',
             labelStyle: TextStyle(
                 fontWeight: FontWeight.w500,
