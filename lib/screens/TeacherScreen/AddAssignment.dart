@@ -1,10 +1,12 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 
 class AddAAssignment extends StatelessWidget {
   static const String id = "AddAAssignment";
-  String _name, _startDate,_endDate,_startTime,_endTime,_password;
+  String _name, _startDate, _endDate, _startTime, _endTime, _password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +102,7 @@ class AddAAssignment extends StatelessWidget {
                   child: Container(
                     child: TextField(
                       onChanged: (value) {
-                        _startTime= value;
+                        _startTime = value;
                       },
                       keyboardType: TextInputType.number,
                       cursorColor: kPrimaryColor,
@@ -122,7 +124,7 @@ class AddAAssignment extends StatelessWidget {
                   child: Container(
                     child: TextField(
                       onChanged: (value) {
-                        _endTime= value;
+                        _endTime = value;
                       },
                       keyboardType: TextInputType.number,
                       cursorColor: kPrimaryColor,
@@ -140,22 +142,39 @@ class AddAAssignment extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
-                  child: Container(
-                    child: TextField(
-                      onChanged: (value) {
-                      },
-                      keyboardType: TextInputType.number,
-                      cursorColor: kPrimaryColor,
-                      style: TextStyle(color: Colors.grey.shade600),
-                      decoration: InputDecoration(
-                        labelText: "Start Time",
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade700),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade700),
-                        ),
+                  padding: const EdgeInsets.fromLTRB(50.0, 30.0, 0, 0),
+                  child: GestureDetector(
+                    onTap: () async {
+                      FilePickerResult result =
+                          await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['jpg', 'pdf', 'doc'],
+                      );
+                    },
+                    child: Material(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: kPrimaryColor,
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: SizedBox(
+                              height: 35,
+                              width: 170,
+                              child: Center(
+                                child: Text(
+                                  "Upload Assignment",
+                                  style: TextStyle(
+                                    fontFamily: 'NotoSans',
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -165,7 +184,7 @@ class AddAAssignment extends StatelessWidget {
                   child: Container(
                     child: TextField(
                       onChanged: (value) {
-                        _password= value;
+                        _password = value;
                       },
                       keyboardType: TextInputType.number,
                       cursorColor: kPrimaryColor,

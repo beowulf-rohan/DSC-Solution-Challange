@@ -59,7 +59,7 @@ class _StudentHomeState extends State<StudentHome> {
           SpeedDialChild(
             child: Icon(Icons.add_circle_outline, color: kPrimaryColor),
             onTap: () {},
-            label: 'Add Class',
+            label: 'Join a Class',
             labelStyle: TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.white,

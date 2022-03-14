@@ -10,7 +10,7 @@ import 'package:demo/screens/IntroScreen.dart';
 import 'package:demo/screens/StudentScreen/StudentClassScreen.dart';
 import 'package:demo/screens/StudentScreen/StudentHome.dart';
 import 'package:demo/screens/StudentScreen/StudentProfile.dart';
-import 'package:demo/screens/TeacherScreen/AddAAssignment.dart';
+import 'package:demo/screens/TeacherScreen/AddAssignment.dart';
 import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
 import 'package:demo/screens/TeacherScreen/MakeNewClass.dart';
 import 'package:demo/screens/TeacherScreen/TeacherClassScreen.dart';
