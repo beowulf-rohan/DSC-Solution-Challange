@@ -3,6 +3,9 @@ import 'package:demo/screens/TeacherScreen/MakeNewClass.dart';
 import 'package:demo/screens/TeacherScreen/TeacherReusable.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+
+BuildContext tempContext;
 
 class TeacherHome extends StatefulWidget {
   static const String id = "TeacherHome";
@@ -15,6 +18,7 @@ class _TeacherHomeState extends State<TeacherHome> {
   //final primaryColor = Color(0xFF488fb1);
   @override
   Widget build(BuildContext context) {
+    tempContext = context;
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -33,57 +37,7 @@ class _TeacherHomeState extends State<TeacherHome> {
           ],
         ),
         backgroundColor: kPrimaryColor,
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(bottom: 10, right: 15, top: 0, left: 0),
-          child: FabCircularMenu(
-            fabCloseColor: Colors.white.withOpacity(0.7),
-            fabOpenColor: Colors.white.withOpacity(0.7),
-            key: fabKey,
-            alignment: Alignment.bottomRight,
-            ringColor: Colors.white.withOpacity(0.7),
-            ringDiameter: 300.0,
-            ringWidth: 75.0,
-            fabSize: 60.0,
-            fabElevation: 8.0,
-            fabIconBorder: CircleBorder(),
-            fabColor: Colors.white,
-            fabOpenIcon: Icon(Icons.menu, color: kPrimaryColor),
-            fabCloseIcon: Icon(Icons.close, color: kPrimaryColor),
-            fabMargin: const EdgeInsets.all(16.0),
-            animationDuration: const Duration(milliseconds: 800),
-            animationCurve: Curves.easeInOutCirc,
-            onDisplayChange: (isOpen) {
-              //_showSnackBar(context, "The menu is ${isOpen ? "open" : "closed"}");
-            },
-            children: <Widget>[
-              RawMaterialButton(
-                onPressed: () {
-                  // _showSnackBar(context, "You pressed 1");
-                },
-                shape: CircleBorder(),
-                padding: const EdgeInsets.all(12.0),
-                child: Icon(Icons.info, size: 30, color: kPrimaryColor),
-              ),
-              RawMaterialButton(
-                onPressed: () {
-                  // _showSnackBar(context, "You pressed 2");
-                },
-                shape: CircleBorder(),
-                padding: const EdgeInsets.all(12.0),
-                child:
-                    Icon(Icons.person_rounded, size: 30, color: kPrimaryColor),
-              ),
-              RawMaterialButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, MakeNewClass.id);
-                },
-                shape: CircleBorder(),
-                padding: const EdgeInsets.all(12.0),
-                child: Icon(Icons.add_circle, size: 30, color: kPrimaryColor),
-              ),
-            ],
-          ),
-        ),
+        floatingActionButton: _getFAB(),
       ),
     );
   }
@@ -93,5 +47,42 @@ class _TeacherHomeState extends State<TeacherHome> {
       content: Text(message),
       duration: const Duration(milliseconds: 1000),
     ));
+  }
+
+  Widget _getFAB() {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 10, right: 15, top: 0, left: 0),
+      child: SpeedDial(
+        overlayColor: Colors.transparent,
+        animatedIcon: AnimatedIcons.menu_close,
+        animatedIconTheme: IconThemeData(size: 22),
+        backgroundColor: kPrimaryColor,
+        visible: true,
+        // curve: Curves.bounceIn,
+        children: [
+          // FAB 1
+          SpeedDialChild(
+            child: Icon(Icons.add_circle_outline, color: kPrimaryColor),
+            onTap: () {},
+            label: 'Add Class',
+            labelStyle: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+                fontSize: 16.0),
+            labelBackgroundColor: kPrimaryColor,
+          ),
+          // FAB 2
+          SpeedDialChild(
+              child: Icon(Icons.person, color: kPrimaryColor),
+              onTap: () {},
+              label: 'Profile',
+              labelStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontSize: 16.0),
+              labelBackgroundColor: kPrimaryColor),
+        ],
+      ),
+    );
   }
 }
