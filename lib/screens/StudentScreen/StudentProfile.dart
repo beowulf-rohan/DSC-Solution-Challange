@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:demo/constants.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-class TeacherProfile extends StatefulWidget {
-  static const String id = "TeacherProfile";
+class StudentProfile extends StatefulWidget {
+  static const String id = 'StudentProfile';
   @override
-  State<TeacherProfile> createState() => _TeacherProfileState();
+  State<StudentProfile> createState() => _StudentProfileState();
 }
 
-class _TeacherProfileState extends State<TeacherProfile> {
+class _StudentProfileState extends State<StudentProfile> {
   String _name, _address, _aadhar, _panId, _contact;
   bool _passwordVisible1 = false,
       _passwordVisible2 = false,
