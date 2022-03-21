@@ -293,3 +293,36 @@ class AssignemntCard extends StatelessWidget {
     );
   }
 }
+
+class UserField extends StatelessWidget {
+  final String heading, subtitle;
+  UserField({@required this.heading, @required this.subtitle});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 20, 0.0, 0.0),
+      child: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              heading,
+              style: TextStyle(
+                  fontSize: 15.5,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey.shade700),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 0),
+              child: Text(
+                subtitle,
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ),
+            Divider(color: Colors.grey.shade900),
+          ],
+        ),
+      ),
+    );
+  }
+}
