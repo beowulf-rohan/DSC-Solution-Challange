@@ -1,13 +1,25 @@
 import 'package:demo/screens/TeacherScreen/TeacherReusable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 import '../../constants.dart';
 
-class AddAAssignment extends StatelessWidget {
+class AddAAssignment extends StatefulWidget {
   static const String id = "AddAAssignment";
-  String _name, _startDate, _endDate, _startTime, _endTime, _password;
+
+  @override
+  State<AddAAssignment> createState() => _AddAAssignmentState();
+}
+
+class _AddAAssignmentState extends State<AddAAssignment> {
+  String _name = "",
+      _startDate = "",
+      _endDate = "",
+      _startTime = "",
+      _endTime = "",
+      _password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +69,7 @@ class AddAAssignment extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 30.0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 30.0, 0, 0),
                   child: GestureDetector(
                     onTap: () async {
                       List<DateTime> dateTimeList =
@@ -90,6 +102,15 @@ class AddAAssignment extends StatelessWidget {
                         borderRadius: const Radius.circular(16),
                       );
                       print(dateTimeList);
+                      setState(() {
+                        _startDate =
+                            DateFormat('dd-MM-yyyy').format(dateTimeList[0]);
+                        _endDate =
+                            DateFormat('dd-MM-yyyy').format(dateTimeList[1]);
+                        _startTime =
+                            DateFormat('hh:mm').format(dateTimeList[0]);
+                        _endTime = DateFormat('hh:mm').format(dateTimeList[1]);
+                      });
                     },
                     child: Material(
                       child: Row(
@@ -119,44 +140,52 @@ class AddAAssignment extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
-                  child: Container(
-                    child: UserField(
-                      heading: 'Start Date',
-                      subtitle: '',
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
+                      child: Container(
+                        child: UserField(
+                          heading: 'Start Date',
+                          subtitle: _startDate,
+                        ),
+                      ),
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
+                      child: Container(
+                        child: UserField(
+                          heading: 'Start Time',
+                          subtitle: _startTime,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
+                      child: Container(
+                        child: UserField(
+                          heading: 'End Date',
+                          subtitle: _endDate,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
+                      child: Container(
+                        child: UserField(
+                          heading: 'End Time',
+                          subtitle: _endTime,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
-                  child: Container(
-                    child: UserField(
-                      heading: 'End Date',
-                      subtitle: '',
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
-                  child: Container(
-                    child: UserField(
-                      heading: 'Start Time',
-                      subtitle: '',
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
-                  child: Container(
-                    child: UserField(
-                      heading: 'End Time',
-                      subtitle: '',
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 30.0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0, 0),
                   child: GestureDetector(
                     onTap: () async {
                       FilePickerResult result =
