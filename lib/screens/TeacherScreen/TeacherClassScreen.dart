@@ -53,6 +53,9 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
                           time: '5:21AM',
                           duration: '3 hours',
                           response: '20/60'),
+                      SizedBox(
+                        height: 15,
+                      )
                     ],
                   ),
                 ),
@@ -80,6 +83,9 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
                           time: '5:21AM',
                           duration: '3 hours',
                           response: '20/60'),
+                      SizedBox(
+                        height: 15,
+                      )
                     ],
                   ),
                 ),

@@ -1,5 +1,7 @@
+import 'package:demo/screens/TeacherScreen/TeacherReusable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 import '../../constants.dart';
 
@@ -55,22 +57,64 @@ class AddAAssignment extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
-                  child: Container(
-                    child: TextField(
-                      onChanged: (value) {
-                        _startDate = value;
-                      },
-                      cursorColor: kPrimaryColor,
-                      style: TextStyle(color: Colors.grey.shade600),
-                      decoration: InputDecoration(
-                        labelText: "Start Date",
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade700),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade700),
+                  padding: const EdgeInsets.fromLTRB(50.0, 30.0, 0, 0),
+                  child: GestureDetector(
+                    onTap: () async {
+                      List<DateTime> dateTimeList =
+                          await showOmniDateTimeRangePicker(
+                        context: context,
+                        primaryColor: Colors.grey[700],
+                        backgroundColor: Colors.white,
+                        calendarTextColor: Colors.black,
+                        tabTextColor: Colors.black,
+                        unselectedTabBackgroundColor: kPrimaryColor,
+                        buttonTextColor: kPrimaryColor,
+                        timeSpinnerTextStyle:
+                            const TextStyle(color: Colors.black, fontSize: 18),
+                        timeSpinnerHighlightedTextStyle:
+                            const TextStyle(color: Colors.black, fontSize: 24),
+                        is24HourMode: false,
+                        isShowSeconds: false,
+                        startInitialDate: DateTime.now(),
+                        startFirstDate:
+                            DateTime(1600).subtract(const Duration(days: 3652)),
+                        startLastDate: DateTime.now().add(
+                          const Duration(days: 3652),
                         ),
+                        endInitialDate: DateTime.now(),
+                        endFirstDate:
+                            DateTime(1600).subtract(const Duration(days: 3652)),
+                        endLastDate: DateTime.now().add(
+                          const Duration(days: 3652),
+                        ),
+                        borderRadius: const Radius.circular(16),
+                      );
+                      print(dateTimeList);
+                    },
+                    child: Material(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: kPrimaryColor,
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: SizedBox(
+                              height: 35,
+                              width: 170,
+                              child: Center(
+                                child: Text(
+                                  "Select date and time",
+                                  style: TextStyle(
+                                    fontFamily: 'NotoSans',
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -78,66 +122,36 @@ class AddAAssignment extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
                   child: Container(
-                    child: TextField(
-                      onChanged: (value) {
-                        _endDate = value;
-                      },
-                      keyboardType: TextInputType.number,
-                      cursorColor: kPrimaryColor,
-                      style: TextStyle(color: Colors.grey.shade600),
-                      decoration: InputDecoration(
-                        labelText: "End Date",
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade700),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade700),
-                        ),
-                      ),
+                    child: UserField(
+                      heading: 'Start Date',
+                      subtitle: '',
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
                   child: Container(
-                    child: TextField(
-                      onChanged: (value) {
-                        _startTime = value;
-                      },
-                      keyboardType: TextInputType.number,
-                      cursorColor: kPrimaryColor,
-                      style: TextStyle(color: Colors.grey.shade600),
-                      decoration: InputDecoration(
-                        labelText: "Start Time",
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade700),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade700),
-                        ),
-                      ),
+                    child: UserField(
+                      heading: 'End Date',
+                      subtitle: '',
                     ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
                   child: Container(
-                    child: TextField(
-                      onChanged: (value) {
-                        _endTime = value;
-                      },
-                      keyboardType: TextInputType.number,
-                      cursorColor: kPrimaryColor,
-                      style: TextStyle(color: Colors.grey.shade600),
-                      decoration: InputDecoration(
-                        labelText: "End Time",
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade700),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade700),
-                        ),
-                      ),
+                    child: UserField(
+                      heading: 'Start Time',
+                      subtitle: '',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
+                  child: Container(
+                    child: UserField(
+                      heading: 'End Time',
+                      subtitle: '',
                     ),
                   ),
                 ),
