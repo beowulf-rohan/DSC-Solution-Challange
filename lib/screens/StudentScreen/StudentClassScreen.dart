@@ -1,3 +1,4 @@
+import 'package:demo/screens/StudentScreen/generateOrSubmit.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,19 +40,22 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
                           date: '13-03-2022',
                           time: '3:21PM',
                           duration: '1 hours',
-                          response: '30/60'),
+                          response: '30/60',
+                          press: (){Navigator.pushNamed(context,generateOrSubmit.id);} ),
                       AssignemntCard(
                           name: 'ABC2',
                           date: '16-03-2022',
                           time: '5:21AM',
                           duration: '3 hours',
-                          response: '20/60'),
+                          response: '20/60',
+                          press: (){Navigator.pushNamed(context,generateOrSubmit.id);}),
                       AssignemntCard(
                           name: 'ABC2',
                           date: '16-03-2022',
                           time: '5:21AM',
                           duration: '3 hours',
-                          response: '20/60'),
+                          response: '20/60',
+                          press: (){Navigator.pushNamed(context,generateOrSubmit.id);}),
                     ],
                   ),
                 ),
@@ -72,13 +76,15 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
                           date: '13-03-2022',
                           time: '3:21PM',
                           duration: '1 hours',
-                          response: '30/60'),
+                          response: '30/60',
+                          press: (){} ),
                       AssignemntCard(
                           name: 'ABC2',
                           date: '16-03-2022',
                           time: '5:21AM',
                           duration: '3 hours',
-                          response: '20/60'),
+                          response: '20/60',
+                          press: (){} ),
                     ],
                   ),
                 ),

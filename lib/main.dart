@@ -10,6 +10,9 @@ import 'package:demo/screens/IntroScreen.dart';
 import 'package:demo/screens/StudentScreen/StudentClassScreen.dart';
 import 'package:demo/screens/StudentScreen/StudentHome.dart';
 import 'package:demo/screens/StudentScreen/StudentProfile.dart';
+import 'package:demo/screens/StudentScreen/createSHA.dart';
+import 'package:demo/screens/StudentScreen/generateOrSubmit.dart';
+import 'package:demo/screens/StudentScreen/submitPDF.dart';
 import 'package:demo/screens/TeacherScreen/AddAssignment.dart';
 import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
 import 'package:demo/screens/TeacherScreen/MakeNewClass.dart';
@@ -47,6 +50,9 @@ class MyApp extends StatelessWidget {
         AddAAssignment.id: (context) => AddAAssignment(),
         TeacherProfile.id: (context) => TeacherProfile(),
         StudentProfile.id: (context) => StudentProfile(),
+        generateOrSubmit.id: (context) => generateOrSubmit(),
+        createSHA.id: (context) => createSHA(),
+        submitPDF.id: (context) => submitPDF(),
         // UpdateScreen.id: (context) => UpdateScreen(),
         // NavigationScreen.id: (context) => NavigationScreen(),
         // HomeScreen.id: (context) => HomeScreen(),
