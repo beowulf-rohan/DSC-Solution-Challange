@@ -156,15 +156,17 @@ class AssignemntCard extends StatelessWidget {
     @required this.time,
     @required this.duration,
     @required this.response,
+    @required this.press,
   }) : super(key: key);
   final String name, date, time, duration, response;
+  final Function press;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: InkWell(
-        onTap: () {},
+        onTap: press,
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.20),

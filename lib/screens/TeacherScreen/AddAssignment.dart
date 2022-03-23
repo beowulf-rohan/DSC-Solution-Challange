@@ -129,6 +129,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                                   "Select date and time",
                                   style: TextStyle(
                                     fontFamily: 'NotoSans',
+                                    color: Colors.white,
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
