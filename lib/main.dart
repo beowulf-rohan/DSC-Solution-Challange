@@ -20,8 +20,11 @@ import 'package:demo/screens/TeacherScreen/TeacherClassScreen.dart';
 import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
 import 'package:demo/screens/TeacherScreen/TeacherProfile.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -53,18 +56,6 @@ class MyApp extends StatelessWidget {
         generateOrSubmit.id: (context) => generateOrSubmit(),
         createSHA.id: (context) => createSHA(),
         submitPDF.id: (context) => submitPDF(),
-        // UpdateScreen.id: (context) => UpdateScreen(),
-        // NavigationScreen.id: (context) => NavigationScreen(),
-        // HomeScreen.id: (context) => HomeScreen(),
-        // Addition1.id: (context) => Addition1(),
-        // Addition2.id: (context) => Addition2(),
-        // Addition3.id: (context) => Addition3(),
-        // FAQ.id: (context) => FAQ(),
-        // HelpLine.id: (context) => HelpLine(),
-        // TermsAndConditions.id: (context) => TermsAndConditions(),
-        // InfoScreen.id: (context) => InfoScreen(),
-        // UserScreen.id: (context) => UserScreen(),
-        // ForgotPassScreen.id: (context) => ForgotPassScreen(),
       },
     );
   }
