@@ -2,7 +2,9 @@
 
 import 'package:demo/screens/AuthenticationScreens/LoginStudent.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupDetailsStudent.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../constants.dart';
 
 class SignupScreenStudent extends StatefulWidget {
@@ -15,11 +17,11 @@ class SignupScreenStudent extends StatefulWidget {
 }
 
 class _SignupScreenStudentState extends State<SignupScreenStudent> {
-  // String _emailVal, _passwordVal, _confirmPasswordVal;
+  String _emailVal, _passwordVal, _confirmPasswordVal;
   bool _passwordVisible1 = false, _passwordVisible2 = false;
   String status;
   bool showSpinner = false;
-  // final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,7 @@ class _SignupScreenStudentState extends State<SignupScreenStudent> {
                   child: Container(
                     child: TextField(
                       onChanged: (value) {
-                        // _emailVal = value;
+                        _emailVal = value;
                       },
                       cursorColor: kPrimaryColor,
                       keyboardType: TextInputType.emailAddress,
@@ -83,7 +85,7 @@ class _SignupScreenStudentState extends State<SignupScreenStudent> {
                   child: Container(
                     child: TextField(
                       onChanged: (value) {
-                        // _passwordVal = value;
+                        _passwordVal = value;
                       },
                       cursorColor: kPrimaryColor,
                       obscureText: !_passwordVisible1,
@@ -120,7 +122,7 @@ class _SignupScreenStudentState extends State<SignupScreenStudent> {
                   child: Container(
                     child: TextField(
                       onChanged: (value) {
-                        // _confirmPasswordVal = value;
+                        _confirmPasswordVal = value;
                       },
                       cursorColor: kPrimaryColor,
                       obscureText: !_passwordVisible2,
@@ -154,11 +156,88 @@ class _SignupScreenStudentState extends State<SignupScreenStudent> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        SignupDetailsStudent.id,
-                      );
+                    onTap: () async {
+                      if (_emailVal != null &&
+                          _passwordVal != null &&
+                          _confirmPasswordVal != null) {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          if (_passwordVal == _confirmPasswordVal) {
+                            final newUser =
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: _emailVal, password: _passwordVal);
+                            if (newUser != null) {
+                              // final SharedPreferences sharedPref = await SharedPreferences.getInstance();
+                              // sharedPref.setString(USER_EMAIL, _emailVal);
+                              Navigator.pushNamed(
+                                  context, SignupDetailsStudent.id);
+                            }
+                          } else {
+                            Alert(
+                                    context: context,
+                                    title: 'Re-enter Password',
+                                    buttons: [
+                                      DialogButton(
+                                        child: Text(
+                                          "CANCEL",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                          ),
+                                        ),
+                                        onPressed: () => Navigator.pop(context),
+                                        color: kPrimaryColor,
+                                        width: 150.0,
+                                        radius: BorderRadius.circular(15.0),
+                                      ),
+                                    ],
+                                    desc:
+                                        "Password and\nConfirm Password\ndo not match")
+                                .show();
+                          }
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        } catch (error) {
+                          print(error.code);
+                          switch (error.code) {
+                            case "invalid-email":
+                              status = 'Invalid Email';
+                              break;
+                            case "email-already-in-use":
+                              status = 'Email already in use';
+                              break;
+                            default:
+                              status = 'Undefined error';
+                              break;
+                          }
+                          setState(() {
+                            showSpinner = false;
+                          });
+                          Alert(
+                                  context: context,
+                                  title: status,
+                                  buttons: [
+                                    DialogButton(
+                                      child: Text(
+                                        "CANCEL",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                      color: kPrimaryColor,
+                                      width: 150.0,
+                                      radius: BorderRadius.circular(15.0),
+                                    ),
+                                  ],
+                                  desc: "Please try again")
+                              .show();
+                        }
+                      }
                     },
                     child: Container(
                       height: buttonHeight,
