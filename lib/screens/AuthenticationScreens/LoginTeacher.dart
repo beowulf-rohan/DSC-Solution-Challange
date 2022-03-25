@@ -2,6 +2,7 @@
 
 import 'package:demo/screens/AuthenticationScreens/SignupStudent.dart';
 import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -22,7 +23,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
   bool _passwordVisible = false;
   String status;
   bool showSpinner = false;
-  // final _auth = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,11 +143,70 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TeacherHome()));
+                    onTap: () async {
+                      if (_emailVal != null && _passwordVal != null) {
+                        setState(() {
+                          showSpinner = true;
+                        });
+                        try {
+                          final oldUser =
+                              await _auth.signInWithEmailAndPassword(
+                                  email: _emailVal, password: _passwordVal);
+                          if (oldUser != null) {
+                            // final SharedPreferences sharedPref = await SharedPreferences.getInstance();
+                            // sharedPref.setString(USER_EMAIL, _emailVal);
+                            Navigator.pushNamed(context, TeacherHome.id);
+                          }
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        } catch (error) {
+                          print(error.code);
+                          switch (error.code) {
+                            case "invalid-email":
+                              status = 'Invalid Email';
+                              break;
+                            case "wrong-password":
+                              status = 'Wrong password';
+                              break;
+                            case "user-not-found":
+                              status = 'User not found';
+                              break;
+                            case "email-already-exists":
+                              status = 'Email already in use';
+                              break;
+                            case "too-many-requests":
+                              status = 'Too many request';
+                              break;
+                            default:
+                              status = 'Undefined error';
+                              break;
+                          }
+                          setState(() {
+                            showSpinner = false;
+                          });
+                          Alert(
+                                  context: context,
+                                  title: status,
+                                  buttons: [
+                                    DialogButton(
+                                      child: Text(
+                                        "CANCEL",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                      color: kPrimaryColor,
+                                      width: 150.0,
+                                      radius: BorderRadius.circular(15.0),
+                                    ),
+                                  ],
+                                  desc: "Please try again")
+                              .show();
+                        }
+                      }
                     },
                     child: Container(
                       height: buttonHeight,
