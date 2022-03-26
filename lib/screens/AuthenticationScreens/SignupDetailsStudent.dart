@@ -162,6 +162,8 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                           _contactNum != null &&
                           _contactNum.length == 10) {
                         _firestore
+                            .collection("AUTH_DATA")
+                            .doc("STUDENT")
                             .collection(USER_COLLECTION)
                             .doc(FirebaseAuth.instance.currentUser.uid)
                             .set({
