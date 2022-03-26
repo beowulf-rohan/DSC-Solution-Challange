@@ -8,14 +8,11 @@ const String PROPERTY_COLLECTION = "PropertyDatabase";
 const String FAQ_COLLECTION = "FaqDatabase";
 const String TERMS_AND_CONDITIONS_COLLECTION = "TnCDatabase";
 
-const String USER_EMAIL = "Email";
-const String USER_NAME = "Name";
-const String USER_ADDRESS = "Address";
-const String USER_CONTACT = "Contact";
-const String USER_PANID = "Pan-Id";
-const String USER_AADHAR = "Aadhar-No";
-const String USER_PROPERTY_COUNT = "Property-Registered";
-const String USER_DP_LINK = "Display-Picture-Link";
+const String STUDENT_EMAIL = "Email";
+const String STUDENT_NAME = "Name";
+const String STUDENT_CONTACT = "Contact";
+const String STUDENT_ROLL_NO = "Roll No";
+const String STUDENT_DEPARTMENT = "Departnent";
 
 const String PROPERTY_NAME = "Name";
 const String PROPERTY_CONTACT = "Contact";
