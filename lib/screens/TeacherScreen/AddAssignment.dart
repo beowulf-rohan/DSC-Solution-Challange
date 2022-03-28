@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:demo/screens/TeacherScreen/TeacherReusable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
@@ -188,45 +191,6 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0, 0),
-                  child: GestureDetector(
-                    onTap: () async {
-                      FilePickerResult result =
-                          await FilePicker.platform.pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: ['jpg', 'pdf', 'doc'],
-                      );
-                    },
-                    child: Material(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: kPrimaryColor,
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: SizedBox(
-                              height: 35,
-                              width: 170,
-                              child: Center(
-                                child: Text(
-                                  "Upload Assignment",
-                                  style: TextStyle(
-                                    fontFamily: 'NotoSans',
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0),
                   child: Container(
                     child: TextField(
@@ -262,33 +226,58 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(50.0, 20.0, 50.0, 0.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: kPrimaryColor,
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: SizedBox(
-                          height: 35,
-                          width: 170,
-                          child: Center(
-                            child: Text(
-                              "Encrypt",
-                              style: TextStyle(
-                                fontFamily: 'NotoSans',
-                                color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0, 0),
+                  child: GestureDetector(
+                    onTap: () async {
+                      FilePickerResult result =
+                          await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['pdf'],
+                      );
+                      final PdfDocument document = PdfDocument(
+                          inputBytes: File('input.pdf').readAsBytesSync());
+
+                      //Add security to the document
+                      final PdfSecurity security = document.security;
+                      //Set password.
+                      security.userPassword = _passwordVal;
+                      security.ownerPassword = _passwordVal;
+                      //Set the encryption algorithm
+                      security.algorithm = PdfEncryptionAlgorithm.aesx256Bit;
+                      //Save the document.
+                      File('secured.pdf').writeAsBytes(document.save());
+                      //Dispose the document
+                      document.dispose();
+                    },
+                    child: Material(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: kPrimaryColor,
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            child: SizedBox(
+                              height: 35,
+                              width: 170,
+                              child: Center(
+                                child: Text(
+                                  "Upload Assignment",
+                                  style: TextStyle(
+                                    fontFamily: 'NotoSans',
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
                               ),
-                              textAlign: TextAlign.left,
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
