@@ -1,8 +1,11 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../constants.dart';
 
 class SignupDetailsTeacher extends StatefulWidget {
@@ -13,19 +16,19 @@ class SignupDetailsTeacher extends StatefulWidget {
 
 class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
   String _name, _eid, _department, _contactNum;
-  // final _firestore = FirebaseFirestore.instance;
-  // final _auth = FirebaseAuth.instance;
-  // User loggedInUser;
+  final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  User loggedInUser;
 
   void getCurrentUser() async {
-    // try {
-    //   // final user = _auth.currentUser;
-    //   if (user != null) {
-    //     // loggedInUser = user;
-    //   }
-    // } catch (e) {
-    //   print(e);
-    // }
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -152,112 +155,55 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, TeacherHome.id);
+                    onTap: () async {
+                      if (_name != null &&
+                          _eid != null &&
+                          _department != null &&
+                          _contactNum != null &&
+                          _contactNum.length == 10) {
+                        _firestore
+                            .collection("AUTH_DATA")
+                            .doc("TEACHER")
+                            .collection(USER_COLLECTION)
+                            .doc(FirebaseAuth.instance.currentUser.uid)
+                            .set({
+                          TEACHER_EMAIL: loggedInUser.email,
+                          TEACHER_NAME: _name,
+                          TEACHER_CONTACT: _contactNum,
+                          TEACHER_DEPARTMENT: _department,
+                          TEACHER_CONTACT: _contactNum,
+                          TEACHER_UID: loggedInUser.uid
+                        });
+                        Navigator.pushNamed(context, TeacherHome.id);
+                        // Navigator.of(context).pushNamedAndRemoveUntil(
+                        //     NavigationScreen.id,
+                        //     (Route<dynamic> route) => false);
+                      } else {
+                        if (_contactNum.length != 10) {
+                          Alert(
+                                  context: context,
+                                  title:
+                                      "Your phone number should be 10 digits long",
+                                  buttons: [
+                                    DialogButton(
+                                      child: Text(
+                                        "CANCEL",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                      color: kPrimaryColor,
+                                      width: 150.0,
+                                      radius: BorderRadius.circular(15.0),
+                                    ),
+                                  ],
+                                  desc: "Please Re-enter")
+                              .show();
+                        }
+                      }
                     },
-                    //   onTap: () async {
-                    //     if (_name != null &&
-                    //         _address != null &&
-                    //         _contactNum != null &&
-                    //         _aadhar != null &&
-                    //         _panId != null &&
-                    //         _contactNum.length == 10 &&
-                    //         _aadhar.length == 12 &&
-                    //         _panId.length == 10) {
-                    //       final SharedPreferences sharedPref =
-                    //           await SharedPreferences.getInstance();
-                    //       sharedPref.setString(USER_NAME, _name);
-                    //       sharedPref.setString(USER_ADDRESS, _address);
-                    //       sharedPref.setString(USER_CONTACT, _contactNum);
-                    //       sharedPref.setString(USER_PANID, _panId);
-                    //       sharedPref.setString(USER_AADHAR, _aadhar);
-                    //       sharedPref.setString(USER_PROPERTY_COUNT, "0");
-                    //       sharedPref.setString(USER_DP_LINK, _photoUrl);
-                    //       _firestore
-                    //           .collection(USER_COLLECTION)
-                    //           .doc(FirebaseAuth.instance.currentUser.uid)
-                    //           .set({
-                    //         USER_EMAIL: loggedInUser.email,
-                    //         USER_NAME: _name,
-                    //         USER_ADDRESS: _address,
-                    //         USER_CONTACT: _contactNum,
-                    //         USER_PANID: _panId,
-                    //         USER_AADHAR: _aadhar,
-                    //         USER_PROPERTY_COUNT: "0",
-                    //         USER_DP_LINK: _photoUrl,
-                    //       });
-                    //       Navigator.of(context).pushNamedAndRemoveUntil(
-                    //           NavigationScreen.id,
-                    //           (Route<dynamic> route) => false);
-                    //     } else {
-                    //       if (_contactNum.length != 10) {
-                    //         Alert(
-                    //                 context: context,
-                    //                 title:
-                    //                     "Your phone number should be 10 digits long",
-                    //                 buttons: [
-                    //                   DialogButton(
-                    //                     child: Text(
-                    //                       "CANCEL",
-                    //                       style: TextStyle(
-                    //                         color: Colors.white,
-                    //                         fontSize: 20.0,
-                    //                       ),
-                    //                     ),
-                    //                     onPressed: () => Navigator.pop(context),
-                    //                     color: primaryColour,
-                    //                     width: 150.0,
-                    //                     radius: BorderRadius.circular(15.0),
-                    //                   ),
-                    //                 ],
-                    //                 desc: "Please Re-enter")
-                    //             .show();
-                    //       } else if (_aadhar.length != 12) {
-                    //         Alert(
-                    //                 context: context,
-                    //                 title:
-                    //                     "Your Aadhar Number should be 12 digits long",
-                    //                 buttons: [
-                    //                   DialogButton(
-                    //                     child: Text(
-                    //                       "CANCEL",
-                    //                       style: TextStyle(
-                    //                         color: Colors.white,
-                    //                         fontSize: 20.0,
-                    //                       ),
-                    //                     ),
-                    //                     onPressed: () => Navigator.pop(context),
-                    //                     color: primaryColour,
-                    //                     width: 150.0,
-                    //                     radius: BorderRadius.circular(15.0),
-                    //                   ),
-                    //                 ],
-                    //                 desc: "Please Re-enter")
-                    //             .show();
-                    //       } else if (_panId.length != 10) {
-                    //         Alert(
-                    //                 context: context,
-                    //                 title: "Your Pan Id should be 10 digits long",
-                    //                 buttons: [
-                    //                   DialogButton(
-                    //                     child: Text(
-                    //                       "CANCEL",
-                    //                       style: TextStyle(
-                    //                         color: Colors.white,
-                    //                         fontSize: 20.0,
-                    //                       ),
-                    //                     ),
-                    //                     onPressed: () => Navigator.pop(context),
-                    //                     color: primaryColour,
-                    //                     width: 150.0,
-                    //                     radius: BorderRadius.circular(15.0),
-                    //                   ),
-                    //                 ],
-                    //                 desc: "Please Re-enter")
-                    //             .show();
-                    //       }
-                    //     }
-                    //   },
                     child: Container(
                       height: buttonHeight,
                       decoration: BoxDecoration(

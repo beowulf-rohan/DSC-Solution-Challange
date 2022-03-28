@@ -171,7 +171,8 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                           STUDENT_NAME: _name,
                           STUDENT_CONTACT: _contactNum,
                           STUDENT_DEPARTMENT: _department,
-                          STUDENT_CONTACT: _contactNum
+                          STUDENT_CONTACT: _contactNum,
+                          STUDENT_UID: loggedInUser.uid
                         });
                         Navigator.pushNamed(context, StudentHome.id);
                         // Navigator.of(context).pushNamedAndRemoveUntil(
