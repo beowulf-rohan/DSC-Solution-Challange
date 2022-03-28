@@ -19,7 +19,9 @@ class _AddAAssignmentState extends State<AddAAssignment> {
       _endDate = "",
       _startTime = "",
       _endTime = "",
-      _password = "";
+      _passwordVal = "",
+      _drivelink = "";
+  bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -212,6 +214,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                                   "Upload Assignment",
                                   style: TextStyle(
                                     fontFamily: 'NotoSans',
+                                    color: Colors.white,
                                   ),
                                   textAlign: TextAlign.left,
                                 ),
@@ -224,14 +227,14 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
+                  padding: const EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0),
                   child: Container(
                     child: TextField(
                       onChanged: (value) {
-                        _password = value;
+                        _passwordVal = value;
                       },
-                      keyboardType: TextInputType.number,
                       cursorColor: kPrimaryColor,
+                      obscureText: !_passwordVisible,
                       style: TextStyle(color: Colors.grey.shade600),
                       decoration: InputDecoration(
                         labelText: "Password",
@@ -241,8 +244,58 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey.shade700),
                         ),
-                        hintText: "Enter the Password",
+                        hintText: "Enter your Password",
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                          child: Icon(
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
                       ),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(50.0, 20.0, 50.0, 0.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: SizedBox(
+                          height: 35,
+                          width: 170,
+                          child: Center(
+                            child: Text(
+                              "Encrypt",
+                              style: TextStyle(
+                                fontFamily: 'NotoSans',
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
+                  child: Container(
+                    child: UserField(
+                      heading: 'Drive Link',
+                      subtitle: _drivelink,
                     ),
                   ),
                 ),
@@ -355,6 +408,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                     //       }
                     //     }
                     //   },
+
                     child: Container(
                       height: buttonHeight,
                       decoration: BoxDecoration(
@@ -363,7 +417,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                       ),
                       child: Center(
                         child: Text(
-                          "Sign Up",
+                          "Create",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 15.0,

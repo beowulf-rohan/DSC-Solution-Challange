@@ -1,5 +1,6 @@
 import 'package:demo/screens/TeacherScreen/AddAssignment.dart';
 import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
+import 'package:demo/screens/TeacherScreen/AssignmentInfo.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -36,23 +37,35 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
                   child: Column(
                     children: [
                       AssignemntCard(
-                          name: 'ABC1',
-                          date: '13-03-2022',
-                          time: '3:21PM',
-                          duration: '1 hours',
-                          response: '30/60'),
+                        name: 'ABC1',
+                        date: '13-03-2022',
+                        time: '3:21PM',
+                        duration: '1 hours',
+                        response: '30/60',
+                        press: () {
+                          Navigator.pushNamed(context, AssignmentInfo.id);
+                        },
+                      ),
                       AssignemntCard(
-                          name: 'ABC2',
-                          date: '16-03-2022',
-                          time: '5:21AM',
-                          duration: '3 hours',
-                          response: '20/60'),
+                        name: 'ABC2',
+                        date: '16-03-2022',
+                        time: '5:21AM',
+                        duration: '3 hours',
+                        response: '20/60',
+                        press: () {
+                          Navigator.pushNamed(context, AssignmentInfo.id);
+                        },
+                      ),
                       AssignemntCard(
-                          name: 'ABC2',
-                          date: '16-03-2022',
-                          time: '5:21AM',
-                          duration: '3 hours',
-                          response: '20/60'),
+                        name: 'ABC2',
+                        date: '16-03-2022',
+                        time: '5:21AM',
+                        duration: '3 hours',
+                        response: '20/60',
+                        press: () {
+                          Navigator.pushNamed(context, AssignmentInfo.id);
+                        },
+                      ),
                       SizedBox(
                         height: 15,
                       )

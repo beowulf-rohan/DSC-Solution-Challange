@@ -15,6 +15,7 @@ import 'package:demo/screens/StudentScreen/generateOrSubmit.dart';
 import 'package:demo/screens/StudentScreen/submitPDF.dart';
 import 'package:demo/screens/TeacherScreen/AddAssignment.dart';
 import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
+import 'package:demo/screens/TeacherScreen/AssignmentInfo.dart';
 import 'package:demo/screens/TeacherScreen/MakeNewClass.dart';
 import 'package:demo/screens/TeacherScreen/TeacherClassScreen.dart';
 import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         generateOrSubmit.id: (context) => generateOrSubmit(),
         createSHA.id: (context) => createSHA(),
         submitPDF.id: (context) => submitPDF(),
+        AssignmentInfo.id: (context) => AssignmentInfo(),
       },
     );
   }
