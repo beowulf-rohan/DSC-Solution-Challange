@@ -1,8 +1,15 @@
+//import 'dart:html';
+
+//import 'dart:html';
+
+import 'dart:convert';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
-
+import 'package:crypto/crypto.dart';
+import 'dart:io';
 import '../../constants.dart';
 import '../TeacherScreen/TeacherReusable.dart';
 
@@ -60,6 +67,18 @@ class _createSHAState extends State<createSHA> {
                               type: FileType.custom,
                               allowedExtensions: ['jpg', 'pdf', 'doc'],
                             );
+                            PlatformFile file = result.files.first;
+                            final File fileForFirebase = File(file.path);
+                            List<int> imageBytes = fileForFirebase.readAsBytesSync();
+                            //print(imageBytes);
+                            String base64Image = base64Encode(imageBytes);
+                            //print(base64Image);
+                            var bytes = utf8.encode(base64Image); // data being hashed
+                            var digest = sha256.convert(bytes);
+                            print(digest.toString());
+                            setState(() {
+                              _shakey=digest.toString();
+                            });
                           },
                           child: Material(
                             child: Row(
