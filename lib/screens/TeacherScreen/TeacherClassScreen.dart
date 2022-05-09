@@ -12,8 +12,10 @@ BuildContext tempContext;
 
 class TeacherClassScreen extends StatefulWidget {
   static String id = "TeacherClassScreen";
+  String classname="";
   @override
   State<TeacherClassScreen> createState() => _TeacherClassScreenState();
+  TeacherClassScreen(this.classname);
 }
 
 class _TeacherClassScreenState extends State<TeacherClassScreen> {
@@ -106,13 +108,13 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
             ),
           ],
         ),
-        floatingActionButton: _getFAB(),
+        floatingActionButton: _getFAB(context,widget.classname),
       ),
     );
   }
 }
 
-Widget _getFAB() {
+Widget _getFAB(BuildContext context,String classname) {
   return Padding(
     padding: EdgeInsets.only(bottom: 10, right: 15, top: 0, left: 0),
     child: SpeedDial(
@@ -139,7 +141,11 @@ Widget _getFAB() {
         SpeedDialChild(
             child: Icon(Icons.assignment, color: kPrimaryColor),
             onTap: () {
-              Navigator.pushNamed(tempContext, AddAAssignment.id);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddAAssignment(classname),
+                  ));
             },
             label: 'Add Assignment',
             labelStyle: TextStyle(
