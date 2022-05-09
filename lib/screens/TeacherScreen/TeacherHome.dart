@@ -27,9 +27,11 @@ class _TeacherHomeState extends State<TeacherHome> {
             HeadingText(text: "My Classes"),
             ClassCard(
                 path: "",
-                className: "Data Structrue and Algoritms",
+                className: "second class",
                 department: "CSE",
-                batch: "2k19"),
+                batch: "2k19",
+              context: context,
+            ),
             ClassCard(
                 path: "",
                 className: "Data Structrue and Algoritms",

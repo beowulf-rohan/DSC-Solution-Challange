@@ -31,9 +31,11 @@ class ClassCard extends StatelessWidget {
       @required this.path,
       @required this.className,
       @required this.department,
-      @required this.batch})
+      @required this.batch,
+      @required this.context})
       : super(key: key);
   final String path, className, department, batch;
+  final BuildContext context;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,11 @@ class ClassCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, TeacherClassScreen.id);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TeacherClassScreen(className),
+              ));
         },
         child: Container(
           decoration: BoxDecoration(

@@ -164,8 +164,8 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                         _firestore
                             .collection("AUTH_DATA")
                             .doc("TEACHER")
-                            .collection(USER_COLLECTION)
-                            .doc(FirebaseAuth.instance.currentUser.uid)
+                            .collection(FirebaseAuth.instance.currentUser.uid)
+                            .doc("Teacher_Deatils")
                             .set({
                           TEACHER_EMAIL: loggedInUser.email,
                           TEACHER_NAME: _name,
