@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../constants.dart';
 class AddAAssignment extends StatefulWidget {
@@ -17,15 +18,14 @@ class AddAAssignment extends StatefulWidget {
   State<AddAAssignment> createState() => _AddAAssignmentState();
   AddAAssignment(this.classname);
 }
-
+String name="";
 class _AddAAssignmentState extends State<AddAAssignment> {
-  String _name = "",
-      _startDate = "",
+      String _startDate = "",
       _endDate = "",
       _startTime = "",
       _endTime = "",
-      _passwordVal = "",
-      _drivelink = "";
+      _passwordVal = "";
+  File finalfile;
   bool _passwordVisible = false;
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -77,7 +77,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                   child: Container(
                     child: TextField(
                       onChanged: (value) {
-                        _name = value;
+                        name = value;
                       },
                       cursorColor: kPrimaryColor,
                       style: TextStyle(color: Colors.grey.shade600),
@@ -270,9 +270,9 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                       security.algorithm = PdfEncryptionAlgorithm.aesx256Bit;
                       //Save the document.
                       fileForFirebase.writeAsBytes(document.save());
+                      finalfile=fileForFirebase;
                       //Dispose the document
                       document.dispose();
-                      
                     },
                     child: Material(
                       child: Row(
@@ -304,29 +304,25 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(50.0, 10.0, 50.0, 0),
-                  child: Container(
-                    child: UserField(
-                      heading: 'Drive Link',
-                      subtitle: _drivelink,
-                    ),
-                  ),
-                ),
-                Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async{
+                      firebase_storage.UploadTask task = await uploadFile(finalfile,widget.classname);
+                      String downloadURL = await firebase_storage.FirebaseStorage.instance
+                          .ref('Assignments/'+FirebaseAuth.instance.currentUser.uid+widget.classname+'/'+name+'.pdf')
+                          .getDownloadURL();
+                      finalfile.delete();
                       _firestore.collection("Classes")
                           .doc(FirebaseAuth.instance.currentUser.uid+widget.classname)
                           .collection("Assignment_List")
                           .add({
-                        "Name": _name,
+                        "Name": name,
                         "Start Date": _startDate,
                         "End Date": _endDate,
                         "Start Time": _startTime,
                         "End Time": _endTime,
                         "Password": _passwordVal,
-                        "Drive Link": _drivelink,
+                        "Download Link": downloadURL,
                       });
                       Navigator.pop(context);
                     },
@@ -356,4 +352,23 @@ class _AddAAssignmentState extends State<AddAAssignment> {
       ),
     );
   }
+}
+Future<firebase_storage.UploadTask> uploadFile(File file,String classname) async {
+  if (file == null) {
+    return null;
+  }
+  firebase_storage.UploadTask uploadTask;
+  // Create a Reference to the file
+  firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+      .ref('Assignments/'+FirebaseAuth.instance.currentUser.uid+classname+'/'+name+'.pdf');
+
+  final metadata = firebase_storage.SettableMetadata(
+      contentType: 'file/pdf',
+      customMetadata: {'picked-file-path': file.path});
+  print("Uploading..!");
+
+  uploadTask = ref.putData(await file.readAsBytes(), metadata);
+
+  print("done..!");
+  return Future.value(uploadTask);
 }
