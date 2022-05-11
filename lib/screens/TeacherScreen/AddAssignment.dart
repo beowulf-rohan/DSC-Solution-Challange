@@ -11,21 +11,23 @@ import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../constants.dart';
+
 class AddAAssignment extends StatefulWidget {
   static const String id = "AddAAssignment";
-  String classname="";
+  String classname = "";
   @override
   State<AddAAssignment> createState() => _AddAAssignmentState();
   AddAAssignment(this.classname);
 }
-String name="";
+
+String name = "";
+
 class _AddAAssignmentState extends State<AddAAssignment> {
-      String _startDate = "",
+  String _startDate = "",
       _endDate = "",
       _startTime = "",
       _endTime = "",
       _passwordVal = "";
-  File finalfile;
   bool _passwordVisible = false;
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -41,12 +43,14 @@ class _AddAAssignmentState extends State<AddAAssignment> {
       print(e);
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getCurrentUser();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -270,7 +274,9 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                       security.algorithm = PdfEncryptionAlgorithm.aesx256Bit;
                       //Save the document.
                       fileForFirebase.writeAsBytes(document.save());
-                      finalfile=fileForFirebase;
+                      firebase_storage.UploadTask task =
+                          await uploadFile(fileForFirebase, widget.classname);
+
                       //Dispose the document
                       document.dispose();
                     },
@@ -306,14 +312,20 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                   child: GestureDetector(
-                    onTap: () async{
-                      firebase_storage.UploadTask task = await uploadFile(finalfile,widget.classname);
-                      String downloadURL = await firebase_storage.FirebaseStorage.instance
-                          .ref('Assignments/'+FirebaseAuth.instance.currentUser.uid+widget.classname+'/'+name+'.pdf')
+                    onTap: () async {
+                      String downloadURL = await firebase_storage
+                          .FirebaseStorage.instance
+                          .ref('Assignments/' +
+                              FirebaseAuth.instance.currentUser.uid +
+                              widget.classname +
+                              '/' +
+                              name +
+                              '.pdf')
                           .getDownloadURL();
-                      finalfile.delete();
-                      _firestore.collection("Classes")
-                          .doc(FirebaseAuth.instance.currentUser.uid+widget.classname)
+                      _firestore
+                          .collection("Classes")
+                          .doc(FirebaseAuth.instance.currentUser.uid +
+                              widget.classname)
                           .collection("Assignment_List")
                           .add({
                         "Name": name,
@@ -353,18 +365,24 @@ class _AddAAssignmentState extends State<AddAAssignment> {
     );
   }
 }
-Future<firebase_storage.UploadTask> uploadFile(File file,String classname) async {
+
+Future<firebase_storage.UploadTask> uploadFile(
+    File file, String classname) async {
   if (file == null) {
     return null;
   }
   firebase_storage.UploadTask uploadTask;
   // Create a Reference to the file
   firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-      .ref('Assignments/'+FirebaseAuth.instance.currentUser.uid+classname+'/'+name+'.pdf');
+      .ref('Assignments/' +
+          FirebaseAuth.instance.currentUser.uid +
+          classname +
+          '/' +
+          name +
+          '.pdf');
 
   final metadata = firebase_storage.SettableMetadata(
-      contentType: 'file/pdf',
-      customMetadata: {'picked-file-path': file.path});
+      contentType: 'file/pdf', customMetadata: {'picked-file-path': file.path});
   print("Uploading..!");
 
   uploadTask = ref.putData(await file.readAsBytes(), metadata);
