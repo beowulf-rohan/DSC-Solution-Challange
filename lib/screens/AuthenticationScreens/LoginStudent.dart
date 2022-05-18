@@ -1,5 +1,8 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo/screens/AuthenticationScreens/SignupStudent.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +17,8 @@ class LoginStudentScreen extends StatefulWidget {
   @override
   _LoginStudentScreenState createState() => _LoginStudentScreenState();
 }
-
+final _firestore = FirebaseFirestore.instance;
+List<classDetails> classList;
 class _LoginStudentScreenState extends State<LoginStudentScreen> {
   String _emailVal, _passwordVal;
   bool _passwordVisible = false;
@@ -152,7 +156,13 @@ class _LoginStudentScreenState extends State<LoginStudentScreen> {
                           if (oldUser != null) {
                             // final SharedPreferences sharedPref = await SharedPreferences.getInstance();
                             // sharedPref.setString(USER_EMAIL, _emailVal);
-                            Navigator.pushNamed(context, StudentHome.id);
+                            getData();
+                            Timer(Duration(seconds: 3), () {
+                              setState(() {
+                                showSpinner = false;
+                              });
+                              Navigator.pushNamed(context, StudentHome.id);
+                            });
                           }
                           setState(() {
                             showSpinner = false;
@@ -253,4 +263,37 @@ class _LoginStudentScreenState extends State<LoginStudentScreen> {
       ),
     );
   }
+}
+Future<void> getData() async{
+  classList = await fetchAllClasses() as List;
+  print(classList);
+}
+Future<List<classDetails>> fetchAllClasses() async {
+  List <classDetails> tempClasstList=[];
+  List <String> classid=[];
+  QuerySnapshot querySnapshot = await _firestore
+      .collection('AUTH_DATA')
+      .doc('STUDENT')
+      .collection(FirebaseAuth.instance.currentUser.uid)
+      .doc('Class_List').collection('Classes').get();
+  querySnapshot.docs.forEach((element) {
+    classid.add(element['Class id']);
+  });
+  for(int j=0;j<classid.length;j++){
+    DocumentSnapshot document=await _firestore
+        .collection('Classes')
+        .doc(classid[j]).collection('Class_Details').doc('Info').get();
+    classDetails obj=classDetails();
+    obj.batch=document["Batch"];
+    obj.classId=document["Class id"];
+    obj.className=document["Class Name"];
+    obj.dept=document["Department"];
+    print(document["Class Name"]);
+    tempClasstList.add(obj);
+  }
+  return tempClasstList;
+}
+class classDetails{
+  String batch,className,classId,dept;
+  classDetails({this.batch,this.className,this.classId,this.dept});
 }

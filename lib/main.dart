@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         TeacherHome.id: (context) => TeacherHome(),
         StudentHome.id: (context) => StudentHome(),
         //TeacherClassScreen.id: (context) => TeacherClassScreen(),
-        StudentClassScreen.id: (context) => StudentClassScreen(),
+        //StudentClassScreen.id: (context) => StudentClassScreen(),
         MakeNewClass.id: (context) => MakeNewClass(),
         AddStudentToClass.id: (context) => AddStudentToClass(),
         //AddAAssignment.id: (context) => AddAAssignment(),

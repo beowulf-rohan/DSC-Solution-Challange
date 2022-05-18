@@ -11,8 +11,10 @@ BuildContext tempContext;
 
 class StudentClassScreen extends StatefulWidget {
   static String id = "StudentClassScreen";
+  String classname="";
   @override
   State<StudentClassScreen> createState() => _StudentClassScreenState();
+  StudentClassScreen(this.classname);
 }
 
 class _StudentClassScreenState extends State<StudentClassScreen> {
