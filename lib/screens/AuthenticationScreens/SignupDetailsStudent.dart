@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables
 
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo/screens/StudentScreen/StudentHome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -165,8 +167,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                             .collection("AUTH_DATA")
                             .doc("STUDENT")
                             .collection(FirebaseAuth.instance.currentUser.uid)
-                            .doc("Student_Details")
-                            .set({
+                            .add({
                           STUDENT_EMAIL: loggedInUser.email,
                           STUDENT_NAME: _name,
                           STUDENT_CONTACT: _contactNum,

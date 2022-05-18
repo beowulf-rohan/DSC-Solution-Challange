@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo/screens/StudentScreen/StudentProfile.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
@@ -6,17 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../../constants.dart';
+import '../AuthenticationScreens/LoginStudent.dart';
 import 'StudentReusable.dart';
 
 BuildContext tempContext;
 
 class StudentHome extends StatefulWidget {
   static const String id = "StudentHome";
-
   @override
   State<StudentHome> createState() => _StudentHomeState();
 }
-
+final _firestore = FirebaseFirestore.instance;
 class _StudentHomeState extends State<StudentHome> {
   final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
   final primaryColor = Color(0xFF192A56);
@@ -24,7 +26,7 @@ class _StudentHomeState extends State<StudentHome> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   User loggedInUser;
-
+  bool showSpinner=false;
   void getCurrentUser() async {
     try {
       final user = _auth.currentUser;
@@ -44,22 +46,27 @@ class _StudentHomeState extends State<StudentHome> {
   @override
   Widget build(BuildContext context) {
     tempContext = context;
+    List <Widget> card=[];
+    try{
+      card.add(HeadingText(text: "My Classes"));
+      for(int j=0;j<classList.length;j++){
+        card.add(ClassCard(
+          path: classList[j].classId,
+          className: classList[j].className,
+          department: classList[j].dept,
+          batch: classList[j].batch,
+          context: context,
+        ));
+      }
+    }
+    catch(e){
+      print(e);
+      card.add(HeadingText(text: "My Classes"));
+    }
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            HeadingText(text: "My Classes"),
-            ClassCard(
-                path: "",
-                className: "Data Structrue and Algoritms",
-                department: "CSE",
-                batch: "2k19"),
-            ClassCard(
-                path: "",
-                className: "Data Structrue and Algoritms",
-                department: "CSE",
-                batch: "2k19"),
-          ],
+        body: ListView(
+          children: card,
         ),
         backgroundColor: kPrimaryColor,
         floatingActionButton: _getFAB(),
@@ -109,6 +116,9 @@ class _StudentHomeState extends State<StudentHome> {
                     ),
                     TextButton(
                       onPressed: () {
+                        setState(() {
+                          showSpinner = true;
+                        });
                         if(_classid!=null){
                           _firestore.collection("AUTH_DATA")
                               .doc("STUDENT")
@@ -127,7 +137,14 @@ class _StudentHomeState extends State<StudentHome> {
                             "Student_id": FirebaseAuth.instance.currentUser.uid,
                           });
                         }
-                        Navigator.pop(context, 'OK');
+                        getData();
+                        Timer(Duration(seconds: 3), () {
+                          setState(() {
+                            showSpinner = false;
+                          });
+                          Navigator.pop(context, 'OK');
+                        });
+
                       },
                       child: const Text('OK'),
                     ),

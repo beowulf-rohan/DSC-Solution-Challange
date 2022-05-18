@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo/constants.dart';
 import 'package:demo/screens/TeacherScreen/MakeNewClass.dart';
 import 'package:demo/screens/TeacherScreen/TeacherProfile.dart';
 import 'package:demo/screens/TeacherScreen/TeacherReusable.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+
+import '../AuthenticationScreens/LoginTeacher.dart';
 
 BuildContext tempContext;
 
@@ -13,31 +17,57 @@ class TeacherHome extends StatefulWidget {
   @override
   State<TeacherHome> createState() => _TeacherHomeState();
 }
-
+final _firestore = FirebaseFirestore.instance;
+//List<classDetails> classList;
 class _TeacherHomeState extends State<TeacherHome> {
   final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
   //final primaryColor = Color(0xFF488fb1);
+  final _auth = FirebaseAuth.instance;
+  User loggedInUser;
+  void getCurrentUser() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+    //getData();
+  }
+  // Future<void> getData() async{
+  //    classList = await fetchAllClasses() as List;
+  // }
   @override
   Widget build(BuildContext context) {
     tempContext = context;
+    List <Widget> card=[];
+    try{
+      card.add(HeadingText(text: "My Classes"));
+      for(int j=0;j<classList.length;j++){
+        card.add(ClassCard(
+          path: classList[j].classId,
+          className: classList[j].className,
+          department: classList[j].dept,
+          batch: classList[j].batch,
+          context: context,
+        ));
+      }
+    }
+    catch(e){
+      print(e);
+      card.add(HeadingText(text: "My Classes"));
+    }
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: [
-            HeadingText(text: "My Classes"),
-            ClassCard(
-                path: "",
-                className: "second class",
-                department: "CSE",
-                batch: "2k19",
-              context: context,
-            ),
-            ClassCard(
-                path: "",
-                className: "Data Structrue and Algoritms",
-                department: "CSE",
-                batch: "2k19"),
-          ],
+        body: ListView(
+          children: card,
         ),
         backgroundColor: kPrimaryColor,
         floatingActionButton: _getFAB(),
@@ -67,7 +97,7 @@ class _TeacherHomeState extends State<TeacherHome> {
           SpeedDialChild(
             child: Icon(Icons.add_circle_outline, color: kPrimaryColor),
             onTap: () {
-              Navigator.pushNamed(tempContext, MakeNewClass.id);
+                Navigator.pushNamed(tempContext, MakeNewClass.id);
             },
             label: 'Add Class',
             labelStyle: TextStyle(
@@ -93,3 +123,24 @@ class _TeacherHomeState extends State<TeacherHome> {
     );
   }
 }
+// Future<List<dynamic>> fetchAllClasses() async {
+//   List <classDetails> tempClasstList;
+//   QuerySnapshot querySnapshot = await _firestore
+//       .collection('AUTH_DATA')
+//       .doc('TEACHER')
+//       .collection(FirebaseAuth.instance.currentUser.uid)
+//       .doc('Class_List').collection('Classes').get();
+//   querySnapshot.docs.forEach((element) {
+//     classDetails obj=classDetails();
+//     obj.batch=element["Batch"];
+//     obj.classId=element["Class id"];
+//     obj.className=element["Class Name"];
+//     obj.dept=element["Department"];
+//     print(element["Class Name"]);
+//   });
+//   return tempClasstList;
+// }
+// class classDetails{
+//   String batch,className,classId,dept;
+//   classDetails({this.batch,this.className,this.classId,this.dept});
+// }

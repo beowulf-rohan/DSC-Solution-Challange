@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo/screens/StudentScreen/StudentHome.dart';
+import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
+import '../AuthenticationScreens/LoginTeacher.dart';
 
 class MakeNewClass extends StatefulWidget {
   static const String id = "MakeNewClass";
@@ -14,7 +19,7 @@ class _MakeNewClassState extends State<MakeNewClass> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   User loggedInUser;
-
+  bool showSpinner=false;
   void getCurrentUser() async {
     try {
       final user = _auth.currentUser;
@@ -165,6 +170,14 @@ class _MakeNewClassState extends State<MakeNewClass> {
                              "Teacher_id": FirebaseAuth.instance.currentUser.uid,
                            });
                          }
+                         getData();
+                         Timer(Duration(seconds: 3), () {
+                           setState(() {
+                             showSpinner = false;
+                           });
+                           //print(classList);
+                           Navigator.pushNamed(context, TeacherHome.id);
+                         });
                     },
                     child: Container(
                       height: buttonHeight,
