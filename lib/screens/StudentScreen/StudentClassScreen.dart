@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../../constants.dart';
+import 'StudentHome.dart';
 import 'StudentReusable.dart';
 
 BuildContext tempContext;
 
 class StudentClassScreen extends StatefulWidget {
   static String id = "StudentClassScreen";
-  String classname="";
+  String classname = "";
   @override
   State<StudentClassScreen> createState() => _StudentClassScreenState();
   StudentClassScreen(this.classname);
@@ -22,6 +23,45 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
   @override
   Widget build(BuildContext context) {
     tempContext = context;
+    List<Widget> assigned = [], completed = [];
+    try {
+      for (int i = 0; i < completedAssignment.length; i++) {
+        completed.add(AssignemntCard(
+          name: completedAssignment[i].assignmentName,
+          date: completedAssignment[i].endDate,
+          time: completedAssignment[i].endTime,
+          duration: '1 hours',
+          response: '30/60',
+          press: () {},
+        ));
+      }
+      for (int i = 0; i < assignedAssignment.length; i++) {
+        assigned.add(AssignemntCard(
+          name: assignedAssignment[i].assignmentName,
+          date: assignedAssignment[i].endDate,
+          time: assignedAssignment[i].endTime,
+          duration: '1 hours',
+          response: '30/60',
+          press: () {
+            Navigator.pushNamed(context, generateOrSubmit.id);
+          },
+        ));
+      }
+      assigned.add(SizedBox(
+        height: 15,
+      ));
+      completed.add(SizedBox(
+        height: 15,
+      ));
+    } catch (e) {
+      print(e);
+      assigned.add(SizedBox(
+        height: 15,
+      ));
+      completed.add(SizedBox(
+        height: 15,
+      ));
+    }
     return SafeArea(
       child: Scaffold(
         backgroundColor: kPrimaryColor,
@@ -36,29 +76,7 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
                       color: Colors.white.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
-                    children: [
-                      AssignemntCard(
-                          name: 'ABC1',
-                          date: '13-03-2022',
-                          time: '3:21PM',
-                          duration: '1 hours',
-                          response: '30/60',
-                          press: (){Navigator.pushNamed(context,generateOrSubmit.id);} ),
-                      AssignemntCard(
-                          name: 'ABC2',
-                          date: '16-03-2022',
-                          time: '5:21AM',
-                          duration: '3 hours',
-                          response: '20/60',
-                          press: (){Navigator.pushNamed(context,generateOrSubmit.id);}),
-                      AssignemntCard(
-                          name: 'ABC2',
-                          date: '16-03-2022',
-                          time: '5:21AM',
-                          duration: '3 hours',
-                          response: '20/60',
-                          press: (){Navigator.pushNamed(context,generateOrSubmit.id);}),
-                    ],
+                    children: assigned,
                   ),
                 ),
               ],
@@ -72,22 +90,7 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
                       color: Colors.white.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
-                    children: [
-                      AssignemntCard(
-                          name: 'ABC1',
-                          date: '13-03-2022',
-                          time: '3:21PM',
-                          duration: '1 hours',
-                          response: '30/60',
-                          press: (){} ),
-                      AssignemntCard(
-                          name: 'ABC2',
-                          date: '16-03-2022',
-                          time: '5:21AM',
-                          duration: '3 hours',
-                          response: '20/60',
-                          press: (){} ),
-                    ],
+                    children: completed,
                   ),
                 ),
               ],

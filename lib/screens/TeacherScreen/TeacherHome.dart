@@ -20,6 +20,8 @@ class TeacherHome extends StatefulWidget {
 
 final _firestore = FirebaseFirestore.instance;
 List<AssignmentDetails> assignmentList = [];
+List<AssignmentDetails> completedAssignment = [];
+List<AssignmentDetails> assignedAssignment = [];
 
 //List<classDetails> classList;
 class _TeacherHomeState extends State<TeacherHome> {
@@ -127,9 +129,43 @@ class _TeacherHomeState extends State<TeacherHome> {
   }
 }
 
+String convert(String a, String b) {
+  // 19-12-2018 => 2018-12-19
+  String one, two, three;
+  one = a[6] + a[7] + a[8] + a[9];
+  two = a[3] + a[4];
+  three = a[0] + a[1];
+
+  String s1 = one + '-' + two + '-' + three;
+  s1 = s1 + ' ' + b + ':' + '00' + '.' + '000';
+  return s1;
+}
+
 Future<void> getAssignmentData(String classID, String className) async {
   assignmentList = await fetchAllAssignments(classID, className) as List;
   print(assignmentList);
+  try {
+    for (int i = 0; i < assignmentList.length; i++) {
+      String s1 = assignmentList[i].startDate;
+      String s2 = assignmentList[i].startTime;
+      s1 = convert(s1, s2);
+      DateTime d1 = DateTime.parse(s1);
+      s1 = assignmentList[i].endDate;
+      s2 = assignmentList[i].endTime;
+      s1 = convert(s1, s2);
+      DateTime d2 = DateTime.parse(s1);
+      DateTime d = DateTime.now();
+      if (d.isBefore(d2)) {
+        assignedAssignment.add(assignmentList[i]);
+      } else {
+        completedAssignment.add(assignmentList[i]);
+      }
+    }
+  } catch (e) {
+    print(e);
+  }
+  print(assignedAssignment);
+  print(completedAssignment);
 }
 
 Future<List<AssignmentDetails>> fetchAllAssignments(

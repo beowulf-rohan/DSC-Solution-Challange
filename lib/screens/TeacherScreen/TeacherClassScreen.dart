@@ -1,6 +1,7 @@
 import 'package:demo/screens/TeacherScreen/AddAssignment.dart';
 import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
 import 'package:demo/screens/TeacherScreen/AssignmentInfo.dart';
+import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -12,7 +13,7 @@ BuildContext tempContext;
 
 class TeacherClassScreen extends StatefulWidget {
   static String id = "TeacherClassScreen";
-  String classname="";
+  String classname = "";
   @override
   State<TeacherClassScreen> createState() => _TeacherClassScreenState();
   TeacherClassScreen(this.classname);
@@ -23,6 +24,45 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
   @override
   Widget build(BuildContext context) {
     tempContext = context;
+    List<Widget> assigned = [], completed = [];
+    try {
+      for (int i = 0; i < completedAssignment.length; i++) {
+        completed.add(AssignemntCard(
+          name: completedAssignment[i].assignmentName,
+          date: completedAssignment[i].endDate,
+          time: completedAssignment[i].endTime,
+          duration: '1 hours',
+          response: '30/60',
+          press: () {},
+        ));
+      }
+      for (int i = 0; i < assignedAssignment.length; i++) {
+        assigned.add(AssignemntCard(
+          name: assignedAssignment[i].assignmentName,
+          date: assignedAssignment[i].endDate,
+          time: assignedAssignment[i].endTime,
+          duration: '1 hours',
+          response: '30/60',
+          press: () {
+            Navigator.pushNamed(context, AssignmentInfo.id);
+          },
+        ));
+      }
+      assigned.add(SizedBox(
+        height: 15,
+      ));
+      completed.add(SizedBox(
+        height: 15,
+      ));
+    } catch (e) {
+      print(e);
+      assigned.add(SizedBox(
+        height: 15,
+      ));
+      completed.add(SizedBox(
+        height: 15,
+      ));
+    }
     return SafeArea(
       child: Scaffold(
         backgroundColor: kPrimaryColor,
@@ -37,41 +77,7 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
                       color: Colors.white.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
-                    children: [
-                      AssignemntCard(
-                        name: 'ABC1',
-                        date: '13-03-2022',
-                        time: '3:21PM',
-                        duration: '1 hours',
-                        response: '30/60',
-                        press: () {
-                          Navigator.pushNamed(context, AssignmentInfo.id);
-                        },
-                      ),
-                      AssignemntCard(
-                        name: 'ABC2',
-                        date: '16-03-2022',
-                        time: '5:21AM',
-                        duration: '3 hours',
-                        response: '20/60',
-                        press: () {
-                          Navigator.pushNamed(context, AssignmentInfo.id);
-                        },
-                      ),
-                      AssignemntCard(
-                        name: 'ABC2',
-                        date: '16-03-2022',
-                        time: '5:21AM',
-                        duration: '3 hours',
-                        response: '20/60',
-                        press: () {
-                          Navigator.pushNamed(context, AssignmentInfo.id);
-                        },
-                      ),
-                      SizedBox(
-                        height: 15,
-                      )
-                    ],
+                    children: assigned,
                   ),
                 ),
               ],
@@ -85,36 +91,20 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
                       color: Colors.white.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(10)),
                   child: Column(
-                    children: [
-                      AssignemntCard(
-                          name: 'ABC1',
-                          date: '13-03-2022',
-                          time: '3:21PM',
-                          duration: '1 hours',
-                          response: '30/60'),
-                      AssignemntCard(
-                          name: 'ABC2',
-                          date: '16-03-2022',
-                          time: '5:21AM',
-                          duration: '3 hours',
-                          response: '20/60'),
-                      SizedBox(
-                        height: 15,
-                      )
-                    ],
+                    children: completed,
                   ),
                 ),
               ],
             ),
           ],
         ),
-        floatingActionButton: _getFAB(context,widget.classname),
+        floatingActionButton: _getFAB(context, widget.classname),
       ),
     );
   }
 }
 
-Widget _getFAB(BuildContext context,String classname) {
+Widget _getFAB(BuildContext context, String classname) {
   return Padding(
     padding: EdgeInsets.only(bottom: 10, right: 15, top: 0, left: 0),
     child: SpeedDial(
