@@ -37,6 +37,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   User loggedInUser;
+  bool showSpinner = false;
 
   void getCurrentUser() async {
     try {
@@ -58,7 +59,6 @@ class _AddAAssignmentState extends State<AddAAssignment> {
 
   @override
   Widget build(BuildContext context) {
-    bool showSpinner = false;
     return Scaffold(
       body: Center(
         child: ModalProgressHUD(
@@ -119,21 +119,21 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           tabTextColor: Colors.black,
                           unselectedTabBackgroundColor: kPrimaryColor,
                           buttonTextColor: kPrimaryColor,
-                          timeSpinnerTextStyle:
-                              const TextStyle(color: Colors.black, fontSize: 18),
-                          timeSpinnerHighlightedTextStyle:
-                              const TextStyle(color: Colors.black, fontSize: 24),
+                          timeSpinnerTextStyle: const TextStyle(
+                              color: Colors.black, fontSize: 18),
+                          timeSpinnerHighlightedTextStyle: const TextStyle(
+                              color: Colors.black, fontSize: 24),
                           is24HourMode: false,
                           isShowSeconds: false,
                           startInitialDate: DateTime.now(),
-                          startFirstDate:
-                              DateTime(1600).subtract(const Duration(days: 3652)),
+                          startFirstDate: DateTime(1600)
+                              .subtract(const Duration(days: 3652)),
                           startLastDate: DateTime.now().add(
                             const Duration(days: 3652),
                           ),
                           endInitialDate: DateTime.now(),
-                          endFirstDate:
-                              DateTime(1600).subtract(const Duration(days: 3652)),
+                          endFirstDate: DateTime(1600)
+                              .subtract(const Duration(days: 3652)),
                           endLastDate: DateTime.now().add(
                             const Duration(days: 3652),
                           ),
@@ -147,7 +147,8 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                               DateFormat('dd-MM-yyyy').format(dateTimeList[1]);
                           _startTime =
                               DateFormat('HH:mm').format(dateTimeList[0]);
-                          _endTime = DateFormat('HH:mm').format(dateTimeList[1]);
+                          _endTime =
+                              DateFormat('HH:mm').format(dateTimeList[1]);
                         });
                       },
                       child: Material(
@@ -268,9 +269,11 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           type: FileType.custom,
                           allowedExtensions: ['pdf'],
                         );
-                        setState(() {
-                          showSpinner=true;
-                        });
+                        if (result != null) {
+                          setState(() {
+                            showSpinner = true;
+                          });
+                        }
                         PlatformFile file = result.files.first;
                         final File fileForFirebase = File(file.path);
                         final PdfDocument document = PdfDocument(
@@ -284,16 +287,15 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                         //Set the encryption algorithm
                         security.algorithm = PdfEncryptionAlgorithm.aesx256Bit;
                         //Save the document.
-                        try{
+                        try {
                           fileForFirebase.writeAsBytes(document.save());
-                          firebase_storage.UploadTask task =
-                          await uploadFile(fileForFirebase, widget.classname);
-                        }
-                        catch(e){
+                          firebase_storage.UploadTask task = await uploadFile(
+                              fileForFirebase, widget.classname);
+                        } catch (e) {
                           print(e);
                         }
                         setState(() {
-                          showSpinner=false;
+                          showSpinner = false;
                         });
                         //Dispose the document
                         document.dispose();
@@ -332,17 +334,22 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                     child: GestureDetector(
                       onTap: () async {
                         setState(() {
-                          showSpinner=true;
+                          showSpinner = true;
                         });
-                        String downloadURL = await firebase_storage
-                            .FirebaseStorage.instance
-                            .ref('Assignments/' +
-                                FirebaseAuth.instance.currentUser.uid +
-                                widget.classname +
-                                '/' +
-                                name +
-                                '.pdf')
-                            .getDownloadURL();
+                        String downloadURL;
+                        try {
+                          downloadURL = await firebase_storage
+                              .FirebaseStorage.instance
+                              .ref('Assignments/' +
+                                  FirebaseAuth.instance.currentUser.uid +
+                                  widget.classname +
+                                  '/' +
+                                  name +
+                                  '.pdf')
+                              .getDownloadURL();
+                        } catch (e) {
+                          print(e);
+                        }
                         _firestore
                             .collection("Classes")
                             .doc(FirebaseAuth.instance.currentUser.uid +
@@ -429,6 +436,8 @@ Future<firebase_storage.UploadTask> uploadFile(
 
 Future<void> getAssignmentData(String classID, String className) async {
   assignmentList = await fetchAllAssignments(classID, className) as List;
+  assignedAssignment.clear();
+  completedAssignment.clear();
   print(assignmentList);
   try {
     for (int i = 0; i < assignmentList.length; i++) {

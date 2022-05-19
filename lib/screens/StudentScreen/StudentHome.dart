@@ -211,6 +211,8 @@ String convert(String a, String b) {
 
 Future<void> getAssignmentData(String classID, String className) async {
   assignmentList = await fetchAllAssignments(classID, className) as List;
+  assignedAssignment.clear();
+  completedAssignment.clear();
   print(assignmentList);
   try {
     for (int i = 0; i < assignmentList.length; i++) {

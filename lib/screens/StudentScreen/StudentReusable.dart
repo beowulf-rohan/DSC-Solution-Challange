@@ -50,10 +50,10 @@ class _ClassCardState extends State<ClassCard> {
 
   @override
   Widget build(BuildContext context) {
-    return ModalProgressHUD(
-      inAsyncCall: showSpinner,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+      child: ModalProgressHUD(
+        inAsyncCall: showSpinner,
         child: InkWell(
           onTap: () {
             setState(() {
@@ -94,7 +94,8 @@ class _ClassCardState extends State<ClassCard> {
                   thickness: 10,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

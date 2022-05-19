@@ -22,16 +22,23 @@ import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
 import 'package:demo/screens/TeacherScreen/TeacherProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+String finalEmail, konhai;
+Widget home = CircularProgressIndicator();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
+  // const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,6 +67,35 @@ class MyApp extends StatelessWidget {
         AssignmentInfo.id: (context) => AssignmentInfo(),
       },
     );
+  }
+
+  @override
+  void initState() {
+    getValidation().whenComplete(() {
+      if (finalEmail != null && konhai == "TEACHER") {
+        home = TeacherHome();
+      } else if (finalEmail != null && konhai == "STUDENT") {
+        home = StudentHome();
+      } else {
+        home = IntroScreen();
+      }
+    });
+    super.initState();
+  }
+
+  Future getValidation() async {
+    final SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    String email;
+    if (sharedPref.getString('TEACHER_USER_EMAIL') != null) {
+      email = sharedPref.getString('TEACHER_USER_EMAIL');
+      konhai = "TEACHER";
+    } else if (sharedPref.getString('STUDENT_USER_EMAIL') != null) {
+      email = sharedPref.getString('STUDENT_USER_EMAIL');
+      konhai = "STUDENT";
+    }
+    setState(() {
+      finalEmail = email;
+    });
   }
 }
 
