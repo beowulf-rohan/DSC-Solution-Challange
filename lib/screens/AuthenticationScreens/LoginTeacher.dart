@@ -134,7 +134,52 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          // Navigator.pushNamed(context, ForgotPassScreen.id);
+                          if(_emailVal!=null){
+                            _auth.sendPasswordResetEmail(email: _emailVal);
+                            Alert(
+                                context: context,
+                                title: status,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "OK",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20.0,
+                                      ),
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
+                                    color: kPrimaryColor,
+                                    width: 150.0,
+                                    radius: BorderRadius.circular(15.0),
+                                  ),
+                                ],
+                                desc: "Reset Email sent")
+                                .show();
+                          }
+                          else{
+
+                            Alert(
+                                context: context,
+                                title: status,
+                                buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "OK",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20.0,
+                                      ),
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
+                                    color: kPrimaryColor,
+                                    width: 150.0,
+                                    radius: BorderRadius.circular(15.0),
+                                  ),
+                                ],
+                                desc: "No Email Found")
+                                .show();
+                          }
                         },
                         child: Text(
                           "Forgot Password",

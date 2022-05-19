@@ -6,6 +6,7 @@ import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import '../../constants.dart';
 import '../AuthenticationScreens/LoginStudent.dart';
@@ -70,8 +71,11 @@ class _StudentHomeState extends State<StudentHome> {
     }
     return SafeArea(
       child: Scaffold(
-        body: ListView(
-          children: card,
+        body: ModalProgressHUD(
+          inAsyncCall: showSpinner,
+          child: ListView(
+            children: card,
+          ),
         ),
         backgroundColor: kPrimaryColor,
         floatingActionButton: _getFAB(),
@@ -121,10 +125,10 @@ class _StudentHomeState extends State<StudentHome> {
                     ),
                     TextButton(
                       onPressed: () {
-                        setState(() {
-                          showSpinner = true;
-                        });
                         if (_classid != null) {
+                          setState(() {
+                            showSpinner = true;
+                          });
                           _firestore
                               .collection("AUTH_DATA")
                               .doc("STUDENT")
@@ -224,6 +228,8 @@ Future<void> getAssignmentData(String classID, String className) async {
       } else {
         completedAssignment.add(assignmentList[i]);
       }
+      final difference = d2.difference(d1).inHours;
+      print(difference);
     }
   } catch (e) {
     print(e);
