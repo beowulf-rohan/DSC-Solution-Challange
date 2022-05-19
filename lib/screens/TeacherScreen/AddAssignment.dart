@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +12,7 @@ import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../constants.dart';
+import 'TeacherClassScreen.dart';
 
 class AddAAssignment extends StatefulWidget {
   static const String id = "AddAAssignment";
@@ -21,6 +23,8 @@ class AddAAssignment extends StatefulWidget {
 }
 
 String name = "";
+final _firestore = FirebaseFirestore.instance;
+List<AssignmentDetails> assignmentList = [];
 
 class _AddAAssignmentState extends State<AddAAssignment> {
   String _startDate = "",
@@ -53,6 +57,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
 
   @override
   Widget build(BuildContext context) {
+    bool showSpinner = false;
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -336,7 +341,24 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                         "Password": _passwordVal,
                         "Download Link": downloadURL,
                       });
-                      Navigator.pop(context);
+                      setState(() {
+                        showSpinner = true;
+                      });
+                      getAssignmentData(
+                          FirebaseAuth.instance.currentUser.uid +
+                              widget.classname,
+                          widget.classname);
+                      Timer(Duration(seconds: 3), () {
+                        setState(() {
+                          showSpinner = false;
+                        });
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  TeacherClassScreen(widget.classname),
+                            ));
+                      });
                     },
                     child: Container(
                       height: buttonHeight,
@@ -389,4 +411,37 @@ Future<firebase_storage.UploadTask> uploadFile(
 
   print("done..!");
   return Future.value(uploadTask);
+}
+
+Future<void> getAssignmentData(String classID, String className) async {
+  assignmentList = await fetchAllAssignments(classID, className) as List;
+  print(assignmentList);
+}
+
+Future<List<AssignmentDetails>> fetchAllAssignments(
+    String classID, String className) async {
+  List<AssignmentDetails> assignments = [];
+  QuerySnapshot querySnapshot = await _firestore
+      .collection('Classes')
+      .doc(classID)
+      .collection('Assignment_List')
+      .get();
+  querySnapshot.docs.forEach((element) {
+    AssignmentDetails obj = AssignmentDetails();
+    obj.assignmentName = element["Name"];
+    obj.startTime = element["Start Time"];
+    obj.startDate = element["Start Date"];
+    obj.endTime = element["End Time"];
+    obj.endDate = element["End Date"];
+    obj.password = element["Password"];
+    obj.link = element["Download Link"];
+    print(element["Name"]);
+    assignments.add(obj);
+  });
+  return assignments;
+}
+
+class AssignmentDetails {
+  String assignmentName, startTime, startDate, endTime, endDate;
+  String password, link;
 }
