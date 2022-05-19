@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../constants.dart';
 import '../StudentScreen/StudentHome.dart';
 
@@ -19,8 +20,10 @@ class LoginStudentScreen extends StatefulWidget {
   @override
   _LoginStudentScreenState createState() => _LoginStudentScreenState();
 }
+
 final _firestore = FirebaseFirestore.instance;
 List<classDetails> classList;
+
 class _LoginStudentScreenState extends State<LoginStudentScreen> {
   String _emailVal, _passwordVal;
   bool _passwordVisible = false;
@@ -134,50 +137,48 @@ class _LoginStudentScreenState extends State<LoginStudentScreen> {
                       child: TextButton(
                         onPressed: () {
                           // Navigator.pushNamed(context, ForgotPassScreen.id);
-                          if(_emailVal!=null){
+                          if (_emailVal != null) {
                             _auth.sendPasswordResetEmail(email: _emailVal);
                             Alert(
-                                context: context,
-                                title: status,
-                                buttons: [
-                                  DialogButton(
-                                    child: Text(
-                                      "OK",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20.0,
+                                    context: context,
+                                    title: status,
+                                    buttons: [
+                                      DialogButton(
+                                        child: Text(
+                                          "OK",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                          ),
+                                        ),
+                                        onPressed: () => Navigator.pop(context),
+                                        color: kPrimaryColor,
+                                        width: 150.0,
+                                        radius: BorderRadius.circular(15.0),
                                       ),
-                                    ),
-                                    onPressed: () => Navigator.pop(context),
-                                    color: kPrimaryColor,
-                                    width: 150.0,
-                                    radius: BorderRadius.circular(15.0),
-                                  ),
-                                ],
-                                desc: "Reset Email sent")
+                                    ],
+                                    desc: "Reset Email sent")
                                 .show();
-                          }
-                          else{
-
+                          } else {
                             Alert(
-                                context: context,
-                                title: status,
-                                buttons: [
-                                  DialogButton(
-                                    child: Text(
-                                      "OK",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20.0,
+                                    context: context,
+                                    title: status,
+                                    buttons: [
+                                      DialogButton(
+                                        child: Text(
+                                          "OK",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                          ),
+                                        ),
+                                        onPressed: () => Navigator.pop(context),
+                                        color: kPrimaryColor,
+                                        width: 150.0,
+                                        radius: BorderRadius.circular(15.0),
                                       ),
-                                    ),
-                                    onPressed: () => Navigator.pop(context),
-                                    color: kPrimaryColor,
-                                    width: 150.0,
-                                    radius: BorderRadius.circular(15.0),
-                                  ),
-                                ],
-                                desc: "No Email Found")
+                                    ],
+                                    desc: "No Email Found")
                                 .show();
                           }
                         },
@@ -204,16 +205,18 @@ class _LoginStudentScreenState extends State<LoginStudentScreen> {
                                 await _auth.signInWithEmailAndPassword(
                                     email: _emailVal, password: _passwordVal);
                             if (oldUser != null) {
-                              // final SharedPreferences sharedPref = await SharedPreferences.getInstance();
-                              // sharedPref.setString(USER_EMAIL, _emailVal);
+                              final SharedPreferences sharedPref =
+                                  await SharedPreferences.getInstance();
+                              sharedPref.setString(
+                                  'STUDENT_USER_EMAIL', _emailVal);
                               getData();
                               Timer(Duration(seconds: 3), () {
+                                setState(() {
+                                  showSpinner = false;
+                                });
                                 Navigator.pushNamed(context, StudentHome.id);
                               });
                             }
-                            setState(() {
-                              showSpinner = false;
-                            });
                           } catch (error) {
                             print(error.code);
                             switch (error.code) {
@@ -312,36 +315,44 @@ class _LoginStudentScreenState extends State<LoginStudentScreen> {
     );
   }
 }
-Future<void> getData() async{
+
+Future<void> getData() async {
   classList = await fetchAllClasses() as List;
   print(classList);
 }
+
 Future<List<classDetails>> fetchAllClasses() async {
-  List <classDetails> tempClasstList=[];
-  List <String> classid=[];
+  List<classDetails> tempClasstList = [];
+  List<String> classid = [];
   QuerySnapshot querySnapshot = await _firestore
       .collection('AUTH_DATA')
       .doc('STUDENT')
       .collection(FirebaseAuth.instance.currentUser.uid)
-      .doc('Class_List').collection('Classes').get();
+      .doc('Class_List')
+      .collection('Classes')
+      .get();
   querySnapshot.docs.forEach((element) {
     classid.add(element['Class id']);
   });
-  for(int j=0;j<classid.length;j++){
-    DocumentSnapshot document=await _firestore
+  for (int j = 0; j < classid.length; j++) {
+    DocumentSnapshot document = await _firestore
         .collection('Classes')
-        .doc(classid[j]).collection('Class_Details').doc('Info').get();
-    classDetails obj=classDetails();
-    obj.batch=document["Batch"];
-    obj.classId=document["Class id"];
-    obj.className=document["Class Name"];
-    obj.dept=document["Department"];
+        .doc(classid[j])
+        .collection('Class_Details')
+        .doc('Info')
+        .get();
+    classDetails obj = classDetails();
+    obj.batch = document["Batch"];
+    obj.classId = document["Class id"];
+    obj.className = document["Class Name"];
+    obj.dept = document["Department"];
     print(document["Class Name"]);
     tempClasstList.add(obj);
   }
   return tempClasstList;
 }
-class classDetails{
-  String batch,className,classId,dept;
-  classDetails({this.batch,this.className,this.classId,this.dept});
+
+class classDetails {
+  String batch, className, classId, dept;
+  classDetails({this.batch, this.className, this.classId, this.dept});
 }
