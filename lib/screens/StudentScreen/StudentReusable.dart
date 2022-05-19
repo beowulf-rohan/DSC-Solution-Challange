@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:demo/constants.dart';
 import 'package:demo/screens/StudentScreen/StudentClassScreen.dart';
+import 'package:demo/screens/StudentScreen/StudentHome.dart';
 import 'package:flutter/material.dart';
 
 class HeadingText extends StatelessWidget {
@@ -25,8 +28,8 @@ class HeadingText extends StatelessWidget {
   }
 }
 
-class ClassCard extends StatelessWidget {
-  const ClassCard(
+class ClassCard extends StatefulWidget {
+  ClassCard(
       {Key key,
       @required this.path,
       @required this.className,
@@ -34,19 +37,36 @@ class ClassCard extends StatelessWidget {
       @required this.batch,
       @required this.context})
       : super(key: key);
-  final String path, className, department, batch;
+  String path, className, department, batch;
   final BuildContext context;
+
+  @override
+  State<ClassCard> createState() => _ClassCardState();
+}
+
+class _ClassCardState extends State<ClassCard> {
+  bool showSpinner = false;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: InkWell(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => StudentClassScreen(className),
-              ));
+          setState(() {
+            showSpinner = true;
+          });
+          getAssignmentData(widget.path, widget.className);
+          Timer(Duration(seconds: 3), () {
+            setState(() {
+              showSpinner = false;
+            });
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StudentClassScreen(widget.className),
+                ));
+          });
         },
         child: Container(
           decoration: BoxDecoration(
@@ -80,7 +100,7 @@ class ClassCard extends StatelessWidget {
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.52,
                         child: Text(
-                          className,
+                          widget.className,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 23,
@@ -106,7 +126,7 @@ class ClassCard extends StatelessWidget {
                                   color: Colors.white),
                             ),
                             Text(
-                              department,
+                              widget.department,
                               style: TextStyle(
                                   fontSize: 18,
                                   fontFamily: 'Fredoka',
@@ -129,7 +149,7 @@ class ClassCard extends StatelessWidget {
                                   color: Colors.white),
                             ),
                             Text(
-                              batch,
+                              widget.batch,
                               style: TextStyle(
                                   fontSize: 18,
                                   fontFamily: 'Fredoka',

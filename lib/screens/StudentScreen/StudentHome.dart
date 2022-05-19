@@ -18,7 +18,10 @@ class StudentHome extends StatefulWidget {
   @override
   State<StudentHome> createState() => _StudentHomeState();
 }
+
 final _firestore = FirebaseFirestore.instance;
+List<AssignmentDetails> assignmentList = [];
+
 class _StudentHomeState extends State<StudentHome> {
   final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
   final primaryColor = Color(0xFF192A56);
@@ -26,7 +29,7 @@ class _StudentHomeState extends State<StudentHome> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   User loggedInUser;
-  bool showSpinner=false;
+  bool showSpinner = false;
   void getCurrentUser() async {
     try {
       final user = _auth.currentUser;
@@ -37,19 +40,21 @@ class _StudentHomeState extends State<StudentHome> {
       print(e);
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getCurrentUser();
   }
+
   @override
   Widget build(BuildContext context) {
     tempContext = context;
-    List <Widget> card=[];
-    try{
+    List<Widget> card = [];
+    try {
       card.add(HeadingText(text: "My Classes"));
-      for(int j=0;j<classList.length;j++){
+      for (int j = 0; j < classList.length; j++) {
         card.add(ClassCard(
           path: classList[j].classId,
           className: classList[j].className,
@@ -58,10 +63,8 @@ class _StudentHomeState extends State<StudentHome> {
           context: context,
         ));
       }
-    }
-    catch(e){
+    } catch (e) {
       print(e);
-      card.add(HeadingText(text: "My Classes"));
     }
     return SafeArea(
       child: Scaffold(
@@ -119,8 +122,9 @@ class _StudentHomeState extends State<StudentHome> {
                         setState(() {
                           showSpinner = true;
                         });
-                        if(_classid!=null){
-                          _firestore.collection("AUTH_DATA")
+                        if (_classid != null) {
+                          _firestore
+                              .collection("AUTH_DATA")
                               .doc("STUDENT")
                               .collection(FirebaseAuth.instance.currentUser.uid)
                               .doc("Class_List")
@@ -130,8 +134,10 @@ class _StudentHomeState extends State<StudentHome> {
                             "Class id": _classid,
                           });
                         }
-                        if(_classid!=null){
-                          _firestore.collection("Classes").doc(_classid)
+                        if (_classid != null) {
+                          _firestore
+                              .collection("Classes")
+                              .doc(_classid)
                               .collection("Student_List")
                               .add({
                             "Student_id": FirebaseAuth.instance.currentUser.uid,
@@ -144,14 +150,14 @@ class _StudentHomeState extends State<StudentHome> {
                           });
                           Navigator.pop(context, 'OK');
                         });
-
                       },
                       child: const Text('OK'),
                     ),
                   ],
                 ),
               );
-              child: const Text('Show Dialog');
+              child:
+              const Text('Show Dialog');
             },
             label: 'Join a Class',
             labelStyle: TextStyle(
@@ -183,4 +189,37 @@ class _StudentHomeState extends State<StudentHome> {
       duration: const Duration(milliseconds: 1000),
     ));
   }
+}
+
+Future<void> getAssignmentData(String classID, String className) async {
+  assignmentList = await fetchAllAssignments(classID, className) as List;
+  print(assignmentList);
+}
+
+Future<List<AssignmentDetails>> fetchAllAssignments(
+    String classID, String className) async {
+  List<AssignmentDetails> assignments = [];
+  QuerySnapshot querySnapshot = await _firestore
+      .collection('Classes')
+      .doc(classID)
+      .collection('Assignment_List')
+      .get();
+  querySnapshot.docs.forEach((element) {
+    AssignmentDetails obj = AssignmentDetails();
+    obj.assignmentName = element["Name"];
+    obj.startTime = element["Start Time"];
+    obj.startDate = element["Start Date"];
+    obj.endTime = element["End Time"];
+    obj.endDate = element["End Date"];
+    obj.password = element["Password"];
+    obj.link = element["Download Link"];
+    print(element["Name"]);
+    assignments.add(obj);
+  });
+  return assignments;
+}
+
+class AssignmentDetails {
+  String assignmentName, startTime, startDate, endTime, endDate;
+  String password, link;
 }

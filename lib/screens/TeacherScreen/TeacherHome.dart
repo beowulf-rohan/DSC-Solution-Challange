@@ -17,7 +17,10 @@ class TeacherHome extends StatefulWidget {
   @override
   State<TeacherHome> createState() => _TeacherHomeState();
 }
+
 final _firestore = FirebaseFirestore.instance;
+List<AssignmentDetails> assignmentList = [];
+
 //List<classDetails> classList;
 class _TeacherHomeState extends State<TeacherHome> {
   final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
@@ -34,6 +37,7 @@ class _TeacherHomeState extends State<TeacherHome> {
       print(e);
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -41,16 +45,17 @@ class _TeacherHomeState extends State<TeacherHome> {
     getCurrentUser();
     //getData();
   }
+
   // Future<void> getData() async{
   //    classList = await fetchAllClasses() as List;
   // }
   @override
   Widget build(BuildContext context) {
     tempContext = context;
-    List <Widget> card=[];
-    try{
+    List<Widget> card = [];
+    try {
       card.add(HeadingText(text: "My Classes"));
-      for(int j=0;j<classList.length;j++){
+      for (int j = 0; j < classList.length; j++) {
         card.add(ClassCard(
           path: classList[j].classId,
           className: classList[j].className,
@@ -59,10 +64,8 @@ class _TeacherHomeState extends State<TeacherHome> {
           context: context,
         ));
       }
-    }
-    catch(e){
+    } catch (e) {
       print(e);
-      card.add(HeadingText(text: "My Classes"));
     }
     return SafeArea(
       child: Scaffold(
@@ -97,7 +100,7 @@ class _TeacherHomeState extends State<TeacherHome> {
           SpeedDialChild(
             child: Icon(Icons.add_circle_outline, color: kPrimaryColor),
             onTap: () {
-                Navigator.pushNamed(tempContext, MakeNewClass.id);
+              Navigator.pushNamed(tempContext, MakeNewClass.id);
             },
             label: 'Add Class',
             labelStyle: TextStyle(
@@ -123,24 +126,36 @@ class _TeacherHomeState extends State<TeacherHome> {
     );
   }
 }
-// Future<List<dynamic>> fetchAllClasses() async {
-//   List <classDetails> tempClasstList;
-//   QuerySnapshot querySnapshot = await _firestore
-//       .collection('AUTH_DATA')
-//       .doc('TEACHER')
-//       .collection(FirebaseAuth.instance.currentUser.uid)
-//       .doc('Class_List').collection('Classes').get();
-//   querySnapshot.docs.forEach((element) {
-//     classDetails obj=classDetails();
-//     obj.batch=element["Batch"];
-//     obj.classId=element["Class id"];
-//     obj.className=element["Class Name"];
-//     obj.dept=element["Department"];
-//     print(element["Class Name"]);
-//   });
-//   return tempClasstList;
-// }
-// class classDetails{
-//   String batch,className,classId,dept;
-//   classDetails({this.batch,this.className,this.classId,this.dept});
-// }
+
+Future<void> getAssignmentData(String classID, String className) async {
+  assignmentList = await fetchAllAssignments(classID, className) as List;
+  print(assignmentList);
+}
+
+Future<List<AssignmentDetails>> fetchAllAssignments(
+    String classID, String className) async {
+  List<AssignmentDetails> assignments = [];
+  QuerySnapshot querySnapshot = await _firestore
+      .collection('Classes')
+      .doc(classID)
+      .collection('Assignment_List')
+      .get();
+  querySnapshot.docs.forEach((element) {
+    AssignmentDetails obj = AssignmentDetails();
+    obj.assignmentName = element["Name"];
+    obj.startTime = element["Start Time"];
+    obj.startDate = element["Start Date"];
+    obj.endTime = element["End Time"];
+    obj.endDate = element["End Date"];
+    obj.password = element["Password"];
+    obj.link = element["Download Link"];
+    print(element["Name"]);
+    assignments.add(obj);
+  });
+  return assignments;
+}
+
+class AssignmentDetails {
+  String assignmentName, startTime, startDate, endTime, endDate;
+  String password, link;
+}
