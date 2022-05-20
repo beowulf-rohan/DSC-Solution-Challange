@@ -293,22 +293,6 @@ class AssignemntCard extends StatelessWidget {
                             SizedBox(
                               width: 15,
                             ),
-                            Text(
-                              'Response : ',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Fredoka',
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              response,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Fredoka',
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white.withOpacity(0.6)),
-                            )
                           ],
                         ),
                       ],
