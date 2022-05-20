@@ -355,7 +355,8 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                             .doc(FirebaseAuth.instance.currentUser.uid +
                                 widget.classname)
                             .collection("Assignment_List")
-                            .add({
+                            .doc(widget.classname + name)
+                            .set({
                           "Name": name,
                           "Start Date": _startDate,
                           "End Date": _endDate,
