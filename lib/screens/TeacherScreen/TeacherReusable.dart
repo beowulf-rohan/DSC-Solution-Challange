@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:demo/constants.dart';
 import 'package:demo/screens/TeacherScreen/TeacherClassScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import 'TeacherHome.dart';
@@ -28,6 +29,13 @@ class HeadingText extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _copyToClipboard(BuildContext context, String classID) async {
+  await Clipboard.setData(ClipboardData(text: classID));
+  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    content: Text('Class Code Copied'),
+  ));
 }
 
 class ClassCard extends StatefulWidget {
@@ -93,23 +101,36 @@ class _ClassCardState extends State<ClassCard> {
                   thickness: 10,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 10),
                       SingleChildScrollView(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.52,
-                          child: Text(
-                            widget.className,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 23,
-                              fontFamily: 'Fredoka',
-                              fontWeight: FontWeight.w500,
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.48,
+                              child: Text(
+                                widget.className,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 23,
+                                  fontFamily: 'Fredoka',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
-                          ),
+                            IconButton(
+                              onPressed: () {
+                                _copyToClipboard(context, widget.path);
+                              },
+                              icon: Icon(
+                                Icons.copy,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 10.00),
@@ -183,10 +204,9 @@ class AssignemntCard extends StatelessWidget {
     @required this.date,
     @required this.time,
     @required this.duration,
-    @required this.response,
     @required this.press,
   }) : super(key: key);
-  final String name, date, time, duration, response;
+  final String name, date, time, duration;
   final Function press;
 
   @override

@@ -32,7 +32,6 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
           date: completedAssignment[i].endDate,
           time: completedAssignment[i].endTime,
           duration: completedAssignment[i].duration,
-          response: '30/60',
           press: () {},
         ));
       }
@@ -42,7 +41,6 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
           date: assignedAssignment[i].endDate,
           time: assignedAssignment[i].endTime,
           duration: assignedAssignment[i].duration,
-          response: '30/60',
           press: () {
             Navigator.pushNamed(context, AssignmentInfo.id);
           },
