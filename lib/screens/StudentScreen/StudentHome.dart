@@ -124,7 +124,7 @@ class _StudentHomeState extends State<StudentHome> {
                       child: const Text('Cancel'),
                     ),
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_classid != null) {
                           setState(() {
                             showSpinner = true;
@@ -141,12 +141,22 @@ class _StudentHomeState extends State<StudentHome> {
                           });
                         }
                         if (_classid != null) {
+                          DocumentSnapshot document = await _firestore
+                              .collection("AUTH_DATA")
+                              .doc("STUDENT")
+                              .collection(FirebaseAuth.instance.currentUser.uid)
+                              .doc("Student_Details")
+                              .get();
                           _firestore
                               .collection("Classes")
                               .doc(_classid)
                               .collection("Student_List")
                               .add({
                             "Student_id": FirebaseAuth.instance.currentUser.uid,
+                            "Contact": document["Contact"],
+                            "Department": document["Department"],
+                            "Email": document["Email"],
+                            "Name": document["Name"],
                           });
                         }
                         getData();
@@ -226,19 +236,19 @@ Future<void> getAssignmentData(String classID, String className) async {
       DateTime d2 = DateTime.parse(s1);
       DateTime d = DateTime.now();
       int difference = d2.difference(d1).inHours;
-      String duration="";
-      if(difference!=0){
-        duration+=difference.toString();
-        duration+='h ';
+      String duration = "";
+      if (difference != 0) {
+        duration += difference.toString();
+        duration += 'h ';
       }
       difference = d2.difference(d1).inMinutes;
-      difference=difference%60;
-      if(difference!=0){
-        duration+=difference.toString();
-        duration+='min';
+      difference = difference % 60;
+      if (difference != 0) {
+        duration += difference.toString();
+        duration += 'min';
       }
       print(duration);
-      assignmentList[i].duration=duration;
+      assignmentList[i].duration = duration;
       if (d.isBefore(d2)) {
         assignedAssignment.add(assignmentList[i]);
       } else {
@@ -278,5 +288,5 @@ Future<List<AssignmentDetails>> fetchAllAssignments(
 
 class AssignmentDetails {
   String assignmentName, startTime, startDate, endTime, endDate;
-  String password, link,duration;
+  String password, link, duration;
 }

@@ -20,7 +20,7 @@ class _MakeNewClassState extends State<MakeNewClass> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   User loggedInUser;
-  bool showSpinner=false;
+  bool showSpinner = false;
   void getCurrentUser() async {
     try {
       final user = _auth.currentUser;
@@ -136,54 +136,78 @@ class _MakeNewClassState extends State<MakeNewClass> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         // Navigator.pushNamed(context, StudentHome.id);
                         setState(() {
-                          showSpinner=true;
+                          showSpinner = true;
                         });
-                           if(_classname!=null&&_batch!=null&&_department!=null){
-                             _firestore.collection("AUTH_DATA")
-                                 .doc("TEACHER")
-                                 .collection(FirebaseAuth.instance.currentUser.uid)
-                                 .doc("Class_List")
-                                 .collection("Classes")
-                                 .doc(FirebaseAuth.instance.currentUser.uid+_classname)
-                                 .set({
-                               "Class Name": _classname,
-                               "Batch": _batch,
-                               "Department": _department,
-                               "Class id": FirebaseAuth.instance.currentUser.uid+_classname,
-                             });
-                           }
-                           if(_classname!=null&&_batch!=null&&_department!=null){
-                             _firestore.collection("Classes")
-                                 .doc(FirebaseAuth.instance.currentUser.uid+_classname)
-                                 .collection("Class_Details")
-                                 .doc("Info")
-                                 .set({
-                               "Class Name": _classname,
-                               "Batch": _batch,
-                               "Department": _department,
-                               "Class id": FirebaseAuth.instance.currentUser.uid+_classname,
-                             });
-                           }
-                           if(_classname!=null&&_batch!=null&&_department!=null){
-                             _firestore.collection("Classes")
-                                 .doc(FirebaseAuth.instance.currentUser.uid+_classname)
-                                 .collection("Class_Details")
-                                 .doc("Teacher_Deatils")
-                                 .set({
-                               "Teacher_id": FirebaseAuth.instance.currentUser.uid,
-                             });
-                           }
-                           getData();
-                           Timer(Duration(seconds: 3), () {
-                             setState(() {
-                               showSpinner = false;
-                             });
-                             //print(classList);
-                             Navigator.pushNamed(context, TeacherHome.id);
-                           });
+                        if (_classname != null &&
+                            _batch != null &&
+                            _department != null) {
+                          _firestore
+                              .collection("AUTH_DATA")
+                              .doc("TEACHER")
+                              .collection(FirebaseAuth.instance.currentUser.uid)
+                              .doc("Class_List")
+                              .collection("Classes")
+                              .doc(FirebaseAuth.instance.currentUser.uid +
+                                  _classname)
+                              .set({
+                            "Class Name": _classname,
+                            "Batch": _batch,
+                            "Department": _department,
+                            "Class id": FirebaseAuth.instance.currentUser.uid +
+                                _classname,
+                          });
+                        }
+                        if (_classname != null &&
+                            _batch != null &&
+                            _department != null) {
+                          _firestore
+                              .collection("Classes")
+                              .doc(FirebaseAuth.instance.currentUser.uid +
+                                  _classname)
+                              .collection("Class_Details")
+                              .doc("Info")
+                              .set({
+                            "Class Name": _classname,
+                            "Batch": _batch,
+                            "Department": _department,
+                            "Class id": FirebaseAuth.instance.currentUser.uid +
+                                _classname,
+                          });
+                        }
+                        if (_classname != null &&
+                            _batch != null &&
+                            _department != null) {
+                          DocumentSnapshot document = await _firestore
+                              .collection("AUTH_DATA")
+                              .doc("TEACHER")
+                              .collection(FirebaseAuth.instance.currentUser.uid)
+                              .doc("Teacher_Details")
+                              .get();
+                          _firestore
+                              .collection("Classes")
+                              .doc(FirebaseAuth.instance.currentUser.uid +
+                                  _classname)
+                              .collection("Class_Details")
+                              .doc("Teacher_Deatils")
+                              .set({
+                            "Teacher_id": FirebaseAuth.instance.currentUser.uid,
+                            "Contact": document["Contact"],
+                            "Department": document["Department"],
+                            "Email": document["Email"],
+                            "Name": document["Name"],
+                          });
+                        }
+                        getData();
+                        Timer(Duration(seconds: 3), () {
+                          setState(() {
+                            showSpinner = false;
+                          });
+                          //print(classList);
+                          Navigator.pushNamed(context, TeacherHome.id);
+                        });
                       },
                       child: Container(
                         height: buttonHeight,
