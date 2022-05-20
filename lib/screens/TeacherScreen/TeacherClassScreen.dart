@@ -31,7 +31,7 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
           name: completedAssignment[i].assignmentName,
           date: completedAssignment[i].endDate,
           time: completedAssignment[i].endTime,
-          duration: completedAssignment[i].duration,
+          duration: completedAssignment[i].duration ?? ' ',
           press: () {},
         ));
       }
@@ -40,7 +40,7 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
           name: assignedAssignment[i].assignmentName,
           date: assignedAssignment[i].endDate,
           time: assignedAssignment[i].endTime,
-          duration: assignedAssignment[i].duration,
+          duration: assignedAssignment[i].duration ?? ' ',
           press: () {
             Navigator.pushNamed(context, AssignmentInfo.id);
           },
