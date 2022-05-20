@@ -68,7 +68,14 @@ class _MyAppState extends State<MyApp> {
       },
     );
   }
+}
+/*
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     getValidation().whenComplete(() {
@@ -97,7 +104,10 @@ class _MyAppState extends State<MyApp> {
       finalEmail = email;
     });
   }
-}
 
-/*
- */
+  @override
+  Widget build(BuildContext context) {
+    return home;
+  }
+}
+*/
