@@ -30,7 +30,7 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
           name: completedAssignment[i].assignmentName,
           date: completedAssignment[i].endDate,
           time: completedAssignment[i].endTime,
-          duration: '1 hours',
+          duration: completedAssignment[i].duration,
           response: '30/60',
           press: () {},
         ));
@@ -40,7 +40,7 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
           name: assignedAssignment[i].assignmentName,
           date: assignedAssignment[i].endDate,
           time: assignedAssignment[i].endTime,
-          duration: '1 hours',
+          duration: assignedAssignment[i].duration,
           response: '30/60',
           press: () {
             Navigator.pushNamed(context, generateOrSubmit.id);
