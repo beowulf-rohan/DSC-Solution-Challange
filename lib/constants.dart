@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 const kPrimaryColor = Color(0xFF488fb1);
 const buttonHeight = 45.0;
 
+const String APP_NAME = "DSC-Solution-Challenge";
 const String USER_COLLECTION = "UserDatabase";
 
 const String STUDENT_EMAIL = "Email";

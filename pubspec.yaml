@@ -51,6 +51,7 @@ dependencies:
   firebase_storage: ^10.2.15
   modal_progress_hud_nsn: ^0.1.0-nullsafety-1
   fluttertoast: ^8.0.9
+  flutter_downloader: ^1.7.4
 
 
 dev_dependencies:
