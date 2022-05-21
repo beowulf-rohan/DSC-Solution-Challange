@@ -40,7 +40,7 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
           name: assignedAssignment[i].assignmentName,
           date: assignedAssignment[i].endDate,
           time: assignedAssignment[i].endTime,
-          duration: assignedAssignment[i].endTime,
+          duration: completedAssignment[i].duration ?? ' ',
           press: () {
             Navigator.push(
                 context,
@@ -49,7 +49,7 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
                       assignedAssignment[i].assignmentName,
                       assignedAssignment[i].endDate,
                       assignedAssignment[i].endTime,
-                      assignedAssignment[i].endTime,
+                      completedAssignment[i].duration ?? ' ',
                       assignedAssignment[i].link),
                 ));
           },

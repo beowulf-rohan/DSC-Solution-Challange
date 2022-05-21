@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../constants.dart';
+import 'DownloadingDialog.dart';
 import 'TeacherReusable.dart';
 
 class AssignmentInfo extends StatefulWidget {
@@ -109,23 +107,11 @@ class _AssignmentInfoState extends State<AssignmentInfo> {
                                 const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
                             child: GestureDetector(
                               onTap: () async {
-                                final status=await Permission.storage.request();
-                                if(status.isGranted) {
-                                  final externalDir = await getExternalStorageDirectory();
-                                  final taskId = await FlutterDownloader.enqueue(
-                                    url: widget.link,
-                                    savedDir: externalDir.path,
-                                    showNotification:
-                                    true, // show download progress in status bar (for Android)
-                                    openFileFromNotification:
-                                    true, // click on notification to open downloaded file (for Android)
-                                  );
-                                }
-                                else{
-                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                    content: Text('Permission Denied'),
-                                  ));
-                                }
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => DownloadingDialog(
+                                      widget.link, widget.name),
+                                );
                               },
                               child: Container(
                                 height: buttonHeight,
