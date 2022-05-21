@@ -272,11 +272,6 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           type: FileType.custom,
                           allowedExtensions: ['pdf'],
                         );
-                        if (result != null) {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                        }
                         PlatformFile file = result.files.first;
                         final File fileForFirebase = File(file.path);
                         final PdfDocument document = PdfDocument(
@@ -297,9 +292,6 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                         } catch (e) {
                           print(e);
                         }
-                        setState(() {
-                          showSpinner = false;
-                        });
                         //Dispose the document
                         document.dispose();
                       },
