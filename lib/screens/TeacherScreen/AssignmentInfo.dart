@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../constants.dart';
 import 'TeacherReusable.dart';
@@ -107,14 +109,23 @@ class _AssignmentInfoState extends State<AssignmentInfo> {
                                 const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
                             child: GestureDetector(
                               onTap: () async {
-                                final taskId = await FlutterDownloader.enqueue(
-                                  url: widget.link,
-                                  savedDir: APP_NAME,
-                                  showNotification:
-                                      true, // show download progress in status bar (for Android)
-                                  openFileFromNotification:
-                                      true, // click on notification to open downloaded file (for Android)
-                                );
+                                final status=await Permission.storage.request();
+                                if(status.isGranted) {
+                                  final externalDir = await getExternalStorageDirectory();
+                                  final taskId = await FlutterDownloader.enqueue(
+                                    url: widget.link,
+                                    savedDir: externalDir.path,
+                                    showNotification:
+                                    true, // show download progress in status bar (for Android)
+                                    openFileFromNotification:
+                                    true, // click on notification to open downloaded file (for Android)
+                                  );
+                                }
+                                else{
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                    content: Text('Permission Denied'),
+                                  ));
+                                }
                               },
                               child: Container(
                                 height: buttonHeight,
@@ -162,15 +173,15 @@ class _AssignmentInfoState extends State<AssignmentInfo> {
     );
   }
 
-  @override
-  void initState() {
-    Initiliaze();
-  }
+  // @override
+  // void initState() {
+  //   Initiliaze();
+  // }
 }
 
-Future<void> Initiliaze() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize(
-      debug: true // optional: set false to disable printing logs to console
-      );
-}
+// Future<void> Initiliaze() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await FlutterDownloader.initialize(
+//       debug: true // optional: set false to disable printing logs to console
+//       );
+// }
