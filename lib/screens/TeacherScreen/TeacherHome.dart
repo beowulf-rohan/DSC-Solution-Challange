@@ -158,19 +158,19 @@ Future<void> getAssignmentData(String classID, String className) async {
       DateTime d2 = DateTime.parse(s1);
       DateTime d = DateTime.now();
       int difference = d2.difference(d1).inHours;
-      String duration="";
-      if(difference!=0){
-        duration+=difference.toString();
-        duration+='h ';
+      String duration = "";
+      if (difference != 0) {
+        duration += difference.toString();
+        duration += 'h ';
       }
       difference = d2.difference(d1).inMinutes;
-      difference=difference%60;
-      if(difference!=0){
-        duration+=difference.toString();
-        duration+='min';
+      difference = difference % 60;
+      if (difference != 0) {
+        duration += difference.toString();
+        duration += 'min';
       }
       print(duration);
-      assignmentList[i].duration=duration;
+      assignmentList[i].duration = duration;
       if (d.isBefore(d2)) {
         assignedAssignment.add(assignmentList[i]);
       } else {
@@ -209,5 +209,5 @@ Future<List<AssignmentDetails>> fetchAllAssignments(
 
 class AssignmentDetails {
   String assignmentName, startTime, startDate, endTime, endDate;
-  String password, link,duration;
+  String password, link, duration;
 }

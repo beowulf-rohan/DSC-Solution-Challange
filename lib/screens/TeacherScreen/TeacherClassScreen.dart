@@ -40,9 +40,18 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
           name: assignedAssignment[i].assignmentName,
           date: assignedAssignment[i].endDate,
           time: assignedAssignment[i].endTime,
-          duration: assignedAssignment[i].duration ?? ' ',
+          duration: assignedAssignment[i].endTime,
           press: () {
-            Navigator.pushNamed(context, AssignmentInfo.id);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AssignmentInfo(
+                      assignedAssignment[i].assignmentName,
+                      assignedAssignment[i].endDate,
+                      assignedAssignment[i].endTime,
+                      assignedAssignment[i].endTime,
+                      assignedAssignment[i].link),
+                ));
           },
         ));
       }

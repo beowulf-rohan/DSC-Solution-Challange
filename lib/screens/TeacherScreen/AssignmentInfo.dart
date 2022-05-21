@@ -1,167 +1,176 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 
 import '../../constants.dart';
+import 'TeacherReusable.dart';
 
-class AssignmentInfo extends StatelessWidget {
+class AssignmentInfo extends StatefulWidget {
+  AssignmentInfo(this.name, this.date, this.time, this.duration, this.link);
+  final String name, date, time, duration, link;
   static String id = "AssignmentInfo";
+
+  @override
+  State<AssignmentInfo> createState() => _AssignmentInfoState();
+}
+
+class _AssignmentInfoState extends State<AssignmentInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimaryColor,
-      body: SafeArea(
-        child: Head(
-          name: 'ABC1',
-          date: '13-03-2022',
-          time: '3:21PM',
-          duration: '1 hours',
-          response: '30/60',
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+              child: AssignemntCard(
+                name: widget.name,
+                date: widget.date,
+                time: widget.time,
+                duration: widget.duration,
+              ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 60,
+                      ),
+                      Image.asset(
+                        "assets/key.png",
+                        height: 150,
+                        width: 150,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
+                            child: GestureDetector(
+                              onTap: () {
+                                // Navigator.pushNamed(context, createSHA.id);
+                              },
+                              child: Container(
+                                height: buttonHeight,
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0xFF2a617a),
+                                      blurRadius: 10.0,
+                                      spreadRadius: 0.0,
+                                      // shadow direction: bottom right
+                                    )
+                                  ],
+                                  border: Border.all(color: Color(0xFF2a617a)),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [kPrimaryColor, Color(0xFF64abc9)],
+                                  ),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Send Password",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 60),
+                  Column(
+                    children: [
+                      Image.asset(
+                        "assets/folder.png",
+                        height: 150,
+                        width: 150,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                final taskId = await FlutterDownloader.enqueue(
+                                  url: widget.link,
+                                  savedDir: APP_NAME,
+                                  showNotification:
+                                      true, // show download progress in status bar (for Android)
+                                  openFileFromNotification:
+                                      true, // click on notification to open downloaded file (for Android)
+                                );
+                              },
+                              child: Container(
+                                height: buttonHeight,
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(0xFF2a617a),
+                                      blurRadius: 10.0,
+                                      spreadRadius: 0.0,
+                                      // shadow direction: bottom right
+                                    )
+                                  ],
+                                  border: Border.all(color: Color(0xFF2a617a)),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [kPrimaryColor, Color(0xFF64abc9)],
+                                  ),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Download PDF",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    Initiliaze();
   }
 }
 
-class Head extends StatelessWidget {
-  const Head({
-    Key key,
-    @required this.name,
-    @required this.date,
-    @required this.time,
-    @required this.duration,
-    @required this.response,
-  }) : super(key: key);
-  final String name, date, time, duration, response;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-      child: InkWell(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.20),
-            border: Border.all(width: 2, color: Colors.white24),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 15, top: 3, bottom: 3),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 10),
-                    SingleChildScrollView(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.52,
-                        child: Text(
-                          name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 23,
-                            fontFamily: 'Fredoka',
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10.00),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Date : ',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Fredoka',
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              date,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Fredoka',
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white.withOpacity(0.6)),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              'Time : ',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Fredoka',
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              time,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Fredoka',
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white.withOpacity(0.6)),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 2.5,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Duration : ',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Fredoka',
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              duration,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Fredoka',
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white.withOpacity(0.6)),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              'Response : ',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Fredoka',
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              response,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: 'Fredoka',
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.white.withOpacity(0.6)),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 7.5),
-                    SizedBox(height: 10),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+Future<void> Initiliaze() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(
+      debug: true // optional: set false to disable printing logs to console
+      );
 }

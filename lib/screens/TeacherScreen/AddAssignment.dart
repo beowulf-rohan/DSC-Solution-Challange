@@ -24,6 +24,7 @@ class AddAAssignment extends StatefulWidget {
   AddAAssignment(this.classname);
 }
 
+DateTime start, end;
 String name = "";
 final _firestore = FirebaseFirestore.instance;
 
@@ -149,6 +150,8 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                               DateFormat('HH:mm').format(dateTimeList[0]);
                           _endTime =
                               DateFormat('HH:mm').format(dateTimeList[1]);
+                          start = dateTimeList[0];
+                          end = dateTimeList[1];
                         });
                       },
                       child: Material(
@@ -364,6 +367,8 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           "End Time": _endTime,
                           "Password": _passwordVal,
                           "Download Link": downloadURL,
+                          "Start DateTime": start.toString(),
+                          "End DateTime": end.toString(),
                         });
                         getAssignmentData(
                             FirebaseAuth.instance.currentUser.uid +
