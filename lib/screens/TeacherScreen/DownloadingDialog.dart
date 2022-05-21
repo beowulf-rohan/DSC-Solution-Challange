@@ -39,7 +39,7 @@ class _DownloadingDialogState extends State<DownloadingDialog> {
 
   Future<String> _getFilePath(String filename) async {
     final dir = await getApplicationDocumentsDirectory();
-    return "${dir.path}/$filename";
+    return "${dir.path}/$filename.pdf";
   }
 
   @override
