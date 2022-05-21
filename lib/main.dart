@@ -22,6 +22,7 @@ import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
 import 'package:demo/screens/TeacherScreen/TeacherProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String finalEmail, konhai;
@@ -29,6 +30,10 @@ Widget home = CircularProgressIndicator();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(
+      debug: true // optional: set false to disable printing logs to console
+  );
   runApp(MyApp());
 }
 
