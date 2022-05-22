@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:twilio_flutter/twilio_flutter.dart';
 
 import '../../constants.dart';
 import 'DownloadingDialog.dart';
 import 'TeacherReusable.dart';
 
 class AssignmentInfo extends StatefulWidget {
-  AssignmentInfo(this.name, this.date, this.time, this.duration, this.link);
-  final String name, date, time, duration, link;
+  AssignmentInfo(this.name, this.date, this.time, this.duration, this.link,
+      this.studentContact, this.password);
+  final String name, date, time, duration, link, password;
+  final List<String> studentContact;
   static String id = "AssignmentInfo";
 
   @override
@@ -52,7 +55,27 @@ class _AssignmentInfoState extends State<AssignmentInfo> {
                                 const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
                             child: GestureDetector(
                               onTap: () {
-                                // Navigator.pushNamed(context, createSHA.id);
+                                TwilioFlutter twilioFlutter;
+                                twilioFlutter = TwilioFlutter(
+                                    accountSid:
+                                        'AC79b4aafe764eb646bac829cd4097d4bf', // replace *** with Account SID
+                                    authToken:
+                                        '26bffad6f171a3ad864413801c799d12', // replace xxx with Auth Token
+                                    twilioNumber:
+                                        '+16083363649' // replace .... with Twilio Number
+                                    );
+                                for (int i = 0;
+                                    i < widget.studentContact.length;
+                                    i++) {
+                                  String number = widget.studentContact[i];
+                                  String password = widget.password;
+                                  String name = widget.name;
+                                  twilioFlutter.sendSMS(
+                                      toNumber: "+91" + number,
+                                      messageBody:
+                                          'Password for $name is : $password');
+                                }
+                                //Use sendSMS with the recipient number and message body.
                               },
                               child: Container(
                                 height: buttonHeight,

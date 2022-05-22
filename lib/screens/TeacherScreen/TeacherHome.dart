@@ -187,6 +187,17 @@ Future<void> getAssignmentData(String classID, String className) async {
 Future<List<AssignmentDetails>> fetchAllAssignments(
     String classID, String className) async {
   List<AssignmentDetails> assignments = [];
+  List<String> contact = [];
+  QuerySnapshot q = await _firestore
+      .collection('Classes')
+      .doc(classID)
+      .collection('Student_List')
+      .get();
+
+  q.docs.forEach((element) {
+    contact.add(element['Contact']);
+  });
+
   QuerySnapshot querySnapshot = await _firestore
       .collection('Classes')
       .doc(classID)
@@ -201,6 +212,7 @@ Future<List<AssignmentDetails>> fetchAllAssignments(
     obj.endDate = element["End Date"];
     obj.password = element["Password"];
     obj.link = element["Download Link"];
+    obj.studentContact = contact;
     print(element["Name"]);
     assignments.add(obj);
   });
@@ -210,4 +222,5 @@ Future<List<AssignmentDetails>> fetchAllAssignments(
 class AssignmentDetails {
   String assignmentName, startTime, startDate, endTime, endDate;
   String password, link, duration;
+  List<String> studentContact = [];
 }

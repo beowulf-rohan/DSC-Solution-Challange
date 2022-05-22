@@ -26,34 +26,40 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
     tempContext = context;
     List<Widget> assigned = [], completed = [];
     try {
-      for (int i = 0; i < completedAssignment.length; i++) {
-        completed.add(AssignemntCard(
-          name: completedAssignment[i].assignmentName,
-          date: completedAssignment[i].endDate,
-          time: completedAssignment[i].endTime,
-          duration: completedAssignment[i].duration ?? ' ',
-          press: () {},
-        ));
+      if (assignedAssignment != null) {
+        for (int i = 0; i < assignedAssignment.length; i++) {
+          assigned.add(AssignemntCard(
+            name: assignedAssignment[i].assignmentName,
+            date: assignedAssignment[i].endDate,
+            time: assignedAssignment[i].endTime,
+            duration: completedAssignment[i].duration ?? ' ',
+            press: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AssignmentInfo(
+                        assignedAssignment[i].assignmentName,
+                        assignedAssignment[i].endDate,
+                        assignedAssignment[i].endTime,
+                        completedAssignment[i].duration ?? ' ',
+                        assignedAssignment[i].link,
+                        assignedAssignment[i].studentContact,
+                        assignedAssignment[i].password),
+                  ));
+            },
+          ));
+        }
       }
-      for (int i = 0; i < assignedAssignment.length; i++) {
-        assigned.add(AssignemntCard(
-          name: assignedAssignment[i].assignmentName,
-          date: assignedAssignment[i].endDate,
-          time: assignedAssignment[i].endTime,
-          duration: completedAssignment[i].duration ?? ' ',
-          press: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AssignmentInfo(
-                      assignedAssignment[i].assignmentName,
-                      assignedAssignment[i].endDate,
-                      assignedAssignment[i].endTime,
-                      completedAssignment[i].duration ?? ' ',
-                      assignedAssignment[i].link),
-                ));
-          },
-        ));
+      if (completedAssignment != null) {
+        for (int i = 0; i < completedAssignment.length; i++) {
+          completed.add(AssignemntCard(
+            name: completedAssignment[i].assignmentName,
+            date: completedAssignment[i].endDate,
+            time: completedAssignment[i].endTime,
+            duration: completedAssignment[i].duration ?? ' ',
+            press: () {},
+          ));
+        }
       }
       assigned.add(SizedBox(
         height: 15,
