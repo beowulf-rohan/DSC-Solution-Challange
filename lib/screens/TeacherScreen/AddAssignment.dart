@@ -272,28 +272,28 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           type: FileType.custom,
                           allowedExtensions: ['pdf'],
                         );
-                        PlatformFile file = result.files.first;
-                        final File fileForFirebase = File(file.path);
-                        final PdfDocument document = PdfDocument(
-                            inputBytes: fileForFirebase.readAsBytesSync());
-
-                        //Add security to the document
-                        final PdfSecurity security = document.security;
-                        //Set password.
-                        security.userPassword = _passwordVal;
-                        security.ownerPassword = _passwordVal;
-                        //Set the encryption algorithm
-                        security.algorithm = PdfEncryptionAlgorithm.aesx256Bit;
-                        //Save the document.
                         try {
+                          PlatformFile file = result.files.first;
+                          final File fileForFirebase = File(file.path);
+                          final PdfDocument document = PdfDocument(
+                              inputBytes: fileForFirebase.readAsBytesSync());
+
+                          //Add security to the document
+                          final PdfSecurity security = document.security;
+                          //Set password.
+                          security.userPassword = _passwordVal;
+                          security.ownerPassword = _passwordVal;
+                          //Set the encryption algorithm
+                          security.algorithm =
+                              PdfEncryptionAlgorithm.aesx256Bit;
+                          //Save the document.
                           fileForFirebase.writeAsBytes(document.save());
                           firebase_storage.UploadTask task = await uploadFile(
                               fileForFirebase, widget.classname);
+                          document.dispose();
                         } catch (e) {
                           print(e);
                         }
-                        //Dispose the document
-                        document.dispose();
                       },
                       child: Material(
                         child: Row(

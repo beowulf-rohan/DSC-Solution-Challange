@@ -191,7 +191,7 @@ class _MakeNewClassState extends State<MakeNewClass> {
                               .doc(FirebaseAuth.instance.currentUser.uid +
                                   _classname)
                               .collection("Class_Details")
-                              .doc("Teacher_Deatils")
+                              .doc("Teacher_Details")
                               .set({
                             "Teacher_id": FirebaseAuth.instance.currentUser.uid,
                             "Contact": document["Contact"],
