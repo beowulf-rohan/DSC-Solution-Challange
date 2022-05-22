@@ -26,13 +26,13 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
     tempContext = context;
     List<Widget> assigned = [], completed = [];
     try {
-      if (assignedAssignment != null) {
+      if (assignedAssignment.length != 0) {
         for (int i = 0; i < assignedAssignment.length; i++) {
           assigned.add(AssignemntCard(
             name: assignedAssignment[i].assignmentName,
             date: assignedAssignment[i].endDate,
             time: assignedAssignment[i].endTime,
-            duration: completedAssignment[i].duration ?? ' ',
+            duration: assignedAssignment[i].duration ?? ' ',
             press: () {
               Navigator.push(
                   context,
@@ -41,7 +41,7 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
                         assignedAssignment[i].assignmentName,
                         assignedAssignment[i].endDate,
                         assignedAssignment[i].endTime,
-                        completedAssignment[i].duration ?? ' ',
+                        assignedAssignment[i].duration ?? ' ',
                         assignedAssignment[i].link,
                         assignedAssignment[i].studentContact,
                         assignedAssignment[i].password),
@@ -50,7 +50,7 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
           ));
         }
       }
-      if (completedAssignment != null) {
+      if (completedAssignment.length != 0) {
         for (int i = 0; i < completedAssignment.length; i++) {
           completed.add(AssignemntCard(
             name: completedAssignment[i].assignmentName,
