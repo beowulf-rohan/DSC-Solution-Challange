@@ -175,9 +175,9 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                               .set({
                             TEACHER_EMAIL: loggedInUser.email,
                             TEACHER_NAME: _name,
+                            TEACHER_ROLL_NO: _eid,
                             TEACHER_CONTACT: _contactNum,
                             TEACHER_DEPARTMENT: _department,
-                            TEACHER_CONTACT: _contactNum,
                             TEACHER_UID: loggedInUser.uid
                           });
                           setState(() {

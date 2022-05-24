@@ -49,7 +49,7 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => createSHA(
+                    builder: (context) => generateOrSubmit(
                         widget.classId,
                         widget.classname +
                             assignedAssignment[i].assignmentName),

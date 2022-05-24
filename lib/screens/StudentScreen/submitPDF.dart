@@ -1,18 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 
-class submitPDF extends StatelessWidget {
+final _firestore = FirebaseFirestore.instance;
+
+class submitPDF extends StatefulWidget {
   static String id = "submitPDF";
+  String classId = "", assignmentId = "";
+  submitPDF(this.classId, this.assignmentId);
+
+  @override
+  State<submitPDF> createState() => _submitPDFState();
+}
+
+class _submitPDFState extends State<submitPDF> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,7 +60,7 @@ class submitPDF extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () async {
                             FilePickerResult result =
-                            await FilePicker.platform.pickFiles(
+                                await FilePicker.platform.pickFiles(
                               type: FileType.custom,
                               allowedExtensions: ['jpg', 'pdf', 'doc'],
                             );
@@ -88,7 +100,19 @@ class submitPDF extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        _firestore
+                            .collection("Classes")
+                            .doc(widget.classId)
+                            .collection("Assignment_List")
+                            .doc(widget.assignmentId)
+                            .collection('Submissions')
+                            .doc(FirebaseAuth.instance.currentUser.uid)
+                            .set({
+                          "Name": FirebaseAuth.instance.currentUser.displayName,
+                          "SHA": "yeh sha hai",
+                          "Roll": "roll",
+                          "Download Link": "downloadURL",
+                        });
                       },
                       child: Container(
                         height: buttonHeight,
