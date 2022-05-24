@@ -55,6 +55,7 @@ dependencies:
   path_provider: ^2.0.10
   open_file: ^3.2.1
   twilio_flutter: ^0.0.9
+  flutter_sms: ^2.3.2
 
 
 dev_dependencies:
