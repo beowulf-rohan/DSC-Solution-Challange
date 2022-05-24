@@ -22,7 +22,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   User loggedInUser;
-  bool showSpinner=false;
+  bool showSpinner = false;
   void getCurrentUser() async {
     try {
       final user = _auth.currentUser;
@@ -167,7 +167,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                             _contactNum != null &&
                             _contactNum.length == 10) {
                           setState(() {
-                            showSpinner=true;
+                            showSpinner = true;
                           });
                           _firestore
                               .collection("AUTH_DATA")
@@ -177,13 +177,13 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                               .set({
                             STUDENT_EMAIL: loggedInUser.email,
                             STUDENT_NAME: _name,
+                            STUDENT_ROLL_NO: _roll,
                             STUDENT_CONTACT: _contactNum,
                             STUDENT_DEPARTMENT: _department,
-                            STUDENT_CONTACT: _contactNum,
                             STUDENT_UID: loggedInUser.uid
                           });
                           setState(() {
-                            showSpinner=false;
+                            showSpinner = false;
                           });
                           Navigator.pushNamed(context, StudentHome.id);
                           // Navigator.of(context).pushNamedAndRemoveUntil(

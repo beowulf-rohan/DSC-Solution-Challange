@@ -8,6 +8,8 @@ import '../../constants.dart';
 
 class generateOrSubmit extends StatelessWidget {
   static String id = "generateOrSubmit";
+  String classId = "", assignmentId = "";
+  generateOrSubmit(this.classId, this.assignmentId);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,10 +43,15 @@ class generateOrSubmit extends StatelessWidget {
                       children: [
                         Padding(
                           padding:
-                          const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
+                              const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, createSHA.id);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        createSHA(classId, assignmentId),
+                                  ));
                             },
                             child: Container(
                               height: buttonHeight,
@@ -96,10 +103,15 @@ class generateOrSubmit extends StatelessWidget {
                       children: [
                         Padding(
                           padding:
-                          const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
+                              const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, submitPDF.id);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        submitPDF(classId, assignmentId),
+                                  ));
                             },
                             child: Container(
                               height: buttonHeight,
