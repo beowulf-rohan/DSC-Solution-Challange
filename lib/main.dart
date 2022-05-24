@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
         TeacherProfile.id: (context) => TeacherProfile(),
         StudentProfile.id: (context) => StudentProfile(),
         generateOrSubmit.id: (context) => generateOrSubmit(),
-        createSHA.id: (context) => createSHA(),
+        // createSHA.id: (context) => createSHA(),
         submitPDF.id: (context) => submitPDF(),
         // AssignmentInfo.id: (context) => AssignmentInfo(),
       },

@@ -7,15 +7,17 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import '../../constants.dart';
 import 'StudentHome.dart';
 import 'StudentReusable.dart';
+import 'createSHA.dart';
 
 BuildContext tempContext;
 
 class StudentClassScreen extends StatefulWidget {
   static String id = "StudentClassScreen";
   String classname = "";
+  String classId = "";
   @override
   State<StudentClassScreen> createState() => _StudentClassScreenState();
-  StudentClassScreen(this.classname);
+  StudentClassScreen(this.classname, this.classId);
 }
 
 class _StudentClassScreenState extends State<StudentClassScreen> {
@@ -25,25 +27,36 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
     tempContext = context;
     List<Widget> assigned = [], completed = [];
     try {
-      for (int i = 0; i < completedAssignment.length; i++) {
-        completed.add(AssignemntCard(
-          name: completedAssignment[i].assignmentName,
-          date: completedAssignment[i].endDate,
-          time: completedAssignment[i].endTime,
-          duration: completedAssignment[i].duration ?? ' ',
-          press: () {},
-        ));
+      if (completedAssignment.length != 0) {
+        for (int i = 0; i < completedAssignment.length; i++) {
+          completed.add(AssignemntCard(
+            name: completedAssignment[i].assignmentName,
+            date: completedAssignment[i].endDate,
+            time: completedAssignment[i].endTime,
+            duration: completedAssignment[i].duration ?? ' ',
+            press: () {},
+          ));
+        }
       }
-      for (int i = 0; i < assignedAssignment.length; i++) {
-        assigned.add(AssignemntCard(
-          name: assignedAssignment[i].assignmentName,
-          date: assignedAssignment[i].endDate,
-          time: assignedAssignment[i].endTime,
-          duration: assignedAssignment[i].duration ?? ' ',
-          press: () {
-            Navigator.pushNamed(context, generateOrSubmit.id);
-          },
-        ));
+      if (assignedAssignment.length != 0) {
+        for (int i = 0; i < assignedAssignment.length; i++) {
+          assigned.add(AssignemntCard(
+            name: assignedAssignment[i].assignmentName,
+            date: assignedAssignment[i].endDate,
+            time: assignedAssignment[i].endTime,
+            duration: assignedAssignment[i].duration ?? ' ',
+            press: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => createSHA(
+                        widget.classId,
+                        widget.classname +
+                            assignedAssignment[i].assignmentName),
+                  ));
+            },
+          ));
+        }
       }
       assigned.add(SizedBox(
         height: 15,

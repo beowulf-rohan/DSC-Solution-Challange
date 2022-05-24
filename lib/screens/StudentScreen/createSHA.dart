@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:io';
@@ -15,19 +16,21 @@ import '../TeacherScreen/TeacherReusable.dart';
 
 class createSHA extends StatefulWidget {
   static String id = "createSHA";
+  String classId = "", assignmentId = "";
+  createSHA(this.classId, this.assignmentId);
   @override
   _createSHAState createState() => _createSHAState();
 }
 
 class _createSHAState extends State<createSHA> {
-  String _shakey='';
+  String _shakey = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,21 +66,23 @@ class _createSHAState extends State<createSHA> {
                         child: GestureDetector(
                           onTap: () async {
                             FilePickerResult result =
-                            await FilePicker.platform.pickFiles(
+                                await FilePicker.platform.pickFiles(
                               type: FileType.custom,
                               allowedExtensions: ['jpg', 'pdf', 'doc'],
                             );
                             PlatformFile file = result.files.first;
                             final File fileForFirebase = File(file.path);
-                            List<int> imageBytes = fileForFirebase.readAsBytesSync();
+                            List<int> imageBytes =
+                                fileForFirebase.readAsBytesSync();
                             //print(imageBytes);
                             String base64Image = base64Encode(imageBytes);
                             //print(base64Image);
-                            var bytes = utf8.encode(base64Image); // data being hashed
+                            var bytes =
+                                utf8.encode(base64Image); // data being hashed
                             var digest = sha256.convert(bytes);
                             print(digest.toString());
                             setState(() {
-                              _shakey=digest.toString();
+                              _shakey = digest.toString();
                             });
                           },
                           child: Material(
@@ -119,7 +124,13 @@ class _createSHAState extends State<createSHA> {
                     padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        String message = _shakey +
+                            '%' +
+                            widget.classId +
+                            '%' +
+                            widget.assignmentId;
+                        List<String> recipents = ["+16083363649"];
+                        _sendSMS(message, recipents);
                       },
                       child: Container(
                         height: buttonHeight,
@@ -148,4 +159,12 @@ class _createSHAState extends State<createSHA> {
       ),
     );
   }
+}
+
+void _sendSMS(String message, List<String> recipents) async {
+  String _result = await sendSMS(message: message, recipients: recipents)
+      .catchError((onError) {
+    print(onError);
+  });
+  print(_result);
 }
