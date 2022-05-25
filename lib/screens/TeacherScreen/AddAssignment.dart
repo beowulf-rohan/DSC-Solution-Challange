@@ -365,15 +365,16 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                                 FirebaseAuth.instance.currentUser.uid +
                                     widget.classname,
                                 widget.classname)
-                            .then((value) => {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            TeacherClassScreen(
-                                                widget.classname),
-                                      ))
-                                });
+                            .then((value) => {null});
+                        setState(() {
+                          showSpinner = false;
+                        });
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  TeacherClassScreen(widget.classname),
+                            ));
                       },
                       child: Container(
                         height: buttonHeight,

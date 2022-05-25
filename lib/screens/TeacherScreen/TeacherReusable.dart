@@ -62,21 +62,20 @@ class _ClassCardState extends State<ClassCard> {
       child: Padding(
         padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
         child: InkWell(
-          onTap: () {
+          onTap: () async {
             setState(() {
               showSpinner = true;
             });
-            getAssignmentData(widget.path, widget.className);
-            Timer(Duration(seconds: 3), () {
-              setState(() {
-                showSpinner = false;
-              });
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TeacherClassScreen(widget.className),
-                  ));
+            await getAssignmentData(widget.path, widget.className)
+                .then((value) => {null});
+            setState(() {
+              showSpinner = false;
             });
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TeacherClassScreen(widget.className),
+                ));
           },
           child: Container(
             decoration: BoxDecoration(
