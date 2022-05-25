@@ -17,6 +17,7 @@ class AssignmentInfo extends StatefulWidget {
 }
 
 class _AssignmentInfoState extends State<AssignmentInfo> {
+  bool showSpinner=false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
