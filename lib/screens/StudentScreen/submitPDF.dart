@@ -1,12 +1,17 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../constants.dart';
 
 final _firestore = FirebaseFirestore.instance;
+FilePickerResult result;
 
 class submitPDF extends StatefulWidget {
   static String id = "submitPDF";
@@ -59,8 +64,7 @@ class _submitPDFState extends State<submitPDF> {
                         padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0, 0),
                         child: GestureDetector(
                           onTap: () async {
-                            FilePickerResult result =
-                                await FilePicker.platform.pickFiles(
+                            result = await FilePicker.platform.pickFiles(
                               type: FileType.custom,
                               allowedExtensions: ['jpg', 'pdf', 'doc'],
                             );
@@ -79,7 +83,7 @@ class _submitPDFState extends State<submitPDF> {
                                     width: 170,
                                     child: Center(
                                       child: Text(
-                                        "Create SHA",
+                                        "Upload File",
                                         style: TextStyle(
                                           fontFamily: 'NotoSans',
                                           color: Colors.white,
@@ -99,7 +103,33 @@ class _submitPDFState extends State<submitPDF> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
+                        DocumentSnapshot document = await _firestore
+                            .collection('AUTH_DATA')
+                            .doc('STUDENT')
+                            .collection(FirebaseAuth.instance.currentUser.uid)
+                            .doc('Student_Details')
+                            .get();
+                        PlatformFile file = result.files.first;
+                        final File fileForFirebase = File(file.path);
+                        String downloadURL;
+                        firebase_storage.UploadTask task =
+                            await uploadFile(fileForFirebase, widget.classId)
+                                .whenComplete(() async => {
+                                      downloadURL = await firebase_storage
+                                          .FirebaseStorage.instance
+                                          .ref('Assignments/' +
+                                              FirebaseAuth
+                                                  .instance.currentUser.uid +
+                                              widget.classId +
+                                              '/' +
+                                              "studentResponse" +
+                                              '.pdf')
+                                          .getDownloadURL()
+                                    });
+                        print(downloadURL);
+                        String name = document["Name"];
+                        // String roll = document["Roll No"];
                         _firestore
                             .collection("Classes")
                             .doc(widget.classId)
@@ -108,10 +138,10 @@ class _submitPDFState extends State<submitPDF> {
                             .collection('Submissions')
                             .doc(FirebaseAuth.instance.currentUser.uid)
                             .set({
-                          "Name": FirebaseAuth.instance.currentUser.displayName,
+                          "Name": name,
                           "SHA": "yeh sha hai",
-                          "Roll": "roll",
-                          "Download Link": "downloadURL",
+                          // "Roll": roll,
+                          "Download Link": downloadURL,
                         });
                       },
                       child: Container(
@@ -141,4 +171,29 @@ class _submitPDFState extends State<submitPDF> {
       ),
     );
   }
+}
+
+Future<firebase_storage.UploadTask> uploadFile(
+    File file, String classname) async {
+  if (file == null) {
+    return null;
+  }
+  firebase_storage.UploadTask uploadTask;
+  // Create a Reference to the file
+  firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+      .ref('Assignments/' +
+          FirebaseAuth.instance.currentUser.uid +
+          classname +
+          '/' +
+          "studentResponse" +
+          '.pdf');
+
+  final metadata = firebase_storage.SettableMetadata(
+      contentType: 'file/pdf', customMetadata: {'picked-file-path': file.path});
+  print("Uploading..!");
+
+  uploadTask = ref.putData(await file.readAsBytes(), metadata);
+
+  print("done..!");
+  return Future.value(uploadTask);
 }

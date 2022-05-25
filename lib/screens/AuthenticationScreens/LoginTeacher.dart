@@ -208,13 +208,11 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                                   await SharedPreferences.getInstance();
                               sharedPref.setString(
                                   'TEACHER_USER_EMAIL', _emailVal);
-                              getData();
-                              Timer(Duration(seconds: 3), () {
-                                setState(() {
-                                  showSpinner = false;
-                                });
-                                Navigator.pushNamed(context, TeacherHome.id);
+                              await getData().then((value) => {null});
+                              setState(() {
+                                showSpinner = false;
                               });
+                              Navigator.pushNamed(context, TeacherHome.id);
                             }
                           } catch (error) {
                             print(error.code);

@@ -27,6 +27,7 @@ class AddAAssignment extends StatefulWidget {
 DateTime start, end;
 String name = "";
 final _firestore = FirebaseFirestore.instance;
+File fileForFirebase;
 
 class _AddAAssignmentState extends State<AddAAssignment> {
   String _startDate = "",
@@ -274,7 +275,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                         );
                         try {
                           PlatformFile file = result.files.first;
-                          final File fileForFirebase = File(file.path);
+                          fileForFirebase = File(file.path);
                           final PdfDocument document = PdfDocument(
                               inputBytes: fileForFirebase.readAsBytesSync());
 
@@ -288,8 +289,6 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                               PdfEncryptionAlgorithm.aesx256Bit;
                           //Save the document.
                           fileForFirebase.writeAsBytes(document.save());
-                          firebase_storage.UploadTask task = await uploadFile(
-                              fileForFirebase, widget.classname);
                           document.dispose();
                         } catch (e) {
                           print(e);
@@ -332,19 +331,19 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           showSpinner = true;
                         });
                         String downloadURL;
-                        try {
-                          downloadURL = await firebase_storage
-                              .FirebaseStorage.instance
-                              .ref('Assignments/' +
-                                  FirebaseAuth.instance.currentUser.uid +
-                                  widget.classname +
-                                  '/' +
-                                  name +
-                                  '.pdf')
-                              .getDownloadURL();
-                        } catch (e) {
-                          print(e);
-                        }
+                        firebase_storage.UploadTask task =
+                            await uploadFile(fileForFirebase, widget.classname)
+                                .whenComplete(() async => {null});
+                        downloadURL = await firebase_storage
+                            .FirebaseStorage.instance
+                            .ref('Assignments/' +
+                                FirebaseAuth.instance.currentUser.uid +
+                                widget.classname +
+                                '/' +
+                                name +
+                                '.pdf')
+                            .getDownloadURL();
+                        print(downloadURL);
                         _firestore
                             .collection("Classes")
                             .doc(FirebaseAuth.instance.currentUser.uid +
@@ -363,20 +362,19 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           "End DateTime": end.toString(),
                         });
                         getAssignmentData(
-                            FirebaseAuth.instance.currentUser.uid +
-                                widget.classname,
-                            widget.classname);
-                        Timer(Duration(seconds: 3), () {
-                          setState(() {
-                            showSpinner = false;
-                          });
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    TeacherClassScreen(widget.classname),
-                              ));
+                                FirebaseAuth.instance.currentUser.uid +
+                                    widget.classname,
+                                widget.classname)
+                            .then((value) => {null});
+                        setState(() {
+                          showSpinner = false;
                         });
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  TeacherClassScreen(widget.classname),
+                            ));
                       },
                       child: Container(
                         height: buttonHeight,

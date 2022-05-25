@@ -159,13 +159,11 @@ class _StudentHomeState extends State<StudentHome> {
                             "Name": document["Name"],
                           });
                         }
-                        getData();
-                        Timer(Duration(seconds: 3), () {
-                          setState(() {
-                            showSpinner = false;
-                          });
-                          Navigator.pop(context, 'OK');
+                        await getData().then((value) => {null});
+                        setState(() {
+                          showSpinner = false;
                         });
+                        Navigator.pop(context, 'OK');
                       },
                       child: const Text('OK'),
                     ),
