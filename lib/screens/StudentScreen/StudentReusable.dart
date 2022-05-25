@@ -63,22 +63,21 @@ class _ClassCardState extends State<ClassCard> {
       child: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: InkWell(
-          onTap: () {
+          onTap: () async {
             setState(() {
               showSpinner = true;
             });
-            getAssignmentData(widget.path, widget.className);
-            Timer(Duration(seconds: 3), () {
-              setState(() {
-                showSpinner = false;
-              });
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        StudentClassScreen(widget.className, widget.path),
-                  ));
+            await getAssignmentData(widget.path, widget.className)
+                .then((value) => {null});
+            setState(() {
+              showSpinner = false;
             });
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      StudentClassScreen(widget.className, widget.path),
+                ));
           },
           child: Container(
             decoration: BoxDecoration(
