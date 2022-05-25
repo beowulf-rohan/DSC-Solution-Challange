@@ -12,11 +12,15 @@ import '../../constants.dart';
 
 final _firestore = FirebaseFirestore.instance;
 FilePickerResult result;
+String classId = "", assignmentId = "";
 
 class submitPDF extends StatefulWidget {
   static String id = "submitPDF";
-  String classId = "", assignmentId = "";
-  submitPDF(this.classId, this.assignmentId);
+
+  submitPDF(String cId, String aId) {
+    classId = cId;
+    assignmentId = aId;
+  }
 
   @override
   State<submitPDF> createState() => _submitPDFState();
@@ -114,16 +118,17 @@ class _submitPDFState extends State<submitPDF> {
                         final File fileForFirebase = File(file.path);
                         String downloadURL;
                         firebase_storage.UploadTask task =
-                            await uploadFile(fileForFirebase, widget.classId)
+                            await uploadFile(fileForFirebase, classId)
                                 .whenComplete(() async => {
                                       downloadURL = await firebase_storage
                                           .FirebaseStorage.instance
-                                          .ref('Assignments/' +
+                                          .ref('Responses/' +
+                                              classId +
+                                              '/' +
+                                              assignmentId +
+                                              '/' +
                                               FirebaseAuth
                                                   .instance.currentUser.uid +
-                                              widget.classId +
-                                              '/' +
-                                              "studentResponse" +
                                               '.pdf')
                                           .getDownloadURL()
                                     });
@@ -132,9 +137,9 @@ class _submitPDFState extends State<submitPDF> {
                         // String roll = document["Roll No"];
                         _firestore
                             .collection("Classes")
-                            .doc(widget.classId)
+                            .doc(classId)
                             .collection("Assignment_List")
-                            .doc(widget.assignmentId)
+                            .doc(assignmentId)
                             .collection('Submissions')
                             .doc(FirebaseAuth.instance.currentUser.uid)
                             .set({
@@ -181,11 +186,12 @@ Future<firebase_storage.UploadTask> uploadFile(
   firebase_storage.UploadTask uploadTask;
   // Create a Reference to the file
   firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-      .ref('Assignments/' +
-          FirebaseAuth.instance.currentUser.uid +
-          classname +
+      .ref('Responses/' +
+          classId +
           '/' +
-          "studentResponse" +
+          assignmentId +
+          '/' +
+          FirebaseAuth.instance.currentUser.uid +
           '.pdf');
 
   final metadata = firebase_storage.SettableMetadata(
