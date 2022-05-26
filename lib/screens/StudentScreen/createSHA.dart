@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
@@ -133,6 +134,7 @@ class _createSHAState extends State<createSHA> {
                       child: GestureDetector(
                         onTap: () {
                           String message = _shakey +
+                              '%' + FirebaseAuth.instance.currentUser.uid+
                               '%' +
                               widget.classId +
                               '%' +
