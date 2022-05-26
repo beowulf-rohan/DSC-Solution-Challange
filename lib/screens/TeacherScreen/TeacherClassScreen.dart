@@ -2,6 +2,7 @@ import 'package:demo/screens/TeacherScreen/AddAssignment.dart';
 import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
 import 'package:demo/screens/TeacherScreen/AssignmentInfo.dart';
 import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
+import 'package:demo/screens/TeacherScreen/TestResponses.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -57,7 +58,13 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
             date: completedAssignment[i].endDate,
             time: completedAssignment[i].endTime,
             duration: completedAssignment[i].duration ?? ' ',
-            press: () {},
+            press: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TestResponses(),
+                  ));
+            },
           ));
         }
       }

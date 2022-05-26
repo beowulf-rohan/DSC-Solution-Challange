@@ -125,8 +125,10 @@ class _ClassCardState extends State<ClassCard> {
                               onPressed: () {
                                 _copyToClipboard(context, widget.path);
                               },
-                              icon: Icon(
-                                Icons.copy,
+                              icon: new IconTheme(
+                                data: new IconThemeData(
+                                    color: Colors.white.withOpacity(0.9)),
+                                child: new Icon(Icons.copy),
                               ),
                             ),
                           ],
@@ -353,6 +355,89 @@ class UserField extends StatelessWidget {
               ),
             ),
             Divider(color: Colors.grey.shade900),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ResponseCard extends StatefulWidget {
+  @override
+  State<ResponseCard> createState() => _ResponseCardState();
+}
+
+class _ResponseCardState extends State<ResponseCard> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.20),
+          border: Border.all(width: 2, color: Colors.white24),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SingleChildScrollView(
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.70,
+                          child: Text(
+                            "Roll Number",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 23,
+                              fontFamily: 'Fredoka',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: new IconTheme(
+                            data: new IconThemeData(color: Colors.lightGreen),
+                            child: new Icon(Icons.verified_user_rounded),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.70,
+                          child: Text(
+                            "Student Name",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: 'Fredoka',
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white.withOpacity(0.6)),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: new IconTheme(
+                            data: new IconThemeData(
+                                color: Colors.white.withOpacity(0.9)),
+                            child: new Icon(Icons.download),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
