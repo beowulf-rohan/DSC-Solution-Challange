@@ -51,8 +51,9 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
                   MaterialPageRoute(
                     builder: (context) => generateOrSubmit(
                         widget.classId,
-                        widget.classname +
-                            assignedAssignment[i].assignmentName),
+                        widget.classname + assignedAssignment[i].assignmentName,
+                        assignedAssignment[i].link,
+                        assignedAssignment[i].assignmentName),
                   ));
             },
           ));
