@@ -74,7 +74,7 @@ class _ClassCardState extends State<ClassCard> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TeacherClassScreen(widget.className),
+                  builder: (context) => TeacherClassScreen(widget.className,widget.path),
                 ));
           },
           child: Container(

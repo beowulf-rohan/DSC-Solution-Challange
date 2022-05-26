@@ -19,9 +19,10 @@ import 'TeacherHome.dart';
 class AddAAssignment extends StatefulWidget {
   static const String id = "AddAAssignment";
   String classname = "";
+  String classId="";
   @override
   State<AddAAssignment> createState() => _AddAAssignmentState();
-  AddAAssignment(this.classname);
+  AddAAssignment(this.classname,this.classId);
 }
 
 DateTime start, end;
@@ -349,7 +350,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                             .doc(FirebaseAuth.instance.currentUser.uid +
                                 widget.classname)
                             .collection("Assignment_List")
-                            .doc(widget.classname + name)
+                            .doc(name)
                             .set({
                           "Name": name,
                           "Start Date": _startDate,
@@ -373,7 +374,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  TeacherClassScreen(widget.classname),
+                                  TeacherClassScreen(widget.classname,widget.classId),
                             ));
                       },
                       child: Container(
