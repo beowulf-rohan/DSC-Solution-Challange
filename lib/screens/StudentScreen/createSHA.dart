@@ -18,14 +18,14 @@ import '../TeacherScreen/TeacherReusable.dart';
 
 class createSHA extends StatefulWidget {
   static String id = "createSHA";
-  String classId = "", assignmentId = "";
-  createSHA(this.classId, this.assignmentId);
+  String classId = "", assignmentName = "";
+  createSHA(this.classId, this.assignmentName);
   @override
   _createSHAState createState() => _createSHAState();
 }
 
 class _createSHAState extends State<createSHA> {
-  bool showSpinner=false;
+  bool showSpinner = false;
   String _shakey = '';
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class _createSHAState extends State<createSHA> {
                           child: GestureDetector(
                             onTap: () async {
                               setState(() {
-                                showSpinner=true;
+                                showSpinner = true;
                               });
                               FilePickerResult result =
                                   await FilePicker.platform.pickFiles(
@@ -91,7 +91,7 @@ class _createSHAState extends State<createSHA> {
                               print(digest.toString());
                               setState(() {
                                 _shakey = digest.toString();
-                                showSpinner=false;
+                                showSpinner = false;
                               });
                             },
                             child: Material(
@@ -134,11 +134,12 @@ class _createSHAState extends State<createSHA> {
                       child: GestureDetector(
                         onTap: () {
                           String message = _shakey +
-                              '%' + FirebaseAuth.instance.currentUser.uid+
+                              '%' +
+                              FirebaseAuth.instance.currentUser.uid +
                               '%' +
                               widget.classId +
                               '%' +
-                              widget.assignmentId;
+                              widget.assignmentName;
                           List<String> recipents = ["+16083363649"];
                           _sendSMS(message, recipents);
                           Navigator.pop(context);

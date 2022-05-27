@@ -13,15 +13,16 @@ import 'package:twilio_flutter/twilio_flutter.dart';
 import '../../constants.dart';
 import 'TeacherReusable.dart';
 import 'package:twilio_flutter/src/models/sent_sms_data.dart';
+
 BuildContext tempContext;
 
 class TeacherClassScreen extends StatefulWidget {
   static String id = "TeacherClassScreen";
   String classname = "";
-  String classId="";
+  String classId = "";
   @override
   State<TeacherClassScreen> createState() => _TeacherClassScreenState();
-  TeacherClassScreen(this.classname,this.classId);
+  TeacherClassScreen(this.classname, this.classId);
 }
 
 class _TeacherClassScreenState extends State<TeacherClassScreen> {
@@ -62,8 +63,10 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
             date: completedAssignment[i].endDate,
             time: completedAssignment[i].endTime,
             duration: completedAssignment[i].duration ?? ' ',
-            press: () async{
-              await getResponseList(widget.classId,completedAssignment[i].assignmentName).whenComplete(() => null);
+            press: () async {
+              await getResponseList(
+                      widget.classId, completedAssignment[i].assignmentName)
+                  .whenComplete(() => null);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -159,7 +162,7 @@ Widget _getFAB(BuildContext context, String classname) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddAAssignment(classname,classId),
+                    builder: (context) => AddAAssignment(classname, classId),
                   ));
             },
             label: 'Add Assignment',
@@ -172,27 +175,46 @@ Widget _getFAB(BuildContext context, String classname) {
     ),
   );
 }
-Future<void> getResponseList(String classId,String AssignmentName) async {
+
+Future<void> getResponseList(String classId, String AssignmentName) async {
   TwilioFlutter twilioFlutter;
   twilioFlutter = TwilioFlutter(
       accountSid:
-      'AC79b4aafe764eb646bac829cd4097d4bf', // replace *** with Account SID
+          'AC79b4aafe764eb646bac829cd4097d4bf', // replace *** with Account SID
       authToken:
-      '26bffad6f171a3ad864413801c799d12', // replace xxx with Auth Token
-      twilioNumber:
-      '+16083363649' // replace .... with Twilio Number
-  );
-  SentSmsData data= await twilioFlutter.getSmsList();
+          '26bffad6f171a3ad864413801c799d12', // replace xxx with Auth Token
+      twilioNumber: '+16083363649' // replace .... with Twilio Number
+      );
+  SentSmsData data = await twilioFlutter.getSmsList();
   print(data.messages);
-  List <Message> messages=[];
-  for(int j=0;j<data.messages.length;j++){
-    if(data.messages[j].direction=="inbound"){
+  List<Message> messages = [];
+  for (int j = 0; j < data.messages.length; j++) {
+    if (data.messages[j].direction == "inbound" &&
+        data.messages[j].body.length > 94) {
       messages.add(data.messages[j]);
     }
   }
-  List <HashMap <String,String> > finalList=[];
-  for(int j=0;j<messages.length;j++){
-    String sha=messages[j].body.substring(0,32);
-    String uuid=messages[j].body.substring(32,36);
+  List<HashMap<String, String>> finalList = [];
+  for (int j = 0; j < messages.length; j++) {
+    print(messages[j].body);
+    print(messages[j].body.length);
+    String shaKey = messages[j].body.substring(0, 63);
+    String studentId = messages[j].body.substring(65, 93);
+    String classId = "";
+    int k = 95;
+    while (messages[j].body[k] != '%') {
+      classId += messages[j].body[k];
+      k++;
+    }
+    k++;
+    String assignmentId = "";
+    while (k < messages[j].body.length) {
+      assignmentId += messages[j].body[k];
+      k++;
+    }
+    print(shaKey);
+    print(studentId);
+    print(classId);
+    print(assignmentId);
   }
 }
