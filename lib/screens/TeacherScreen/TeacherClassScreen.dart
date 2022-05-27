@@ -186,7 +186,7 @@ Future<void> getResponseList(String classId, String AssignmentName) async {
       twilioNumber: '+16083363649' // replace .... with Twilio Number
       );
   SentSmsData data = await twilioFlutter.getSmsList();
-  print(data.messages);
+  // print(data.messages);
   List<Message> messages = [];
   for (int j = 0; j < data.messages.length; j++) {
     if (data.messages[j].direction == "inbound" &&
@@ -194,16 +194,17 @@ Future<void> getResponseList(String classId, String AssignmentName) async {
       messages.add(data.messages[j]);
     }
   }
-  HashMap<String, String> responses;
+  HashMap responses = new HashMap<String, String>();
+  HashMap timeDiffrences = new HashMap<String, int>();
   for (int j = 0; j < messages.length; j++) {
-    print(messages[j].body);
-    print(messages[j].body.length);
+    // print(messages[j].body);
+    // print(messages[j].body.length);
     String shaKey = messages[j].body.substring(0, 63);
     String studentId = messages[j].body.substring(65, 93);
     String tempClassId = "";
-    int k = 95;
+    int k = 94;
     while (messages[j].body[k] != '%') {
-      classId += messages[j].body[k];
+      tempClassId += messages[j].body[k];
       k++;
     }
     k++;
@@ -212,16 +213,57 @@ Future<void> getResponseList(String classId, String AssignmentName) async {
       tempAssignmentName += messages[j].body[k];
       k++;
     }
-    if (tempClassId.compareTo(classId) == 1 &&
-        tempAssignmentName.compareTo(AssignmentName) == 1) {
+    if (tempClassId == classId && tempAssignmentName == AssignmentName) {
+      DateTime sentDateTime = convertStringToDateTime(messages[j].dateSent);
+      DateTime now = DateTime.now();
+      int diff = now.difference(sentDateTime).inSeconds;
       if (responses.containsKey(studentId)) {
+        if (timeDiffrences[studentId] > diff) {
+          timeDiffrences[studentId] = diff;
+          responses[studentId] = shaKey;
+        }
       } else {
         responses[studentId] = shaKey;
+        timeDiffrences[studentId] = diff;
       }
     }
     // print(shaKey);
     // print(studentId);
-    // print(classId);
-    // print(assignmentId);
+    // print(tempClassId);
+    // print(tempAssignmentName);
   }
+  print(responses);
+}
+
+DateTime convertStringToDateTime(String s) {
+  int n = s.length - 16;
+  String day = s[5] + s[6];
+  String month = s[8] + s[9] + s[10];
+  String year = s[n - 3] + s[n - 2] + s[n - 1] + s[n];
+  n = s.length - 14;
+  String time = s[n] +
+      s[n + 1] +
+      s[n + 2] +
+      s[n + 3] +
+      s[n + 4] +
+      s[n + 5] +
+      s[n + 6] +
+      s[n + 7] +
+      '.0000';
+  HashMap monthList = new HashMap<String, String>();
+  monthList["Jan"] = "01";
+  monthList["Feb"] = "02";
+  monthList["Mar"] = "03";
+  monthList["Apr"] = "04";
+  monthList["May"] = "05";
+  monthList["Jun"] = "06";
+  monthList["Jul"] = "07";
+  monthList["Aug"] = "08";
+  monthList["Sep"] = "09";
+  monthList["Oct"] = "10";
+  monthList["Nov"] = "11";
+  monthList["Dec"] = "12";
+  String dateTime = year + '-' + monthList[month] + '-' + day + ' ' + time;
+  DateTime d = DateTime.tryParse(dateTime);
+  return d;
 }
