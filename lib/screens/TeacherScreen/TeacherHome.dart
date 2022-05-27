@@ -157,13 +157,13 @@ Future<void> getAssignmentData(String classID, String className) async {
       s1 = convert(s1, s2);
       DateTime d2 = DateTime.parse(s1);
       DateTime d = DateTime.now();
-      int difference = d2.difference(d).inHours;
+      int difference = d2.difference(d1).inHours;
       String duration = "";
       if (difference != 0) {
         duration += difference.toString();
         duration += 'h ';
       }
-      difference = d2.difference(d).inMinutes;
+      difference = d2.difference(d1).inMinutes;
       difference = difference % 60;
       if (difference != 0) {
         duration += difference.toString();
