@@ -15,14 +15,14 @@ import '../../constants.dart';
 
 final _firestore = FirebaseFirestore.instance;
 FilePickerResult result;
-String classId = "", assignmentId = "";
+String classId = "", assignmentName = "";
 
 class submitPDF extends StatefulWidget {
   static String id = "submitPDF";
 
-  submitPDF(String cId, String aId) {
+  submitPDF(String cId, String aName) {
     classId = cId;
-    assignmentId = aId;
+    assignmentName = aName;
   }
 
   @override
@@ -30,7 +30,7 @@ class submitPDF extends StatefulWidget {
 }
 
 class _submitPDFState extends State<submitPDF> {
-  bool showSpinner=false;
+  bool showSpinner = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,14 +75,14 @@ class _submitPDFState extends State<submitPDF> {
                           child: GestureDetector(
                             onTap: () async {
                               setState(() {
-                                showSpinner=true;
+                                showSpinner = true;
                               });
                               result = await FilePicker.platform.pickFiles(
                                 type: FileType.custom,
                                 allowedExtensions: ['pdf'],
                               );
                               setState(() {
-                                showSpinner=false;
+                                showSpinner = false;
                               });
                             },
                             child: Material(
@@ -121,7 +121,7 @@ class _submitPDFState extends State<submitPDF> {
                       child: GestureDetector(
                         onTap: () async {
                           setState(() {
-                            showSpinner=true;
+                            showSpinner = true;
                           });
                           DocumentSnapshot document = await _firestore
                               .collection('AUTH_DATA')
@@ -131,26 +131,28 @@ class _submitPDFState extends State<submitPDF> {
                               .get();
                           PlatformFile file = result.files.first;
                           final File fileForFirebase = File(file.path);
-                          List<int> imageBytes = fileForFirebase.readAsBytesSync();
+                          List<int> imageBytes =
+                              fileForFirebase.readAsBytesSync();
                           //print(imageBytes);
                           String base64Image = base64Encode(imageBytes);
                           //print(base64Image);
-                          var bytes = utf8.encode(base64Image); // data being hashed
+                          var bytes =
+                              utf8.encode(base64Image); // data being hashed
                           var digest = sha256.convert(bytes);
-                          String sha=digest.toString();
+                          String sha = digest.toString();
                           String downloadURL;
                           firebase_storage.UploadTask task =
-                              await uploadFile(fileForFirebase, classId).whenComplete(() => null);
+                              await uploadFile(fileForFirebase, classId)
+                                  .whenComplete(() => null);
                           downloadURL = await firebase_storage
                               .FirebaseStorage.instance
                               .ref('Responses/' +
-                              classId +
-                              '/' +
-                              assignmentId +
-                              '/' +
-                              FirebaseAuth
-                                  .instance.currentUser.uid +
-                              '.pdf')
+                                  classId +
+                                  '/' +
+                                  assignmentName +
+                                  '/' +
+                                  FirebaseAuth.instance.currentUser.uid +
+                                  '.pdf')
                               .getDownloadURL();
                           print(downloadURL);
                           String name = document["Name"];
@@ -159,7 +161,7 @@ class _submitPDFState extends State<submitPDF> {
                               .collection("Classes")
                               .doc(classId)
                               .collection("Assignment_List")
-                              .doc(assignmentId)
+                              .doc(assignmentName)
                               .collection('Submissions')
                               .doc(FirebaseAuth.instance.currentUser.uid)
                               .set({
@@ -169,7 +171,7 @@ class _submitPDFState extends State<submitPDF> {
                             "Download Link": downloadURL,
                           });
                           setState(() {
-                            showSpinner=false;
+                            showSpinner = false;
                           });
                           Navigator.pop(context);
                         },
@@ -214,7 +216,7 @@ Future<firebase_storage.UploadTask> uploadFile(
       .ref('Responses/' +
           classId +
           '/' +
-          assignmentId +
+          assignmentName +
           '/' +
           FirebaseAuth.instance.currentUser.uid +
           '.pdf');
