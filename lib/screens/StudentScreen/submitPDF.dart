@@ -31,6 +31,7 @@ class submitPDF extends StatefulWidget {
 
 class _submitPDFState extends State<submitPDF> {
   bool showSpinner = false;
+  File fileForFirebase;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +82,10 @@ class _submitPDFState extends State<submitPDF> {
                                 type: FileType.custom,
                                 allowedExtensions: ['pdf'],
                               );
+                              PlatformFile file = result.files.first;
+                              fileForFirebase = File(file.path);
+                              firebase_storage.UploadTask task =
+                              await uploadFile(fileForFirebase, classId);
                               setState(() {
                                 showSpinner = false;
                               });
@@ -129,8 +134,6 @@ class _submitPDFState extends State<submitPDF> {
                               .collection(FirebaseAuth.instance.currentUser.uid)
                               .doc('Student_Details')
                               .get();
-                          PlatformFile file = result.files.first;
-                          final File fileForFirebase = File(file.path);
                           List<int> imageBytes =
                               fileForFirebase.readAsBytesSync();
                           //print(imageBytes);
@@ -141,9 +144,6 @@ class _submitPDFState extends State<submitPDF> {
                           var digest = sha256.convert(bytes);
                           String sha = digest.toString();
                           String downloadURL;
-                          firebase_storage.UploadTask task =
-                              await uploadFile(fileForFirebase, classId)
-                                  .whenComplete(() => null);
                           downloadURL = await firebase_storage
                               .FirebaseStorage.instance
                               .ref('Responses/' +

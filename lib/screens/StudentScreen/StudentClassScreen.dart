@@ -1,4 +1,5 @@
 import 'package:demo/screens/StudentScreen/generateOrSubmit.dart';
+import 'package:demo/screens/StudentScreen/submitWhenCompleted.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,15 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
             date: completedAssignment[i].endDate,
             time: completedAssignment[i].endTime,
             duration: completedAssignment[i].duration ?? ' ',
-            press: () {},
+            press: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => submitWhenCompleted(
+                        widget.classId,
+                        assignedAssignment[i].assignmentName),
+                  ));
+            },
           ));
         }
       }
