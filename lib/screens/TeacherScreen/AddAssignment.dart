@@ -19,10 +19,10 @@ import 'TeacherHome.dart';
 class AddAAssignment extends StatefulWidget {
   static const String id = "AddAAssignment";
   String classname = "";
-  String classId="";
+  String classId = "";
   @override
   State<AddAAssignment> createState() => _AddAAssignmentState();
-  AddAAssignment(this.classname,this.classId);
+  AddAAssignment(this.classname, this.classId);
 }
 
 DateTime start, end;
@@ -290,6 +290,9 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                               PdfEncryptionAlgorithm.aesx256Bit;
                           //Save the document.
                           fileForFirebase.writeAsBytes(document.save());
+                          firebase_storage.UploadTask task = await uploadFile(
+                                  fileForFirebase, widget.classname)
+                              .then((value) => null);
                           document.dispose();
                         } catch (e) {
                           print(e);
@@ -332,9 +335,6 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           showSpinner = true;
                         });
                         String downloadURL;
-                        firebase_storage.UploadTask task =
-                            await uploadFile(fileForFirebase, widget.classname)
-                                .whenComplete(() async => {null});
                         downloadURL = await firebase_storage
                             .FirebaseStorage.instance
                             .ref('Assignments/' +
@@ -362,7 +362,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           "Start DateTime": start.toString(),
                           "End DateTime": end.toString(),
                         });
-                        getAssignmentData(
+                        await getAssignmentData(
                                 FirebaseAuth.instance.currentUser.uid +
                                     widget.classname,
                                 widget.classname)
@@ -373,8 +373,8 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  TeacherClassScreen(widget.classname,widget.classId),
+                              builder: (context) => TeacherClassScreen(
+                                  widget.classname, widget.classId),
                             ));
                       },
                       child: Container(

@@ -194,27 +194,34 @@ Future<void> getResponseList(String classId, String AssignmentName) async {
       messages.add(data.messages[j]);
     }
   }
-  List<HashMap<String, String>> finalList = [];
+  HashMap<String, String> responses;
   for (int j = 0; j < messages.length; j++) {
     print(messages[j].body);
     print(messages[j].body.length);
     String shaKey = messages[j].body.substring(0, 63);
     String studentId = messages[j].body.substring(65, 93);
-    String classId = "";
+    String tempClassId = "";
     int k = 95;
     while (messages[j].body[k] != '%') {
       classId += messages[j].body[k];
       k++;
     }
     k++;
-    String assignmentId = "";
+    String tempAssignmentName = "";
     while (k < messages[j].body.length) {
-      assignmentId += messages[j].body[k];
+      tempAssignmentName += messages[j].body[k];
       k++;
     }
-    print(shaKey);
-    print(studentId);
-    print(classId);
-    print(assignmentId);
+    if (tempClassId.compareTo(classId) == 1 &&
+        tempAssignmentName.compareTo(AssignmentName) == 1) {
+      if (responses.containsKey(studentId)) {
+      } else {
+        responses[studentId] = shaKey;
+      }
+    }
+    // print(shaKey);
+    // print(studentId);
+    // print(classId);
+    // print(assignmentId);
   }
 }
