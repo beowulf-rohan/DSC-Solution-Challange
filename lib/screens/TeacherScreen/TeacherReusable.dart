@@ -74,7 +74,8 @@ class _ClassCardState extends State<ClassCard> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TeacherClassScreen(widget.className,widget.path),
+                  builder: (context) =>
+                      TeacherClassScreen(widget.className, widget.path),
                 ));
           },
           child: Container(
@@ -363,6 +364,13 @@ class UserField extends StatelessWidget {
 }
 
 class ResponseCard extends StatefulWidget {
+  ResponseCard(
+      {@required this.roll,
+      @required this.name,
+      @required this.link,
+      @required this.check});
+  final String roll, name, link;
+  final bool check;
   @override
   State<ResponseCard> createState() => _ResponseCardState();
 }
@@ -391,7 +399,7 @@ class _ResponseCardState extends State<ResponseCard> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.70,
                           child: Text(
-                            "Roll Number",
+                            widget.roll,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 23,
@@ -416,7 +424,7 @@ class _ResponseCardState extends State<ResponseCard> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.70,
                           child: Text(
-                            "Student Name",
+                            widget.name,
                             style: TextStyle(
                                 fontSize: 18,
                                 fontFamily: 'Fredoka',

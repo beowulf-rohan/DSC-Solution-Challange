@@ -157,6 +157,7 @@ class _StudentHomeState extends State<StudentHome> {
                             "Department": document["Department"],
                             "Email": document["Email"],
                             "Name": document["Name"],
+                            "Roll": document["Roll No"],
                           });
                         }
                         await getData().then((value) => {null});

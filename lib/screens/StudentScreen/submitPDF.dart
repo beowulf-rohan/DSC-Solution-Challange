@@ -85,7 +85,7 @@ class _submitPDFState extends State<submitPDF> {
                               PlatformFile file = result.files.first;
                               fileForFirebase = File(file.path);
                               firebase_storage.UploadTask task =
-                              await uploadFile(fileForFirebase, classId);
+                                  await uploadFile(fileForFirebase, classId);
                               setState(() {
                                 showSpinner = false;
                               });
@@ -167,7 +167,8 @@ class _submitPDFState extends State<submitPDF> {
                               .set({
                             "Name": name,
                             "SHA": sha,
-                            // "Roll": roll,
+                            "Student_id": FirebaseAuth.instance.currentUser.uid,
+                            'Submission Time': DateTime.now(),
                             "Download Link": downloadURL,
                           });
                           setState(() {
