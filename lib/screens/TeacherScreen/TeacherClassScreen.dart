@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo/screens/StudentScreen/submitPDF.dart';
 import 'package:demo/screens/TeacherScreen/AddAssignment.dart';
 import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
@@ -24,6 +25,9 @@ class TeacherClassScreen extends StatefulWidget {
   State<TeacherClassScreen> createState() => _TeacherClassScreenState();
   TeacherClassScreen(this.classname, this.classId);
 }
+
+final _firestore = FirebaseFirestore.instance;
+List<ResponseOfStudent> responsesRender = [];
 
 class _TeacherClassScreenState extends State<TeacherClassScreen> {
   final GlobalKey<FabCircularMenuState> fabKey = GlobalKey();
@@ -65,8 +69,10 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
             duration: completedAssignment[i].duration ?? ' ',
             press: () async {
               await getResponseList(
-                      widget.classId, completedAssignment[i].assignmentName)
-                  .whenComplete(() => null);
+                      widget.classId,
+                      completedAssignment[i].assignmentName,
+                      completedAssignment[i].end)
+                  .then((value) => null);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -176,7 +182,8 @@ Widget _getFAB(BuildContext context, String classname) {
   );
 }
 
-Future<void> getResponseList(String classId, String AssignmentName) async {
+Future<void> getResponseList(
+    String classId, String assignmentName, DateTime end) async {
   TwilioFlutter twilioFlutter;
   twilioFlutter = TwilioFlutter(
       accountSid:
@@ -199,7 +206,7 @@ Future<void> getResponseList(String classId, String AssignmentName) async {
   for (int j = 0; j < messages.length; j++) {
     // print(messages[j].body);
     // print(messages[j].body.length);
-    String shaKey = messages[j].body.substring(0, 63);
+    String shaKey = messages[j].body.substring(0, 64);
     String studentId = messages[j].body.substring(65, 93);
     String tempClassId = "";
     int k = 94;
@@ -213,7 +220,7 @@ Future<void> getResponseList(String classId, String AssignmentName) async {
       tempAssignmentName += messages[j].body[k];
       k++;
     }
-    if (tempClassId == classId && tempAssignmentName == AssignmentName) {
+    if (tempClassId == classId && tempAssignmentName == assignmentName) {
       DateTime sentDateTime = convertStringToDateTime(messages[j].dateSent);
       DateTime now = DateTime.now();
       int diff = now.difference(sentDateTime).inSeconds;
@@ -232,6 +239,58 @@ Future<void> getResponseList(String classId, String AssignmentName) async {
     // print(tempClassId);
     // print(tempAssignmentName);
   }
+  HashMap links = new HashMap<String, String>();
+  HashMap timeOfSubmission = new HashMap<String, DateTime>();
+  HashMap shaForCheck = new HashMap<String, String>();
+  QuerySnapshot q2 = await _firestore
+      .collection('Classes')
+      .doc(classId)
+      .collection('Assignment_List')
+      .doc(assignmentName)
+      .collection('Submissions')
+      .get();
+  q2.docs.forEach((element) {
+    links[element['Student_id']] = element['link'];
+    timeOfSubmission[element['Student_id']] =
+        DateTime.parse(element['Submission Time']);
+    shaForCheck[element['Student_id']] = element['SHA'];
+  });
+  QuerySnapshot querySnapshot = await _firestore
+      .collection('Classes')
+      .doc(classId)
+      .collection('Student_List')
+      .get();
+  querySnapshot.docs.forEach((element) {
+    ResponseOfStudent responseOfStudent = new ResponseOfStudent();
+    responseOfStudent.uid = element['Student_id'];
+    responseOfStudent.name = element['Name'];
+    responseOfStudent.roll = element["Roll No"];
+    responseOfStudent.sha =
+        shaForCheck.putIfAbsent(element['Student_id'], () => null);
+    responseOfStudent.submitTime =
+        timeOfSubmission.putIfAbsent(element['Student_id'], () => null);
+    ;
+    responseOfStudent.link =
+        links.putIfAbsent(element['Student_id'], () => null);
+    if (responseOfStudent.link != null) {
+      if (responses.containsKey(responseOfStudent.uid)) {
+        if (responses[responseOfStudent.uid] == responseOfStudent.sha) {
+          responseOfStudent.checkSHA = true;
+        } else {
+          responseOfStudent.checkSHA = false;
+        }
+      } else {
+        if (end.isBefore(responseOfStudent.submitTime)) {
+          responseOfStudent.checkSHA = false;
+        } else {
+          responseOfStudent.checkSHA = true;
+        }
+      }
+    } else {
+      responseOfStudent.checkSHA = false;
+    }
+    responsesRender.add(responseOfStudent);
+  });
   print(responses);
 }
 
@@ -266,4 +325,10 @@ DateTime convertStringToDateTime(String s) {
   String dateTime = year + '-' + monthList[month] + '-' + day + ' ' + time;
   DateTime d = DateTime.tryParse(dateTime);
   return d;
+}
+
+class ResponseOfStudent {
+  String name, roll, uid, link, sha;
+  bool checkSHA;
+  DateTime submitTime;
 }
