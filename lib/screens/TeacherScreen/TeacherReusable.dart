@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:demo/constants.dart';
+import 'package:demo/screens/TeacherScreen/DownloadingDialog.dart';
 import 'package:demo/screens/TeacherScreen/TeacherClassScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -363,14 +364,26 @@ class UserField extends StatelessWidget {
   }
 }
 
+IconTheme correct = new IconTheme(
+  data: new IconThemeData(color: Colors.lightGreen),
+  child: new Icon(Icons.check),
+);
+
+IconTheme wrong = new IconTheme(
+  data: new IconThemeData(color: Colors.redAccent),
+  child: new Icon(Icons.close),
+);
+
 class ResponseCard extends StatefulWidget {
   ResponseCard(
       {@required this.roll,
       @required this.name,
       @required this.link,
-      @required this.check});
+      @required this.check,
+      @required this.context});
   final String roll, name, link;
   final bool check;
+  final BuildContext context;
   @override
   State<ResponseCard> createState() => _ResponseCardState();
 }
@@ -409,11 +422,7 @@ class _ResponseCardState extends State<ResponseCard> {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
-                          icon: new IconTheme(
-                            data: new IconThemeData(color: Colors.lightGreen),
-                            child: new Icon(Icons.verified_user_rounded),
-                          ),
+                          icon: widget.check ? correct : wrong,
                         ),
                       ],
                     ),
@@ -433,7 +442,13 @@ class _ResponseCardState extends State<ResponseCard> {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  DownloadingDialog(widget.link, widget.roll),
+                            );
+                          },
                           icon: new IconTheme(
                             data: new IconThemeData(
                                 color: Colors.white.withOpacity(0.9)),

@@ -6,7 +6,7 @@ import '../../constants.dart';
 
 class submitWhenCompleted extends StatefulWidget {
   String classId = "", assignmentName = "";
-  submitWhenCompleted(this.classId,this.assignmentName);
+  submitWhenCompleted(this.classId, this.assignmentName);
   @override
   State<submitWhenCompleted> createState() => _submitWhenCompletedState();
 }
@@ -40,15 +40,14 @@ class _submitWhenCompletedState extends State<submitWhenCompleted> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding:
-                        const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
+                        padding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
                         child: GestureDetector(
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      submitPDF(classId, assignmentName),
+                                  builder: (context) => submitPDF(
+                                      widget.classId, widget.assignmentName),
                                 ));
                           },
                           child: Container(
@@ -92,6 +91,7 @@ class _submitWhenCompletedState extends State<submitWhenCompleted> {
           ),
         ),
       ),
-    );;
+    );
+    ;
   }
 }

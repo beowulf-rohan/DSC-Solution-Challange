@@ -40,8 +40,7 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => submitWhenCompleted(
-                        widget.classId,
-                        assignedAssignment[i].assignmentName),
+                        widget.classId, completedAssignment[i].assignmentName),
                   ));
             },
           ));
