@@ -9,8 +9,6 @@ class TestResponses extends StatefulWidget {
   State<TestResponses> createState() => _TestResponsesState();
 }
 
-List<Widget> studentResponses = [];
-
 class _TestResponsesState extends State<TestResponses> {
   @override
   void initState() {
@@ -20,14 +18,17 @@ class _TestResponsesState extends State<TestResponses> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> studentResponses = [];
     try {
       studentResponses.add(HeadingText(text: "Responses"));
       for (int i = 0; i < responsesRender.length; i++) {
+        print(responsesRender[i].link);
         studentResponses.add(ResponseCard(
           name: responsesRender[i].name,
           roll: responsesRender[i].roll,
           link: responsesRender[i].link,
           check: responsesRender[i].checkSHA,
+          context: context,
         ));
       }
     } catch (e) {
@@ -35,7 +36,7 @@ class _TestResponsesState extends State<TestResponses> {
     }
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: ListView(
           children: studentResponses,
         ),
         backgroundColor: kPrimaryColor,

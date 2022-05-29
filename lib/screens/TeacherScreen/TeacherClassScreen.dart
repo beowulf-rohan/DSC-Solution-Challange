@@ -184,6 +184,7 @@ Widget _getFAB(BuildContext context, String classname) {
 
 Future<void> getResponseList(
     String classId, String assignmentName, DateTime end) async {
+  responsesRender.clear();
   TwilioFlutter twilioFlutter;
   twilioFlutter = TwilioFlutter(
       accountSid:
@@ -250,7 +251,7 @@ Future<void> getResponseList(
       .collection('Submissions')
       .get();
   q2.docs.forEach((element) {
-    links[element['Student_id']] = element['link'];
+    links[element['Student_id']] = element['Download Link'];
     timeOfSubmission[element['Student_id']] =
         DateTime.parse(element['Submission Time']);
     shaForCheck[element['Student_id']] = element['SHA'];
@@ -264,7 +265,7 @@ Future<void> getResponseList(
     ResponseOfStudent responseOfStudent = new ResponseOfStudent();
     responseOfStudent.uid = element['Student_id'];
     responseOfStudent.name = element['Name'];
-    responseOfStudent.roll = element["Roll No"];
+    responseOfStudent.roll = element["Roll"];
     responseOfStudent.sha =
         shaForCheck.putIfAbsent(element['Student_id'], () => null);
     responseOfStudent.submitTime =
