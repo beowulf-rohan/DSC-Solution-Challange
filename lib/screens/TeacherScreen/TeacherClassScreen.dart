@@ -68,11 +68,19 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
             time: completedAssignment[i].endTime,
             duration: completedAssignment[i].duration ?? ' ',
             press: () async {
-              await getResponseList(
-                      widget.classId,
-                      completedAssignment[i].assignmentName,
-                      completedAssignment[i].end)
-                  .then((value) => null);
+              try {
+                await getResponseList(
+                    widget.classId,
+                    completedAssignment[i].assignmentName,
+                    completedAssignment[i].end)
+                    .then((value) => null);
+              }catch(e){
+                print(e);
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(const SnackBar(
+                  content: Text('Failed to load student responses'),
+                ));
+              }
               Navigator.push(
                   context,
                   MaterialPageRoute(

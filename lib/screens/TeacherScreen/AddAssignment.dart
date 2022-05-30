@@ -113,35 +113,40 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                     padding: const EdgeInsets.fromLTRB(0, 30.0, 0, 0),
                     child: GestureDetector(
                       onTap: () async {
-                        List<DateTime> dateTimeList =
-                            await showOmniDateTimeRangePicker(
-                          context: context,
-                          primaryColor: Colors.grey[700],
-                          backgroundColor: Colors.white,
-                          calendarTextColor: Colors.black,
-                          tabTextColor: Colors.black,
-                          unselectedTabBackgroundColor: kPrimaryColor,
-                          buttonTextColor: kPrimaryColor,
-                          timeSpinnerTextStyle: const TextStyle(
-                              color: Colors.black, fontSize: 18),
-                          timeSpinnerHighlightedTextStyle: const TextStyle(
-                              color: Colors.black, fontSize: 24),
-                          is24HourMode: false,
-                          isShowSeconds: false,
-                          startInitialDate: DateTime.now(),
-                          startFirstDate: DateTime(1600)
-                              .subtract(const Duration(days: 3652)),
-                          startLastDate: DateTime.now().add(
-                            const Duration(days: 3652),
-                          ),
-                          endInitialDate: DateTime.now(),
-                          endFirstDate: DateTime(1600)
-                              .subtract(const Duration(days: 3652)),
-                          endLastDate: DateTime.now().add(
-                            const Duration(days: 3652),
-                          ),
-                          borderRadius: const Radius.circular(16),
-                        );
+                        List<DateTime> dateTimeList;
+                        try {
+                          dateTimeList =
+                          await showOmniDateTimeRangePicker(
+                            context: context,
+                            primaryColor: Colors.grey[700],
+                            backgroundColor: Colors.white,
+                            calendarTextColor: Colors.black,
+                            tabTextColor: Colors.black,
+                            unselectedTabBackgroundColor: kPrimaryColor,
+                            buttonTextColor: kPrimaryColor,
+                            timeSpinnerTextStyle: const TextStyle(
+                                color: Colors.black, fontSize: 18),
+                            timeSpinnerHighlightedTextStyle: const TextStyle(
+                                color: Colors.black, fontSize: 24),
+                            is24HourMode: false,
+                            isShowSeconds: false,
+                            startInitialDate: DateTime.now(),
+                            startFirstDate: DateTime(1600)
+                                .subtract(const Duration(days: 3652)),
+                            startLastDate: DateTime.now().add(
+                              const Duration(days: 3652),
+                            ),
+                            endInitialDate: DateTime.now(),
+                            endFirstDate: DateTime(1600)
+                                .subtract(const Duration(days: 3652)),
+                            endLastDate: DateTime.now().add(
+                              const Duration(days: 3652),
+                            ),
+                            borderRadius: const Radius.circular(16),
+                          );
+                        }catch(e){
+                          print(e);
+                        }
                         print(dateTimeList);
                         setState(() {
                           _startDate =
@@ -269,12 +274,12 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                     padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0, 0),
                     child: GestureDetector(
                       onTap: () async {
-                        FilePickerResult result =
-                            await FilePicker.platform.pickFiles(
-                          type: FileType.custom,
-                          allowedExtensions: ['pdf'],
-                        );
                         try {
+                          FilePickerResult result =
+                          await FilePicker.platform.pickFiles(
+                            type: FileType.custom,
+                            allowedExtensions: ['pdf'],
+                          );
                           PlatformFile file = result.files.first;
                           fileForFirebase = File(file.path);
                           final PdfDocument document = PdfDocument(
@@ -296,6 +301,10 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           document.dispose();
                         } catch (e) {
                           print(e);
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Failed to upload'),
+                          ));
                         }
                       },
                       child: Material(
@@ -331,42 +340,78 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                     padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                     child: GestureDetector(
                       onTap: () async {
+                        String downloadURL;
                         setState(() {
                           showSpinner = true;
                         });
-                        String downloadURL;
-                        downloadURL = await firebase_storage
-                            .FirebaseStorage.instance
-                            .ref('Assignments/' +
-                                FirebaseAuth.instance.currentUser.uid +
-                                widget.classname +
-                                '/' +
-                                name +
-                                '.pdf')
-                            .getDownloadURL();
-                        print(downloadURL);
-                        _firestore
-                            .collection("Classes")
-                            .doc(FirebaseAuth.instance.currentUser.uid +
+                        try {
+                          downloadURL = await firebase_storage
+                              .FirebaseStorage.instance
+                              .ref('Assignments/' +
+                              FirebaseAuth.instance.currentUser.uid +
+                              widget.classname +
+                              '/' +
+                              name +
+                              '.pdf')
+                              .getDownloadURL();
+                          print(downloadURL);
+                        }catch(e){
+                          print(e);
+                        }
+                        if(name!=null&&_startDate!=null&&_endDate!=null&&_passwordVal!=null&&downloadURL!=null) {
+                          try {
+                            _firestore
+                                .collection("Classes")
+                                .doc(FirebaseAuth.instance.currentUser.uid +
                                 widget.classname)
-                            .collection("Assignment_List")
-                            .doc(name)
-                            .set({
-                          "Name": name,
-                          "Start Date": _startDate,
-                          "End Date": _endDate,
-                          "Start Time": _startTime,
-                          "End Time": _endTime,
-                          "Password": _passwordVal,
-                          "Download Link": downloadURL,
-                          "Start DateTime": start.toString(),
-                          "End DateTime": end.toString(),
-                        });
-                        await getAssignmentData(
-                                FirebaseAuth.instance.currentUser.uid +
-                                    widget.classname,
-                                widget.classname)
-                            .then((value) => {null});
+                                .collection("Assignment_List")
+                                .doc(name)
+                                .set({
+                              "Name": name,
+                              "Start Date": _startDate,
+                              "End Date": _endDate,
+                              "Start Time": _startTime,
+                              "End Time": _endTime,
+                              "Password": _passwordVal,
+                              "Download Link": downloadURL,
+                              "Start DateTime": start.toString(),
+                              "End DateTime": end.toString(),
+                            });
+                          }catch(e){
+                            print(e);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('Failed to create assignment'),
+                            ));
+                          }
+                        }
+                        else{
+                          if(downloadURL.isEmpty){
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('Failed to create assignment'),
+                            ));
+                          }
+                          else{
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('All fields are mandatory'),
+                            ));
+                          }
+                        }
+                        try {
+                          await getAssignmentData(
+                              FirebaseAuth.instance.currentUser.uid +
+                                  widget.classname,
+                              widget.classname)
+                              .then((value) => {null});
+                        }catch(e){
+                          print(e);
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Failed to load assignment'),
+                          ));
+                        }
                         setState(() {
                           showSpinner = false;
                         });

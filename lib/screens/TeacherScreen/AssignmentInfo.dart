@@ -131,11 +131,20 @@ class _AssignmentInfoState extends State<AssignmentInfo> {
                                 const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 0),
                             child: GestureDetector(
                               onTap: () async {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => DownloadingDialog(
-                                      widget.link, widget.name),
-                                );
+                                try {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        DownloadingDialog(
+                                            widget.link, widget.name),
+                                  );
+                                }catch(e){
+                                  print(e);
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    content: Text('Failed to download'),
+                                  ));
+                                }
                               },
                               child: Container(
                                 height: buttonHeight,
