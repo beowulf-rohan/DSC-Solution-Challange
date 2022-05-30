@@ -125,46 +125,64 @@ class _StudentHomeState extends State<StudentHome> {
                     ),
                     TextButton(
                       onPressed: () async {
-                        if (_classid != null) {
+                        try {
+                          if (_classid != null) {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            _firestore
+                                .collection("AUTH_DATA")
+                                .doc("STUDENT")
+                                .collection(
+                                FirebaseAuth.instance.currentUser.uid)
+                                .doc("Class_List")
+                                .collection("Classes")
+                                .doc(_classid)
+                                .set({
+                              "Class id": _classid,
+                            });
+                          }
+                          if (_classid != null) {
+                            DocumentSnapshot document = await _firestore
+                                .collection("AUTH_DATA")
+                                .doc("STUDENT")
+                                .collection(
+                                FirebaseAuth.instance.currentUser.uid)
+                                .doc("Student_Details")
+                                .get();
+                            _firestore
+                                .collection("Classes")
+                                .doc(_classid)
+                                .collection("Student_List")
+                                .add({
+                              "Student_id": FirebaseAuth.instance.currentUser
+                                  .uid,
+                              "Contact": document["Contact"],
+                              "Department": document["Department"],
+                              "Email": document["Email"],
+                              "Name": document["Name"],
+                              "Roll": document["Roll No"],
+                            });
+                          }
+                          await getData().then((value) => {null});
                           setState(() {
-                            showSpinner = true;
+                            showSpinner = false;
                           });
-                          _firestore
-                              .collection("AUTH_DATA")
-                              .doc("STUDENT")
-                              .collection(FirebaseAuth.instance.currentUser.uid)
-                              .doc("Class_List")
-                              .collection("Classes")
-                              .doc(_classid)
-                              .set({
-                            "Class id": _classid,
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('New Class joined'),
+                          ));
+                          Navigator.pop(context, 'OK');
+                        }catch(e){
+                          setState(() {
+                            showSpinner = false;
                           });
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Failed to join the class'),
+                          ));
+                          Navigator.pop(context, 'OK');
                         }
-                        if (_classid != null) {
-                          DocumentSnapshot document = await _firestore
-                              .collection("AUTH_DATA")
-                              .doc("STUDENT")
-                              .collection(FirebaseAuth.instance.currentUser.uid)
-                              .doc("Student_Details")
-                              .get();
-                          _firestore
-                              .collection("Classes")
-                              .doc(_classid)
-                              .collection("Student_List")
-                              .add({
-                            "Student_id": FirebaseAuth.instance.currentUser.uid,
-                            "Contact": document["Contact"],
-                            "Department": document["Department"],
-                            "Email": document["Email"],
-                            "Name": document["Name"],
-                            "Roll": document["Roll No"],
-                          });
-                        }
-                        await getData().then((value) => {null});
-                        setState(() {
-                          showSpinner = false;
-                        });
-                        Navigator.pop(context, 'OK');
                       },
                       child: const Text('OK'),
                     ),

@@ -159,6 +159,7 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                     padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                     child: GestureDetector(
                       onTap: () async {
+                        try{
                         if (_name != null &&
                             _eid != null &&
                             _department != null &&
@@ -189,28 +190,24 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                           //     (Route<dynamic> route) => false);
                         } else {
                           if (_contactNum.length != 10) {
-                            Alert(
-                                    context: context,
-                                    title:
-                                        "Your phone number should be 10 digits long",
-                                    buttons: [
-                                      DialogButton(
-                                        child: Text(
-                                          "CANCEL",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20.0,
-                                          ),
-                                        ),
-                                        onPressed: () => Navigator.pop(context),
-                                        color: kPrimaryColor,
-                                        width: 150.0,
-                                        radius: BorderRadius.circular(15.0),
-                                      ),
-                                    ],
-                                    desc: "Please Re-enter")
-                                .show();
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text(
+                                  "Your phone number should be 10 digits long"),
+                            ));
                           }
+                          else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('All Fields are required'),
+                            ));
+                          }
+                        }
+                        }on FirebaseAuthException catch(error){
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Failed to register....please try again'),
+                          ));
                         }
                       },
                       child: Container(

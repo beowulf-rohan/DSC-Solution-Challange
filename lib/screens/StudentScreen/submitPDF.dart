@@ -75,21 +75,31 @@ class _submitPDFState extends State<submitPDF> {
                           padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0, 0),
                           child: GestureDetector(
                             onTap: () async {
-                              setState(() {
-                                showSpinner = true;
-                              });
-                              result = await FilePicker.platform.pickFiles(
-                                type: FileType.custom,
-                                allowedExtensions: ['pdf'],
-                              );
-                              PlatformFile file = result.files.first;
-                              fileForFirebase = File(file.path);
-                              firebase_storage.UploadTask task =
-                                  await uploadFile(fileForFirebase, classId)
-                                      .then((value) => null);
-                              setState(() {
-                                showSpinner = false;
-                              });
+                              try {
+                                setState(() {
+                                  showSpinner = true;
+                                });
+                                result = await FilePicker.platform.pickFiles(
+                                  type: FileType.custom,
+                                  allowedExtensions: ['pdf'],
+                                );
+                                PlatformFile file = result.files.first;
+                                fileForFirebase = File(file.path);
+                                firebase_storage.UploadTask task =
+                                await uploadFile(fileForFirebase, classId)
+                                    .then((value) => null);
+                                setState(() {
+                                  showSpinner = false;
+                                });
+                              }catch(e){
+                                setState(() {
+                                  showSpinner = false;
+                                });
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Failed to load upload pdf'),
+                                ));
+                              }
                             },
                             child: Material(
                               child: Row(
@@ -126,56 +136,72 @@ class _submitPDFState extends State<submitPDF> {
                       padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                       child: GestureDetector(
                         onTap: () async {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          DocumentSnapshot document = await _firestore
-                              .collection('AUTH_DATA')
-                              .doc('STUDENT')
-                              .collection(FirebaseAuth.instance.currentUser.uid)
-                              .doc('Student_Details')
-                              .get();
-                          List<int> imageBytes =
-                              fileForFirebase.readAsBytesSync();
-                          //print(imageBytes);
-                          String base64Image = base64Encode(imageBytes);
-                          //print(base64Image);
-                          var bytes =
-                              utf8.encode(base64Image); // data being hashed
-                          var digest = sha256.convert(bytes);
-                          String sha = digest.toString();
-                          String downloadURL;
-                          downloadURL = await firebase_storage
-                              .FirebaseStorage.instance
-                              .ref('Responses/' +
-                                  classId +
-                                  '/' +
-                                  assignmentName +
-                                  '/' +
-                                  FirebaseAuth.instance.currentUser.uid +
-                                  '.pdf')
-                              .getDownloadURL();
-                          print(downloadURL);
-                          String name = document["Name"];
-                          // String roll = document["Roll No"];
-                          _firestore
-                              .collection("Classes")
-                              .doc(classId)
-                              .collection("Assignment_List")
-                              .doc(assignmentName)
-                              .collection('Submissions')
-                              .doc(FirebaseAuth.instance.currentUser.uid)
-                              .set({
-                            "Name": name,
-                            "SHA": sha,
-                            "Student_id": FirebaseAuth.instance.currentUser.uid,
-                            'Submission Time': DateTime.now().toString(),
-                            "Download Link": downloadURL,
-                          });
-                          setState(() {
-                            showSpinner = false;
-                          });
-                          Navigator.pop(context);
+                          try {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            DocumentSnapshot document = await _firestore
+                                .collection('AUTH_DATA')
+                                .doc('STUDENT')
+                                .collection(
+                                FirebaseAuth.instance.currentUser.uid)
+                                .doc('Student_Details')
+                                .get();
+                            List<int> imageBytes =
+                            fileForFirebase.readAsBytesSync();
+                            //print(imageBytes);
+                            String base64Image = base64Encode(imageBytes);
+                            //print(base64Image);
+                            var bytes =
+                            utf8.encode(base64Image); // data being hashed
+                            var digest = sha256.convert(bytes);
+                            String sha = digest.toString();
+                            String downloadURL;
+                            downloadURL = await firebase_storage
+                                .FirebaseStorage.instance
+                                .ref('Responses/' +
+                                classId +
+                                '/' +
+                                assignmentName +
+                                '/' +
+                                FirebaseAuth.instance.currentUser.uid +
+                                '.pdf')
+                                .getDownloadURL();
+                            print(downloadURL);
+                            String name = document["Name"];
+                            // String roll = document["Roll No"];
+                            _firestore
+                                .collection("Classes")
+                                .doc(classId)
+                                .collection("Assignment_List")
+                                .doc(assignmentName)
+                                .collection('Submissions')
+                                .doc(FirebaseAuth.instance.currentUser.uid)
+                                .set({
+                              "Name": name,
+                              "SHA": sha,
+                              "Student_id": FirebaseAuth.instance.currentUser
+                                  .uid,
+                              'Submission Time': DateTime.now().toString(),
+                              "Download Link": downloadURL,
+                            });
+                            setState(() {
+                              showSpinner = false;
+                            });
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('PDF submitted'),
+                            ));
+                            Navigator.pop(context);
+                          }catch(e){
+                            setState(() {
+                              showSpinner=false;
+                            });
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text('Failed to submit pdf'),
+                            ));
+                          }
                         },
                         child: Container(
                           height: buttonHeight,

@@ -71,29 +71,40 @@ class _createSHAState extends State<createSHA> {
                           padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0, 0),
                           child: GestureDetector(
                             onTap: () async {
-                              setState(() {
-                                showSpinner = true;
-                              });
-                              FilePickerResult result =
-                                  await FilePicker.platform.pickFiles(
-                                type: FileType.custom,
-                                allowedExtensions: ['pdf'],
-                              );
-                              PlatformFile file = result.files.first;
-                              final File fileForFirebase = File(file.path);
-                              List<int> imageBytes =
-                                  fileForFirebase.readAsBytesSync();
-                              //print(imageBytes);
-                              String base64Image = base64Encode(imageBytes);
-                              //print(base64Image);
-                              var bytes =
-                                  utf8.encode(base64Image); // data being hashed
-                              var digest = sha256.convert(bytes);
-                              print(digest.toString());
-                              setState(() {
-                                _shakey = digest.toString();
-                                showSpinner = false;
-                              });
+                              try {
+                                setState(() {
+                                  showSpinner = true;
+                                });
+                                FilePickerResult result =
+                                await FilePicker.platform.pickFiles(
+                                  type: FileType.custom,
+                                  allowedExtensions: ['pdf'],
+                                );
+                                PlatformFile file = result.files.first;
+                                final File fileForFirebase = File(file.path);
+                                List<int> imageBytes =
+                                fileForFirebase.readAsBytesSync();
+                                //print(imageBytes);
+                                String base64Image = base64Encode(imageBytes);
+                                //print(base64Image);
+                                var bytes =
+                                utf8.encode(base64Image); // data being hashed
+                                var digest = sha256.convert(bytes);
+                                print(digest.toString());
+                                setState(() {
+                                  _shakey = digest.toString();
+                                  showSpinner = false;
+                                });
+                              }catch(e){
+                                print(e);
+                                setState(() {
+                                  showSpinner = false;
+                                });
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Failed to create SHA'),
+                                ));
+                              }
                             },
                             child: Material(
                               child: Row(
@@ -148,7 +159,15 @@ class _createSHAState extends State<createSHA> {
                                 '%' +
                                 widget.assignmentName;
                             List<String> recipents = ["+16083363649"];
-                            _sendSMS(message, recipents);
+                            try{
+                              _sendSMS(message, recipents);
+                            }catch(e){
+                              print(e);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('Failed to send sms'),
+                              ));
+                            }
                             Navigator.pop(context);
                           }
                         },

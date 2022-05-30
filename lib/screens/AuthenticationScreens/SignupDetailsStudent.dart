@@ -141,7 +141,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                         onChanged: (value) {
                           _department = value;
                         },
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.text,
                         cursorColor: kPrimaryColor,
                         style: TextStyle(color: Colors.grey.shade600),
                         decoration: InputDecoration(
@@ -161,58 +161,56 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                     padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                     child: GestureDetector(
                       onTap: () async {
-                        if (_name != null &&
-                            _roll != null &&
-                            _department != null &&
-                            _contactNum != null &&
-                            _contactNum.length == 10) {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          _firestore
-                              .collection("AUTH_DATA")
-                              .doc("STUDENT")
-                              .collection(FirebaseAuth.instance.currentUser.uid)
-                              .doc("Student_Details")
-                              .set({
-                            STUDENT_EMAIL: loggedInUser.email,
-                            STUDENT_NAME: _name,
-                            STUDENT_ROLL_NO: _roll,
-                            STUDENT_CONTACT: _contactNum,
-                            STUDENT_DEPARTMENT: _department,
-                            STUDENT_UID: loggedInUser.uid
-                          });
-                          setState(() {
-                            showSpinner = false;
-                          });
-                          Navigator.pushNamed(context, StudentHome.id);
-                          // Navigator.of(context).pushNamedAndRemoveUntil(
-                          //     NavigationScreen.id,
-                          //     (Route<dynamic> route) => false);
-                        } else {
-                          if (_contactNum.length != 10) {
-                            Alert(
-                                    context: context,
-                                    title:
-                                        "Your phone number should be 10 digits long",
-                                    buttons: [
-                                      DialogButton(
-                                        child: Text(
-                                          "CANCEL",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20.0,
-                                          ),
-                                        ),
-                                        onPressed: () => Navigator.pop(context),
-                                        color: kPrimaryColor,
-                                        width: 150.0,
-                                        radius: BorderRadius.circular(15.0),
-                                      ),
-                                    ],
-                                    desc: "Please Re-enter")
-                                .show();
+                        try {
+                          if (_name != null &&
+                              _roll != null &&
+                              _department != null &&
+                              _contactNum != null &&
+                              _contactNum.length == 10) {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            _firestore
+                                .collection("AUTH_DATA")
+                                .doc("STUDENT")
+                                .collection(
+                                FirebaseAuth.instance.currentUser.uid)
+                                .doc("Student_Details")
+                                .set({
+                              STUDENT_EMAIL: loggedInUser.email,
+                              STUDENT_NAME: _name,
+                              STUDENT_ROLL_NO: _roll,
+                              STUDENT_CONTACT: _contactNum,
+                              STUDENT_DEPARTMENT: _department,
+                              STUDENT_UID: loggedInUser.uid
+                            });
+                            setState(() {
+                              showSpinner = false;
+                            });
+                            Navigator.pushNamed(context, StudentHome.id);
+                            // Navigator.of(context).pushNamedAndRemoveUntil(
+                            //     NavigationScreen.id,
+                            //     (Route<dynamic> route) => false);
+                          } else {
+                            if (_contactNum.length != 10) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                    "Your phone number should be 10 digits long"),
+                              ));
+                            }
+                            else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('All Fields are required'),
+                              ));
+                            }
                           }
+                        }on FirebaseAuthException catch(error){
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Failed to register....please try again'),
+                          ));
                         }
                       },
                       child: Container(

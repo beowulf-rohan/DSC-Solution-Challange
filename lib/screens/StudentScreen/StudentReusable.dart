@@ -67,11 +67,18 @@ class _ClassCardState extends State<ClassCard> {
             setState(() {
               showSpinner = true;
             });
-            await getAssignmentData(widget.path, widget.className)
-                .then((value) => {null});
-            setState(() {
-              showSpinner = false;
-            });
+            try {
+              await getAssignmentData(widget.path, widget.className)
+                  .then((value) => {null});
+            }catch(e){
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(const SnackBar(
+                content: Text('Failed to load assignment data'),
+              ));
+            }
+              setState(() {
+                showSpinner = false;
+              });
             Navigator.push(
                 context,
                 MaterialPageRoute(

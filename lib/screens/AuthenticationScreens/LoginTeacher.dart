@@ -140,7 +140,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                             _auth.sendPasswordResetEmail(email: _emailVal);
                             Alert(
                                     context: context,
-                                    title: status,
+                                    title: '',
                                     buttons: [
                                       DialogButton(
                                         child: Text(
@@ -161,7 +161,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                           } else {
                             Alert(
                                     context: context,
-                                    title: status,
+                                    title: '',
                                     buttons: [
                                       DialogButton(
                                         child: Text(

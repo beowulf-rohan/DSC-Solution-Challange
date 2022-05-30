@@ -159,14 +159,10 @@ class _MakeNewClassState extends State<MakeNewClass> {
                             "Class id": FirebaseAuth.instance.currentUser.uid +
                                 _classname,
                           });
-                        }
-                        if (_classname != null &&
-                            _batch != null &&
-                            _department != null) {
                           _firestore
                               .collection("Classes")
                               .doc(FirebaseAuth.instance.currentUser.uid +
-                                  _classname)
+                              _classname)
                               .collection("Class_Details")
                               .doc("Info")
                               .set({
@@ -176,10 +172,6 @@ class _MakeNewClassState extends State<MakeNewClass> {
                             "Class id": FirebaseAuth.instance.currentUser.uid +
                                 _classname,
                           });
-                        }
-                        if (_classname != null &&
-                            _batch != null &&
-                            _department != null) {
                           DocumentSnapshot document = await _firestore
                               .collection("AUTH_DATA")
                               .doc("TEACHER")
@@ -189,7 +181,7 @@ class _MakeNewClassState extends State<MakeNewClass> {
                           _firestore
                               .collection("Classes")
                               .doc(FirebaseAuth.instance.currentUser.uid +
-                                  _classname)
+                              _classname)
                               .collection("Class_Details")
                               .doc("Teacher_Details")
                               .set({
@@ -200,14 +192,29 @@ class _MakeNewClassState extends State<MakeNewClass> {
                             "Name": document["Name"],
                           });
                         }
-                        getData();
-                        Timer(Duration(seconds: 3), () {
+                        else{
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('All Fields are Mandatory'),
+                          ));
+                        }
+                        try {
+                          await getData().then((value) => null);
                           setState(() {
                             showSpinner = false;
                           });
+                        }catch(e){
+                          print(e);
+                          setState(() {
+                            showSpinner=false;
+                          });
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Failed to load class'),
+                          ));
+                        }
                           //print(classList);
                           Navigator.pushNamed(context, TeacherHome.id);
-                        });
                       },
                       child: Container(
                         height: buttonHeight,

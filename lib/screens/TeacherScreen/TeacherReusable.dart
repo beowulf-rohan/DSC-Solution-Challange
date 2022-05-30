@@ -67,8 +67,15 @@ class _ClassCardState extends State<ClassCard> {
             setState(() {
               showSpinner = true;
             });
-            await getAssignmentData(widget.path, widget.className)
-                .then((value) => {null});
+            try {
+              await getAssignmentData(widget.path, widget.className)
+                  .then((value) => {null});
+            }catch(e){
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(const SnackBar(
+                content: Text('Failed to load assignments'),
+              ));
+            }
             setState(() {
               showSpinner = false;
             });
