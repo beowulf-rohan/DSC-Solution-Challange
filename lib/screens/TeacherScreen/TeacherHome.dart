@@ -80,13 +80,6 @@ class _TeacherHomeState extends State<TeacherHome> {
     );
   }
 
-  void _showSnackBar(BuildContext context, String message) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(message),
-      duration: const Duration(milliseconds: 1000),
-    ));
-  }
-
   Widget _getFAB() {
     return Padding(
       padding: EdgeInsets.only(bottom: 10, right: 15, top: 0, left: 0),

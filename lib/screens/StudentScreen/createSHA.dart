@@ -19,7 +19,8 @@ import '../TeacherScreen/TeacherReusable.dart';
 class createSHA extends StatefulWidget {
   static String id = "createSHA";
   String classId = "", assignmentName = "";
-  createSHA(this.classId, this.assignmentName);
+  DateTime end;
+  createSHA(this.classId, this.assignmentName, this.end);
   @override
   _createSHAState createState() => _createSHAState();
 }
@@ -133,16 +134,23 @@ class _createSHAState extends State<createSHA> {
                       padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                       child: GestureDetector(
                         onTap: () {
-                          String message = _shakey +
-                              '%' +
-                              FirebaseAuth.instance.currentUser.uid +
-                              '%' +
-                              widget.classId +
-                              '%' +
-                              widget.assignmentName;
-                          List<String> recipents = ["+16083363649"];
-                          _sendSMS(message, recipents);
-                          Navigator.pop(context);
+                          if (DateTime.now().isAfter(widget.end)) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text("You can't send SHA.Time is up."),
+                            ));
+                          } else {
+                            String message = _shakey +
+                                '%' +
+                                FirebaseAuth.instance.currentUser.uid +
+                                '%' +
+                                widget.classId +
+                                '%' +
+                                widget.assignmentName;
+                            List<String> recipents = ["+16083363649"];
+                            _sendSMS(message, recipents);
+                            Navigator.pop(context);
+                          }
                         },
                         child: Container(
                           height: buttonHeight,
