@@ -10,7 +10,9 @@ import '../../constants.dart';
 class generateOrSubmit extends StatelessWidget {
   static String id = "generateOrSubmit";
   String classId = "", assignmentLink = "", assignmentName = "";
-  generateOrSubmit(this.classId, this.assignmentName, this.assignmentLink);
+  DateTime end;
+  generateOrSubmit(
+      this.classId, this.assignmentName, this.assignmentLink, this.end);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +114,7 @@ class generateOrSubmit extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        createSHA(classId, assignmentName),
+                                        createSHA(classId, assignmentName, end),
                                   ));
                             },
                             child: Container(

@@ -60,7 +60,8 @@ class _StudentClassScreenState extends State<StudentClassScreen> {
                     builder: (context) => generateOrSubmit(
                         widget.classId,
                         assignedAssignment[i].assignmentName,
-                        assignedAssignment[i].link),
+                        assignedAssignment[i].link,
+                        assignedAssignment[i].end),
                   ));
             },
           ));

@@ -279,6 +279,8 @@ Future<List<AssignmentDetails>> fetchAllAssignments(
     obj.endDate = element["End Date"];
     obj.password = element["Password"];
     obj.link = element["Download Link"];
+    obj.start = DateTime.parse(element["Start DateTime"]);
+    obj.end = DateTime.parse(element["End DateTime"]);
     print(element["Name"]);
     assignments.add(obj);
   });
@@ -288,4 +290,5 @@ Future<List<AssignmentDetails>> fetchAllAssignments(
 class AssignmentDetails {
   String assignmentName, startTime, startDate, endTime, endDate;
   String password, link, duration;
+  DateTime start, end;
 }
