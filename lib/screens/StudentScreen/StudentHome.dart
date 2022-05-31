@@ -164,7 +164,7 @@ class _StudentHomeState extends State<StudentHome> {
                               "Roll": document["Roll No"],
                             });
                           }
-                          await getData().then((value) => {null});
+                          await getStudentData().then((value) => {null});
                           setState(() {
                             showSpinner = false;
                           });

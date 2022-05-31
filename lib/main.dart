@@ -25,8 +25,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String finalEmail, konhai;
-Widget home = CircularProgressIndicator();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -71,45 +69,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-/*
-class HomePage extends StatefulWidget {
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    getValidation().whenComplete(() {
-      if (finalEmail != null && konhai == "TEACHER") {
-        home = TeacherHome();
-      } else if (finalEmail != null && konhai == "STUDENT") {
-        home = StudentHome();
-      } else {
-        home = IntroScreen();
-      }
-    });
-    super.initState();
-  }
-
-  Future getValidation() async {
-    final SharedPreferences sharedPref = await SharedPreferences.getInstance();
-    String email;
-    if (sharedPref.getString('TEACHER_USER_EMAIL') != null) {
-      email = sharedPref.getString('TEACHER_USER_EMAIL');
-      konhai = "TEACHER";
-    } else if (sharedPref.getString('STUDENT_USER_EMAIL') != null) {
-      email = sharedPref.getString('STUDENT_USER_EMAIL');
-      konhai = "STUDENT";
-    }
-    setState(() {
-      finalEmail = email;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return home;
-  }
-}
-*/

@@ -209,7 +209,7 @@ class _LoginStudentScreenState extends State<LoginStudentScreen> {
                                   await SharedPreferences.getInstance();
                               sharedPref.setString(
                                   'STUDENT_USER_EMAIL', _emailVal);
-                              await getData().then((value) => {null});
+                              await getStudentData().then((value) => {null});
                               setState(() {
                                 showSpinner = false;
                               });
@@ -318,7 +318,7 @@ class _LoginStudentScreenState extends State<LoginStudentScreen> {
   }
 }
 
-Future<void> getData() async {
+Future<void> getStudentData() async {
   classList = await fetchAllClasses() as List;
   print(classList);
 }
