@@ -159,54 +159,59 @@ class _SignupDetailsTeacherState extends State<SignupDetailsTeacher> {
                     padding: const EdgeInsets.fromLTRB(50.0, 40.0, 50.0, 0),
                     child: GestureDetector(
                       onTap: () async {
-                        try{
-                        if (_name != null &&
-                            _eid != null &&
-                            _department != null &&
-                            _contactNum != null &&
-                            _contactNum.length == 10) {
-                          setState(() {
-                            showSpinner = true;
-                          });
-                          _firestore
-                              .collection("AUTH_DATA")
-                              .doc("TEACHER")
-                              .collection(FirebaseAuth.instance.currentUser.uid)
-                              .doc("Teacher_Details")
-                              .set({
-                            TEACHER_EMAIL: loggedInUser.email,
-                            TEACHER_NAME: _name,
-                            TEACHER_ROLL_NO: _eid,
-                            TEACHER_CONTACT: _contactNum,
-                            TEACHER_DEPARTMENT: _department,
-                            TEACHER_UID: loggedInUser.uid
-                          });
-                          setState(() {
-                            showSpinner = false;
-                          });
-                          Navigator.pushNamed(context, TeacherHome.id);
-                          // Navigator.of(context).pushNamedAndRemoveUntil(
-                          //     NavigationScreen.id,
-                          //     (Route<dynamic> route) => false);
-                        } else {
-                          if (_contactNum.length != 10) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text(
-                                  "Your phone number should be 10 digits long"),
-                            ));
+                        try {
+                          if (_name != null &&
+                              _eid != null &&
+                              _department != null &&
+                              _contactNum != null &&
+                              _contactNum.length == 10) {
+                            setState(() {
+                              showSpinner = true;
+                            });
+                            _firestore
+                                .collection("AUTH_DATA")
+                                .doc("TEACHER")
+                                .collection(
+                                    FirebaseAuth.instance.currentUser.uid)
+                                .doc("Teacher_Details")
+                                .set({
+                              TEACHER_EMAIL: loggedInUser.email,
+                              TEACHER_NAME: _name,
+                              TEACHER_ROLL_NO: _eid,
+                              TEACHER_CONTACT: _contactNum,
+                              TEACHER_DEPARTMENT: _department,
+                              TEACHER_UID: loggedInUser.uid
+                            });
+                            setState(() {
+                              showSpinner = false;
+                            });
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TeacherHome(),
+                                ));
+                            // Navigator.of(context).pushNamedAndRemoveUntil(
+                            //     NavigationScreen.id,
+                            //     (Route<dynamic> route) => false);
+                          } else {
+                            if (_contactNum.length != 10) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                    "Your phone number should be 10 digits long"),
+                              ));
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text('All Fields are required'),
+                              ));
+                            }
                           }
-                          else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content: Text('All Fields are required'),
-                            ));
-                          }
-                        }
-                        }on FirebaseAuthException catch(error){
+                        } on FirebaseAuthException catch (error) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
-                            content: Text('Failed to register....please try again'),
+                            content:
+                                Text('Failed to register....please try again'),
                           ));
                         }
                       },

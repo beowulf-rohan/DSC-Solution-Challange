@@ -212,7 +212,11 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                               setState(() {
                                 showSpinner = false;
                               });
-                              Navigator.pushNamed(context, TeacherHome.id);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => TeacherHome(),
+                                  ));
                             }
                           } catch (error) {
                             print(error.code);
