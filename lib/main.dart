@@ -20,6 +20,7 @@ import 'package:demo/screens/TeacherScreen/MakeNewClass.dart';
 import 'package:demo/screens/TeacherScreen/TeacherClassScreen.dart';
 import 'package:demo/screens/TeacherScreen/TeacherHome.dart';
 import 'package:demo/screens/TeacherScreen/TeacherProfile.dart';
+import 'package:demo/screens/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: IntroScreen(),
+      home: transition(),
       debugShowCheckedModeBanner: false,
       routes: {
         // IntroScreen.id: (context) => IntroScreen(),
