@@ -70,14 +70,13 @@ class _TeacherClassScreenState extends State<TeacherClassScreen> {
             press: () async {
               try {
                 await getResponseList(
-                    widget.classId,
-                    completedAssignment[i].assignmentName,
-                    completedAssignment[i].end)
+                        widget.classId,
+                        completedAssignment[i].assignmentName,
+                        completedAssignment[i].end)
                     .then((value) => null);
-              }catch(e){
+              } catch (e) {
                 print(e);
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(const SnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text('Failed to load student responses'),
                 ));
               }
@@ -157,18 +156,6 @@ Widget _getFAB(BuildContext context, String classname) {
       visible: true,
       // curve: Curves.bounceIn,
       children: [
-        // FAB 1
-        SpeedDialChild(
-          child: Icon(Icons.person_add, color: kPrimaryColor),
-          onTap: () {
-            /* do anything */
-            Navigator.pushNamed(tempContext, AddStudentToClass.id);
-          },
-          label: 'Add Student',
-          labelStyle: TextStyle(
-              fontWeight: FontWeight.w500, color: Colors.white, fontSize: 16.0),
-          labelBackgroundColor: kPrimaryColor,
-        ),
         // FAB 2
         SpeedDialChild(
             child: Icon(Icons.assignment, color: kPrimaryColor),

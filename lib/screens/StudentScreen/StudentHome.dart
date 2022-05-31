@@ -134,7 +134,7 @@ class _StudentHomeState extends State<StudentHome> {
                                 .collection("AUTH_DATA")
                                 .doc("STUDENT")
                                 .collection(
-                                FirebaseAuth.instance.currentUser.uid)
+                                    FirebaseAuth.instance.currentUser.uid)
                                 .doc("Class_List")
                                 .collection("Classes")
                                 .doc(_classid)
@@ -147,7 +147,7 @@ class _StudentHomeState extends State<StudentHome> {
                                 .collection("AUTH_DATA")
                                 .doc("STUDENT")
                                 .collection(
-                                FirebaseAuth.instance.currentUser.uid)
+                                    FirebaseAuth.instance.currentUser.uid)
                                 .doc("Student_Details")
                                 .get();
                             _firestore
@@ -155,8 +155,8 @@ class _StudentHomeState extends State<StudentHome> {
                                 .doc(_classid)
                                 .collection("Student_List")
                                 .add({
-                              "Student_id": FirebaseAuth.instance.currentUser
-                                  .uid,
+                              "Student_id":
+                                  FirebaseAuth.instance.currentUser.uid,
                               "Contact": document["Contact"],
                               "Department": document["Department"],
                               "Email": document["Email"],
@@ -173,7 +173,7 @@ class _StudentHomeState extends State<StudentHome> {
                             content: Text('New Class joined'),
                           ));
                           Navigator.pop(context, 'OK');
-                        }catch(e){
+                        } catch (e) {
                           setState(() {
                             showSpinner = false;
                           });
@@ -203,7 +203,11 @@ class _StudentHomeState extends State<StudentHome> {
           SpeedDialChild(
               child: Icon(Icons.person, color: kPrimaryColor),
               onTap: () {
-                Navigator.pushNamed(tempContext, StudentProfile.id);
+                Navigator.push(
+                    tempContext,
+                    MaterialPageRoute(
+                      builder: (context) => StudentProfile(),
+                    ));
               },
               label: 'Profile',
               labelStyle: TextStyle(

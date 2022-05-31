@@ -115,8 +115,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                       onTap: () async {
                         List<DateTime> dateTimeList;
                         try {
-                          dateTimeList =
-                          await showOmniDateTimeRangePicker(
+                          dateTimeList = await showOmniDateTimeRangePicker(
                             context: context,
                             primaryColor: Colors.grey[700],
                             backgroundColor: Colors.white,
@@ -144,7 +143,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                             ),
                             borderRadius: const Radius.circular(16),
                           );
-                        }catch(e){
+                        } catch (e) {
                           print(e);
                         }
                         print(dateTimeList);
@@ -276,7 +275,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                       onTap: () async {
                         try {
                           FilePickerResult result =
-                          await FilePicker.platform.pickFiles(
+                              await FilePicker.platform.pickFiles(
                             type: FileType.custom,
                             allowedExtensions: ['pdf'],
                           );
@@ -348,22 +347,26 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           downloadURL = await firebase_storage
                               .FirebaseStorage.instance
                               .ref('Assignments/' +
-                              FirebaseAuth.instance.currentUser.uid +
-                              widget.classname +
-                              '/' +
-                              name +
-                              '.pdf')
+                                  FirebaseAuth.instance.currentUser.uid +
+                                  widget.classname +
+                                  '/' +
+                                  name +
+                                  '.pdf')
                               .getDownloadURL();
                           print(downloadURL);
-                        }catch(e){
+                        } catch (e) {
                           print(e);
                         }
-                        if(name!=null&&_startDate!=null&&_endDate!=null&&_passwordVal!=null&&downloadURL!=null) {
+                        if (name != null &&
+                            _startDate != null &&
+                            _endDate != null &&
+                            _passwordVal != null &&
+                            downloadURL != null) {
                           try {
                             _firestore
                                 .collection("Classes")
                                 .doc(FirebaseAuth.instance.currentUser.uid +
-                                widget.classname)
+                                    widget.classname)
                                 .collection("Assignment_List")
                                 .doc(name)
                                 .set({
@@ -377,22 +380,20 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                               "Start DateTime": start.toString(),
                               "End DateTime": end.toString(),
                             });
-                          }catch(e){
+                          } catch (e) {
                             print(e);
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text('Failed to create assignment'),
                             ));
                           }
-                        }
-                        else{
-                          if(downloadURL==null){
+                        } else {
+                          if (downloadURL == null) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text('Failed to create assignment'),
                             ));
-                          }
-                          else{
+                          } else {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text('All fields are mandatory'),
@@ -401,11 +402,11 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                         }
                         try {
                           await getAssignmentData(
-                              FirebaseAuth.instance.currentUser.uid +
-                                  widget.classname,
-                              widget.classname)
+                                  FirebaseAuth.instance.currentUser.uid +
+                                      widget.classname,
+                                  widget.classname)
                               .then((value) => {null});
-                        }catch(e){
+                        } catch (e) {
                           print(e);
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
@@ -415,7 +416,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                         setState(() {
                           showSpinner = false;
                         });
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => TeacherClassScreen(

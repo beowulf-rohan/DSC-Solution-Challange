@@ -117,7 +117,7 @@ class _MakeNewClassState extends State<MakeNewClass> {
                         onChanged: (value) {
                           _department = value;
                         },
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.text,
                         cursorColor: kPrimaryColor,
                         style: TextStyle(color: Colors.grey.shade600),
                         decoration: InputDecoration(
@@ -162,7 +162,7 @@ class _MakeNewClassState extends State<MakeNewClass> {
                           _firestore
                               .collection("Classes")
                               .doc(FirebaseAuth.instance.currentUser.uid +
-                              _classname)
+                                  _classname)
                               .collection("Class_Details")
                               .doc("Info")
                               .set({
@@ -181,7 +181,7 @@ class _MakeNewClassState extends State<MakeNewClass> {
                           _firestore
                               .collection("Classes")
                               .doc(FirebaseAuth.instance.currentUser.uid +
-                              _classname)
+                                  _classname)
                               .collection("Class_Details")
                               .doc("Teacher_Details")
                               .set({
@@ -191,8 +191,7 @@ class _MakeNewClassState extends State<MakeNewClass> {
                             "Email": document["Email"],
                             "Name": document["Name"],
                           });
-                        }
-                        else{
+                        } else {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
                             content: Text('All Fields are Mandatory'),
@@ -203,18 +202,22 @@ class _MakeNewClassState extends State<MakeNewClass> {
                           setState(() {
                             showSpinner = false;
                           });
-                        }catch(e){
+                        } catch (e) {
                           print(e);
                           setState(() {
-                            showSpinner=false;
+                            showSpinner = false;
                           });
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
                             content: Text('Failed to load class'),
                           ));
                         }
-                          //print(classList);
-                          Navigator.pushNamed(context, TeacherHome.id);
+                        //print(classList);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    TeacherHome()));
                       },
                       child: Container(
                         height: buttonHeight,

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo/constants.dart';
+import 'package:demo/screens/TeacherScreen/AddStudentToClass.dart';
 import 'package:demo/screens/TeacherScreen/MakeNewClass.dart';
 import 'package:demo/screens/TeacherScreen/TeacherProfile.dart';
 import 'package:demo/screens/TeacherScreen/TeacherReusable.dart';
@@ -45,12 +46,8 @@ class _TeacherHomeState extends State<TeacherHome> {
     // TODO: implement initState
     super.initState();
     getCurrentUser();
-    //getData();
   }
 
-  // Future<void> getData() async{
-  //    classList = await fetchAllClasses() as List;
-  // }
   @override
   Widget build(BuildContext context) {
     tempContext = context;
@@ -95,7 +92,11 @@ class _TeacherHomeState extends State<TeacherHome> {
           SpeedDialChild(
             child: Icon(Icons.add_circle_outline, color: kPrimaryColor),
             onTap: () {
-              Navigator.pushNamed(tempContext, MakeNewClass.id);
+              Navigator.push(
+                  tempContext,
+                  MaterialPageRoute(
+                    builder: (context) => MakeNewClass(),
+                  ));
             },
             label: 'Add Class',
             labelStyle: TextStyle(
@@ -108,7 +109,11 @@ class _TeacherHomeState extends State<TeacherHome> {
           SpeedDialChild(
               child: Icon(Icons.person, color: kPrimaryColor),
               onTap: () {
-                Navigator.pushNamed(tempContext, TeacherProfile.id);
+                Navigator.push(
+                    tempContext,
+                    MaterialPageRoute(
+                      builder: (context) => TeacherProfile(),
+                    ));
               },
               label: 'Profile',
               labelStyle: TextStyle(

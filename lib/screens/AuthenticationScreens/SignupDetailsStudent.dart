@@ -174,7 +174,7 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                                 .collection("AUTH_DATA")
                                 .doc("STUDENT")
                                 .collection(
-                                FirebaseAuth.instance.currentUser.uid)
+                                    FirebaseAuth.instance.currentUser.uid)
                                 .doc("Student_Details")
                                 .set({
                               STUDENT_EMAIL: loggedInUser.email,
@@ -187,7 +187,11 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                             setState(() {
                               showSpinner = false;
                             });
-                            Navigator.pushNamed(context, StudentHome.id);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => StudentHome(),
+                                ));
                             // Navigator.of(context).pushNamedAndRemoveUntil(
                             //     NavigationScreen.id,
                             //     (Route<dynamic> route) => false);
@@ -198,18 +202,18 @@ class _SignupDetailsStudentState extends State<SignupDetailsStudent> {
                                 content: Text(
                                     "Your phone number should be 10 digits long"),
                               ));
-                            }
-                            else {
+                            } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
                                 content: Text('All Fields are required'),
                               ));
                             }
                           }
-                        }on FirebaseAuthException catch(error){
+                        } on FirebaseAuthException catch (error) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
-                            content: Text('Failed to register....please try again'),
+                            content:
+                                Text('Failed to register....please try again'),
                           ));
                         }
                       },

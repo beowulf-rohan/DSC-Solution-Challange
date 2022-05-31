@@ -48,8 +48,11 @@ class IntroScreen extends StatelessWidget {
                               const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, LoginTeacherScreen.id);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginTeacherScreen(),
+                                  ));
                             },
                             child: Container(
                               height: buttonHeight,
@@ -89,8 +92,11 @@ class IntroScreen extends StatelessWidget {
                               const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, SignupScreenTeacher.id);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SignupScreenTeacher(),
+                                  ));
                             },
                             child: Container(
                               height: buttonHeight,
@@ -145,8 +151,11 @@ class IntroScreen extends StatelessWidget {
                               const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, LoginStudentScreen.id);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginStudentScreen(),
+                                  ));
                             },
                             child: Container(
                               height: buttonHeight,
@@ -186,8 +195,11 @@ class IntroScreen extends StatelessWidget {
                               const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, SignupScreenStudent.id);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SignupScreenStudent(),
+                                  ));
                             },
                             child: Container(
                               height: buttonHeight,
