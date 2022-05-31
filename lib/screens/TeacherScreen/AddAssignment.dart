@@ -386,7 +386,7 @@ class _AddAAssignmentState extends State<AddAAssignment> {
                           }
                         }
                         else{
-                          if(downloadURL.isEmpty){
+                          if(downloadURL==null){
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text('Failed to create assignment'),
