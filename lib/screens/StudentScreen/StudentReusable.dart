@@ -70,15 +70,14 @@ class _ClassCardState extends State<ClassCard> {
             try {
               await getAssignmentData(widget.path, widget.className)
                   .then((value) => {null});
-            }catch(e){
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text('Failed to load assignment data'),
               ));
             }
-              setState(() {
-                showSpinner = false;
-              });
+            setState(() {
+              showSpinner = false;
+            });
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -134,8 +133,10 @@ class _ClassCardState extends State<ClassCard> {
                               onPressed: () {
                                 _copyToClipboard(context, widget.path);
                               },
-                              icon: Icon(
-                                Icons.copy,
+                              icon: new IconTheme(
+                                data: new IconThemeData(
+                                    color: Colors.white.withOpacity(0.9)),
+                                child: new Icon(Icons.copy),
                               ),
                             ),
                           ],

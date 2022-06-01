@@ -29,7 +29,7 @@ Future getValidation() async {
   }
 }
 
-void resetNewLaunch() async {
+Future<void> resetNewLaunch() async {
   getValidation().whenComplete(() async {
     if (finalEmail != null && konhai == "TEACHER") {
       await getData().then((value) => {null});
@@ -45,12 +45,16 @@ void resetNewLaunch() async {
 
 class _transitionState extends State<transition> {
   bool showSpinner = false;
+
+  Future<void> get() async {
+    await resetNewLaunch().then((value) => null);
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    get();
     Timer(Duration(seconds: 3), () {
-      resetNewLaunch();
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
