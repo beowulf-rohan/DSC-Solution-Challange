@@ -70,9 +70,8 @@ class _ClassCardState extends State<ClassCard> {
             try {
               await getAssignmentData(widget.path, widget.className)
                   .then((value) => {null});
-            }catch(e){
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text('Failed to load assignments'),
               ));
             }
@@ -99,7 +98,7 @@ class _ClassCardState extends State<ClassCard> {
                   child: SizedBox(
                     height: 70,
                     width: 70,
-                    child: Image.asset('images/google.png'),
+                    child: Image.asset('images/class.png'),
                   ),
                 ),
                 VerticalDivider(

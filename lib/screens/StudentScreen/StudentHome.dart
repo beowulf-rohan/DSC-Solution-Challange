@@ -7,9 +7,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
 import '../AuthenticationScreens/LoginStudent.dart';
+import '../IntroScreen.dart';
 import 'StudentReusable.dart';
 
 BuildContext tempContext;
@@ -203,13 +205,32 @@ class _StudentHomeState extends State<StudentHome> {
           SpeedDialChild(
               child: Icon(Icons.person, color: kPrimaryColor),
               onTap: () {
-                Navigator.push(
-                    tempContext,
-                    MaterialPageRoute(
-                      builder: (context) => StudentProfile(),
-                    ));
+                // Navigator.push(
+                //     tempContext,
+                //     MaterialPageRoute(
+                //       builder: (context) => StudentProfile(),
+                //     ));
               },
               label: 'Profile',
+              labelStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontSize: 16.0),
+              labelBackgroundColor: kPrimaryColor),
+          SpeedDialChild(
+              child: Icon(Icons.logout, color: kPrimaryColor),
+              onTap: () async {
+                SharedPreferences sharedPref =
+                    await SharedPreferences.getInstance();
+                await sharedPref.clear();
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => IntroScreen(),
+                    ));
+              },
+              label: 'Log Out',
               labelStyle: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
