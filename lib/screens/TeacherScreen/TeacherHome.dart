@@ -111,11 +111,11 @@ class _TeacherHomeState extends State<TeacherHome> {
           SpeedDialChild(
               child: Icon(Icons.person, color: kPrimaryColor),
               onTap: () {
-                Navigator.push(
-                    tempContext,
-                    MaterialPageRoute(
-                      builder: (context) => TeacherProfile(),
-                    ));
+                // Navigator.push(
+                //     tempContext,
+                //     MaterialPageRoute(
+                //       builder: (context) => TeacherProfile(),
+                //     ));
               },
               label: 'Profile',
               labelStyle: TextStyle(

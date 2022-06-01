@@ -39,7 +39,7 @@ class _SignupScreenStudentState extends State<SignupScreenStudent> {
                   SizedBox(
                     height: 75.0,
                     width: 75.0,
-                    child: Image.asset('assets/images/logo.png'),
+                    child: Image.asset('images/logo.png'),
                   ),
                   SizedBox(height: 30.0),
                   Text(
@@ -175,7 +175,7 @@ class _SignupScreenStudentState extends State<SignupScreenStudent> {
                                 // final SharedPreferences sharedPref = await SharedPreferences.getInstance();
                                 // sharedPref.setString(USER_EMAIL, _emailVal);
                                 setState(() {
-                                  showSpinner=false;
+                                  showSpinner = false;
                                 });
                                 Navigator.pushNamed(
                                     context, SignupDetailsStudent.id);
@@ -193,7 +193,8 @@ class _SignupScreenStudentState extends State<SignupScreenStudent> {
                                               fontSize: 20.0,
                                             ),
                                           ),
-                                          onPressed: () => Navigator.pop(context),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
                                           color: kPrimaryColor,
                                           width: 150.0,
                                           radius: BorderRadius.circular(15.0),

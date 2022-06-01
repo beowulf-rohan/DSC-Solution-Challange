@@ -98,7 +98,7 @@ class _ClassCardState extends State<ClassCard> {
                   child: SizedBox(
                     height: 70,
                     width: 70,
-                    child: Image.asset('images/google.png'),
+                    child: Image.asset('images/class.png'),
                   ),
                 ),
                 VerticalDivider(

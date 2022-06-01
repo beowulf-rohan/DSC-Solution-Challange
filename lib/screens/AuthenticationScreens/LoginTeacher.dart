@@ -45,7 +45,7 @@ class _LoginTeacherScreenState extends State<LoginTeacherScreen> {
                   SizedBox(
                     height: 75.0,
                     width: 75.0,
-                    child: Image.asset('assets/images/logo.png'),
+                    child: Image.asset('images/logo.png'),
                   ),
                   SizedBox(height: 30.0),
                   Text(

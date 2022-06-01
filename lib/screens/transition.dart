@@ -81,10 +81,10 @@ class _transitionState extends State<transition> {
                   SizedBox(
                       height: 150,
                       width: 150,
-                      child: Image.asset('images/google.png')),
+                      child: Image.asset('images/logo.png')),
                   SizedBox(height: 30.0),
                   Text(
-                    'OFFLINE QUIZ',
+                    'REMOTE EXAM',
                     style: TextStyle(
                       fontSize: 40,
                       fontFamily: 'Fredoka',
